@@ -1,0 +1,240 @@
+{
+  "$id": "http://vendia.net/schemas/demos/carbon-emissions-template.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Track the carbon emissions from multiple suppliers through different transportation methods.",
+  "title": "CO2 Emissions",
+  "type": "object",
+  "x-vendia-acls": {
+    "BatteryAcl": {
+      "type": "Battery"
+    },
+    "MotorAcl": {
+      "type": "Motor"
+    },
+    "SeaTransportationAcl": {
+      "type": "SeaTransportation"
+    },
+    "GroundTransportationAcl": {
+      "type": "GroundTransportation"
+    },
+    "HornerPowerToolsAcl": {
+      "type": "HornetPowerTools"
+    },
+    "UserAuthAcl": {
+      "type": "UserAuth"
+    }
+  },
+  "properties": {
+    "Battery": {
+      "description": "Battery information",
+      "items": {
+        "properties": {
+          "co2": {
+            "description": "Total co2 for transportation of part, measured in ppm",
+            "type": "number"
+          },
+          "costManufactured": {
+            "description": "Cost of manufacturing part",
+            "type": "number"
+          },
+          "dateManufactured": {
+            "description": "Date part was manufactured",
+            "format": "date",
+            "type": "string"
+          },
+          "partNumber": {
+            "description": "Part Number",
+            "type": "string"
+          },
+          "salesPrice": {
+            "description": "Sales price of part",
+            "type": "number"
+          },
+          "serialNumber": {
+            "description": "Serial number for part",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "Motor": {
+      "description": "Motor information",
+      "items": {
+        "properties": {
+          "co2": {
+            "description": "Total co2 for transportation of part, measured in ppm",
+            "type": "number"
+          },
+          "costManufactured": {
+            "description": "Cost of manufacturing part",
+            "type": "number"
+          },
+          "dateManufactured": {
+            "description": "Date part was manufactured",
+            "format": "date",
+            "type": "string"
+          },
+          "partNumber": {
+            "description": "Part Number",
+            "type": "string"
+          },
+          "salesPrice": {
+            "description": "Sales price of part",
+            "type": "number"
+          },
+          "serialNumber": {
+            "description": "Serial number for part",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "SeaTransportation": {
+      "description": "Sea Transport information",
+      "items": {
+        "properties": {
+          "trackingNumber": {
+            "description": "number to track",
+            "type": "string"
+          },
+          "co2": {
+            "description": "Carbon output for sea transportation (type * distance)",
+            "type": "number"
+          },
+          "routeId": {
+            "description": "route id",
+            "format": "date",
+            "type": "string"
+          },
+          "shipId": {
+            "description": "Ship id",
+            "type": "string"
+          },
+          "fuelCost": {
+            "description": "cost of fuel",
+            "type": "number"
+          },
+          "laborCost": {
+            "description": "cost of labor",
+            "type": "number"
+          },
+          "customerCost": {
+            "description": "cost of customer",
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "GroundTransportation": {
+      "description": "Ground Transport information",
+      "items": {
+        "properties": {
+          "trackingNumber": {
+            "description": "number to track",
+            "type": "string"
+          },
+          "co2": {
+            "description": "Carbon output for ground transportation (type * distance)",
+            "type": "number"
+          },
+          "routeId": {
+            "description": "route id",
+            "format": "date",
+            "type": "string"
+          },
+          "truckId": {
+            "description": "truck id",
+            "type": "string"
+          },
+          "fuelCost": {
+            "description": "cost of fuel",
+            "type": "number"
+          },
+          "laborCost": {
+            "description": "cost of labor",
+            "type": "number"
+          },
+          "customerCost": {
+            "description": "cost of customer",
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "HornetPowerTools": {
+      "description": "Hornet power tools information",
+      "items": {
+        "properties": {
+          "toolType": {
+            "description": "type of the tool",
+            "type": "string"
+          },
+          "SerialNumber": {
+            "description": "serial number",
+            "type": "string"
+          },
+          "co2": {
+            "description": "Date part was manufactured",
+            "format": "date",
+            "type": "string"
+          },
+          "partsCost": {
+            "description": "Parts cost",
+            "type": "number"
+          },
+          "motorId": {
+            "description": "serial number of motor",
+            "type": "string"
+          },
+          "BatteryId": {
+            "description": "serial number of battery",
+            "type": "string"
+          },
+          "seaTransportId": {
+            "description": "serial number of sea transport",
+            "type": "string"
+          },
+          "groundTransportId": {
+            "description": "serial number of ground transport",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "UserAuth": {
+      "description": "user account information",
+      "items": {
+        "properties": {
+          "userName": {
+            "description": "name of the user",
+            "type": "string"
+          },
+          "emailId": {
+            "description": "email id",
+            "type": "string"
+          },
+          "password": {
+            "description": "passowrd of the user",
+            "type": "string"
+          },
+          "userType": {
+            "description": "type of user for authentication",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  }
+}
