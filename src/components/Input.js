@@ -4,11 +4,20 @@ import Card from 'react-bootstrap/Card';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import Figure from 'react-bootstrap/Figure';
+import battery_fetch from "../connections/BatteryCon";
 
 function Input() {
     const [buffHPT, setbuffHPT] = useState('');
     const [HPT, setHPT] = useState('')
     const [showResults,setShowResults] = useState(false)
+    const [fetchData, setfetchData] = useState('');
+    
+
+    const batteryfetchdata = battery_fetch();
+    console.log("jyothi");
+    battery_fetch().then(function(result) {
+      console.log(result.items[0].co2);
+    });
     const handleSubmit = (e)=>{
         setShowResults(true)
         setHPT(buffHPT)
