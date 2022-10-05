@@ -1,24 +1,17 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+// import logo from './logo.svg';
 import './App.css';
-import Input from './components/Input';
-import Login from './components/Login';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
-    <div>
-    <div className="App"    >
-      <div>
-        Enter HPT number:
-      </div>
-      <Input />
-    </div>
     <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/dashboard" element={<Dashboard />}/>
+    </Routes>
+  </BrowserRouter>
   );
 }
 
