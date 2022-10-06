@@ -107,7 +107,6 @@
           },
           "routeId": {
             "description": "route id",
-            "format": "date",
             "type": "string"
           },
           "shipId": {
@@ -145,7 +144,6 @@
           },
           "routeId": {
             "description": "route id",
-            "format": "date",
             "type": "string"
           },
           "truckId": {
@@ -183,7 +181,6 @@
           },
           "co2": {
             "description": "Date part was manufactured",
-            "format": "date",
             "type": "string"
           },
           "partsCost": {

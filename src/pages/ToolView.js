@@ -2,7 +2,9 @@ import React from "react";
 import Typography from '@mui/material/Typography';
 import {FaTools} from 'react-icons/fa';
 import logo from './logos/sac_state_logo.jpg';
+import BatteryCon from '../connections/BatteryCon';
 import Breakdown from "./Breakdown";
+import { useState } from "react";
 
 export default function ToolView(){
     // var hpt_id = 123;
@@ -13,6 +15,13 @@ export default function ToolView(){
             description: 'Hornet Power Tools is a Web Application developed by Team 4 for tracking Carbon emission for all the products used by Hornet family.'
 
         };
+        const [co2data,setco2data] = useState(0);
+    BatteryCon.battery_fetch().then(function(result)
+        {
+            console.log(result);
+            setco2data(result);
+        });
+    console.log(co2data);
     return (
         <>
         <div className="">
@@ -33,6 +42,9 @@ export default function ToolView(){
                     <span>
                         {item.description}
                     </span>
+                </div>
+                <div className="row">
+                        {co2data.co2}
                 </div>
             </div>
             <div className="row">

@@ -33,7 +33,7 @@ export default function Breakdown(){
             <Typography>CO<sub>2</sub> Emission Breakdown</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
+            {/* <Typography> */}
             <Box sx={{ width: '100%' }}>
                 <Stack spacing={2}>
                     <Item>
@@ -52,7 +52,7 @@ export default function Breakdown(){
                     <Item>Item 3</Item>
                 </Stack>
             </Box>
-            </Typography>
+            {/* </Typography> */}
           </AccordionDetails>
         </Accordion>
         </div>
