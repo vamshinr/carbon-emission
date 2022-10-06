@@ -14,8 +14,23 @@ import { FaRegCopyright, FaSearch, FaUserAlt } from 'react-icons/fa';
 import './Dashboard.css';
 import Box from '@mui/material/Box';
 import ToolView from "./ToolView";
+import { useState } from "react";
+import {FaTools} from 'react-icons/fa';
+import logo from './logos/sac_state_logo.jpg';
+import BatteryCon from '../connections/BatteryCon';
+import Breakdown from "./Breakdown";
 
 export default function Dashboard(){
+
+    //Setting data
+    const [buffHPT, setbuffHPT] = useState('');
+    const [HPT, setHPT] = useState('');
+    const [showResults,setShowResults] = useState(false);
+    const handleSubmit = (e)=>{
+        setShowResults(true)
+        setHPT(buffHPT)
+    }
+
 
     return(
         <>
@@ -56,17 +71,18 @@ export default function Dashboard(){
                         <CardActions>
                             <Stack spacing={2} sx={{ width: 300,  paddingBottom:'40px' }}>
                             <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '210px', backgroundColor:'#fff' }, paddingLeft:'15px', '& .MuiButton-root':{width:'80px',backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
-                                <span><TextField id="hpt-sno-search-text" label="HPT ID" variant="outlined"  style={{marginRight:'0px'}} /></span>
-                                <span><Button variant="outlined" style={{marginTop:'8px', border:'1px solid', height:'56px', width:'66px', borderRadius:'0px 6px 6px 0px', backgroundColor:'#a17f0f', color:'#fff'}}><FaSearch /></Button></span>
+                                <span><TextField id="hpt-sno-search-text" label="HPT ID" variant="outlined"  style={{marginRight:'0px'}} onChange = {(e) => setbuffHPT(e.target.value)} name="hpt-id" /></span>
+                                <span><Button variant="outlined" onClick={handleSubmit} style={{marginTop:'8px', border:'1px solid', height:'56px', width:'66px', borderRadius:'0px 6px 6px 0px', backgroundColor:'#a17f0f', color:'#fff'}}><FaSearch /></Button></span>
                              </Box>   
                             </Stack>
                         </CardActions>
                     </Card>
                 </div>
                 <div className="col-lg-9 col-md-9 col-sm-9 col-xs-12" style={{paddingRight:'30px'}}>
-                    <Card sx={{ maxWidth: '100%', height:'96%' }}>
+                    <Card sx={{ maxWidth: '100%', minHeight:'75%' }}>
                         <CardContent>
-                            <ToolView></ToolView>   
+                            {/* {showResults?<div>HPT Number is {HPT}</div>:null} */}
+                            {showResults? <RenderToolView hpt={HPT} /> :<DashboardTemplate />} 
                         </CardContent>
                     </Card>
                 </div>
@@ -86,4 +102,15 @@ export default function Dashboard(){
 
         </>
     );
+}
+
+const DashboardTemplate = (params) =>{
+    return(<div>
+        {/* <img src="https://i.pcmag.com/imagery/articles/02VBq04BrF1MsCpXrgz2s7b-9..v1606251425.jpg" /> */}
+    </div>);
+}
+
+const RenderToolView = (params)=>{
+    return(
+    <ToolView hpt = {params.hpt} />);
 }
