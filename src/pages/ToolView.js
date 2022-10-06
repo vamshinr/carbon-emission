@@ -15,7 +15,7 @@ export default function ToolView(){
             description: 'Hornet Power Tools is a Web Application developed by Team 4 for tracking Carbon emission for all the products used by Hornet family.'
 
         };
-        const [co2data,setco2data] = useState(0);
+    
     BatteryCon.battery_fetch().then(function(result)
         {
             console.log(result);
