@@ -94,10 +94,10 @@ function Input() {
       const [groundid,setgroundid] = useState();
 
 
-      setseaTransportationco2(0);
-      setgroundTransportationco2(0);
-      setbatterySupplierco2(0);
-      setmotorSupplierco2(0);
+      // setseaTransportationco2(0);
+      // setgroundTransportationco2(0);
+      // setbatterySupplierco2(0);
+      // setmotorSupplierco2(0);
 
       HptCon.hpt_fetch().then(function(result) {
         for (var i = 0; i < result.items.length; i++) {
