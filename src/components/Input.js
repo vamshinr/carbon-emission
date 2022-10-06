@@ -4,7 +4,12 @@ import Card from 'react-bootstrap/Card';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import Figure from 'react-bootstrap/Figure';
+
 import battery_fetch from "../connections/BatteryCon";
+import hpt_fetch from "../connections/HptCon";
+import motor_fetch from "../connections/MotorCon";
+import sea_fetch from "../connections/SeaTransportCon";
+import ground_fetch from "../connections/groundTransportCon";
 
 function Input() {
     const [buffHPT, setbuffHPT] = useState('');
@@ -73,17 +78,106 @@ function Input() {
   )
 
   const CalcResults = (params) => {
-      const [motorSupplier,setmotorSupplier] = useState(24)
-      const [batterySupplier, setbatterySupplier] = useState(30)
-      const totalCo2 = motorSupplier+batterySupplier
 
-        return (
-            <div>
-                total Co2 Emission: {totalCo2}
-                <br/>
-            </div>
-        )
-  }
+    const [hptco2,setHPTco2] = useState(0);
+    const [seaTransportationco2,setseaTransportationco2] = useState(0);
+    const [groundTransportationco2,setgroundTransportationco2] = useState(0);
+    const [userAuthco2,setuserAuthco2] = useState(0);
+    const [motorSupplierco2,setmotorSupplierco2] = useState(0);
+    const [batterySupplierco2, setbatterySupplierco2] = useState(0);
+    const [batteryid,setbatteryid] = useState();
+    const [motorid,setmotorid] = useState();
+    const [seaid,setseaid] = useState();
+    const [groundid,setgroundid] = useState();
+
+
+    // setseaTransportationco2(0);
+    // setgroundTransportationco2(0);
+    // setbatterySupplierco2(0);
+    // setmotorSupplierco2(0);
+
+    hpt_fetch().then(function(result) {
+      for (var i = 0; i < result.items.length; i++) {
+        if (result.items[i].SerialNumber == params.hpt){
+          console.log("hpt found")
+          console.log("hpt:", result.items[i]);
+          setHPTco2(result.items[i].co2);
+          setbatteryid(result.items[i].BatteryId);
+          setmotorid(result.items[i].motorId);
+          setseaid(result.items[i].seaTransportId);
+          setgroundid(result.items[i].groundTransportId);
+        }
+        else{
+          setHPTco2(0);
+        }
+      }
+    });
+    
+    
+    battery_fetch().then(function(result) {
+      for (var i = 0; i < result.items.length; i++) {
+        if (result.items[i].serialNumber == batteryid){
+          console.log("battery found");
+          setbatterySupplierco2(result.items[i].co2);
+        }
+        else{
+          setbatterySupplierco2(0);
+        }
+      }
+    });
+
+
+    motor_fetch().then(function(result) {
+      for (var i = 0; i < result.items.length; i++) {
+        if (result.items[i].serialNumber == motorid){
+          setmotorSupplierco2(result.items[i].co2);
+        }
+        else{
+          setmotorSupplierco2(0);
+        }
+      }
+    });
+
+
+    sea_fetch().then(function(result) {
+      for (var i = 0; i < result.items.length; i++) {
+        if (result.items[i].trackingNumber == seaid){
+          setseaTransportationco2(result.items[i].co2);
+        }
+        else{
+          setseaTransportationco2(0);
+        }
+      }
+    });
+
+
+    ground_fetch().then(function(result) {
+      for (var i = 0; i < result.items.length; i++) {
+        if (result.items[i].trackingNumber == groundid){
+          setgroundTransportationco2(result.items[i].co2);
+        }
+        else{
+          setgroundTransportationco2(0);
+        }
+      }
+    });
+
+      return (
+          <div>
+              total Co2 Emission: {hptco2}
+              <br/>
+              BreakDown
+              <br/>
+              battery co2: {batterySupplierco2}
+              <br/>
+              motor co2: {motorSupplierco2}
+              <br/>
+              sea transport co2: {seaTransportationco2}
+              <br/>
+              ground transport co2: {groundTransportationco2}
+          </div>
+      )
+}
   const popover = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">BreakDown</Popover.Header>
