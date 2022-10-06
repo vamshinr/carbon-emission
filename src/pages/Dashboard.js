@@ -35,7 +35,7 @@ export default function Dashboard(){
                 {/* <Navbar.Collapse id="navbarScroll" > */}
                     <Nav className="" >
                         <Nav.Link href="dashboard" style={{paddingRight:'30px', color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}}>Dashboard</Nav.Link>
-                        <Button href="login" variant="outline-success" style={{padding:'10', marginRight:'-72px'}}><FaUserAlt /></Button>
+                        <Button href="login" title="login" variant="outline-success" style={{padding:'10', marginRight:'-72px'}}><FaUserAlt /></Button>
                     </Nav>
                 {/* </Navbar.Collapse>    */}
                 </Container> 

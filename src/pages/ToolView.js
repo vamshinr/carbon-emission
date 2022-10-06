@@ -2,9 +2,10 @@ import React from "react";
 import Typography from '@mui/material/Typography';
 import {FaTools} from 'react-icons/fa';
 import logo from './logos/sac_state_logo.jpg';
+import Breakdown from "./Breakdown";
 
 export default function ToolView(){
-    var hpt_id = 123
+    // var hpt_id = 123;
     const item = 
         {
             id: 'HPT123' ,
@@ -33,6 +34,9 @@ export default function ToolView(){
                         {item.description}
                     </span>
                 </div>
+            </div>
+            <div className="row">
+                <Breakdown />
             </div>
         </div>
         </>
