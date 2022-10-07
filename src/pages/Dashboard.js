@@ -19,6 +19,7 @@ import {FaTools} from 'react-icons/fa';
 import logo from './logos/sac_state_logo.jpg';
 import BatteryCon from '../connections/BatteryCon';
 import Breakdown from "./Breakdown";
+import cloud from './logos/cloud_co2.png'
 
 export default function Dashboard(){
 
@@ -105,9 +106,27 @@ export default function Dashboard(){
 }
 
 const DashboardTemplate = (params) =>{
-    return(<div>
-        {/* <img src="https://i.pcmag.com/imagery/articles/02VBq04BrF1MsCpXrgz2s7b-9..v1606251425.jpg" /> */}
-    </div>);
+    return(
+    <>
+    <div style={{textAlign:'center'}}>
+        <img src={cloud}  style={{width:'300px', height:'300px'}} />
+    </div>
+    <div style={{textAlign:'center'}}>
+        <Typography gutterBottom variant="h5" component="div" align="center">
+            Carbon Emission Dashboard
+        </Typography>
+        <Typography variant="body2" color="text.secondary" align="center">
+            By Team 4 - Deep Divers
+        </Typography>
+    </div>    
+    <div style={{textAlign:'justify', paddingTop:'20px'}}>
+        <Typography gutterBottom variant="body1" >
+            Carbon Emission Dashboard is designed to track carbon emissions for Hornet Power Tools(HPT). This tracker Dashboard will keep track of the total CO<sub>2</sub> emissions as well as present a breakdown of individual emissions based on contributor types. Search for an HPT item using its Serial Number to display the total CO<sub>2</sub> emissions and their breakdown. 
+        </Typography>
+    </div>
+    </> 
+    
+    );
 }
 
 const RenderToolView = (params)=>{
