@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Battery from './pages/Battery';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Dashboard />}/>
       <Route path="/dashboard" element={<Dashboard />}/>
+      <Route path="/battery" element={<Battery />}/>
     </Routes>
   </BrowserRouter>
   );

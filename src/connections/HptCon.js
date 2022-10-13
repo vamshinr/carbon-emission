@@ -82,11 +82,13 @@ class HptCon{
         }
 
          console.log("HPT Items :",hptdata.items)
-         console.log("HPT ID:", hptdata.items[0].SerialNumber);
-         console.log("HPT Moter :", hptdata.items[0].motorId);
-         console.log("HPT Battery :", hptdata.items[0].BatteryId);
-         console.log("HPT sea :", hptdata.items[0].seaTransportId);
-         console.log("HPT ground :", hptdata.items[0].groundTransportId);
+         if (hptdata.items.length != 0){
+            console.log("HPT ID:", hptdata.items[0].SerialNumber);
+            console.log("HPT Moter :", hptdata.items[0].motorId);
+            console.log("HPT Battery :", hptdata.items[0].BatteryId);
+            console.log("HPT sea :", hptdata.items[0].seaTransportId);
+            console.log("HPT ground :", hptdata.items[0].groundTransportId);
+         }
          return hptdata.items;
      }
 

@@ -28,38 +28,64 @@ export default function Dashboard(){
     const [buffHPT, setbuffHPT] = useState('');
     const [HPT, setHPT] = useState('');
     const [showResults,setShowResults] = useState(false);
-    const [hptco2,setHPTco2] = useState();
-    const [seaTransportationco2,setseaTransportationco2] = useState();
-    const [groundTransportationco2,setgroundTransportationco2] = useState();
-    const [motorSupplierco2,setmotorSupplierco2] = useState();
-    const [batterySupplierco2, setbatterySupplierco2] = useState();
+    const [hptco2,setHPTco2] = useState(0);
+    const [seaTransportationco2,setseaTransportationco2] = useState(0);
+    const [groundTransportationco2,setgroundTransportationco2] = useState(0);
+    const [motorSupplierco2,setmotorSupplierco2] = useState(0);
+    const [batterySupplierco2, setbatterySupplierco2] = useState(0);
 
     const get_co2_info = async(params)=>{
-        const seatransport =  await HptCon.hpt_fetch_by_number(params.hpt, 'seatransport');
-        const totalseaco2 = seatransport[0].co2;
-        setseaTransportationco2(totalseaco2);
-        console.log("total sea co2"+totalseaco2);
-
         const hptTotal = await HptCon.hpt_fetch_by_number(params.hpt)
-        const totalHPTCo2 = hptTotal[0].co2;
-        setHPTco2(totalHPTCo2);
-        console.log("total HPT co2"+totalHPTCo2);
-        
-        const motor = await HptCon.hpt_fetch_by_number(params.hpt, 'motor')
-        const totalMotorCo2 = motor[0].co2;
-        setmotorSupplierco2(totalMotorCo2);
-        console.log("total motor co2"+totalMotorCo2);
-    
-        const battery = await HptCon.hpt_fetch_by_number(params.hpt, 'battery')
-        const totalBatteryCo2 = battery[0].co2
-        console.log("total battery co2"+totalBatteryCo2);
-        setbatterySupplierco2(totalBatteryCo2);
+        if (hptTotal.length == 0){
+            setHPTco2("not available");
+        }
+        else{
+            const totalHPTCo2 = hptTotal[0].co2;
+            setHPTco2(totalHPTCo2);
+            console.log("total HPT co2"+totalHPTCo2);
 
-        const groundtransport = await HptCon.hpt_fetch_by_number(params.hpt, 'groundtransport')
-        const totalgroundco2 = groundtransport[0].co2;
-        setgroundTransportationco2(totalgroundco2);
-        console.log("total ground co2"+totalgroundco2);
+            const seatransport =  await HptCon.hpt_fetch_by_number(params.hpt, 'seatransport');
+            if (seatransport.length == 0){
+                setseaTransportationco2(0);
+            }
+            else {
+                const totalseaco2 = seatransport[0].co2;
+                setseaTransportationco2(totalseaco2);
+                console.log("total sea co2"+totalseaco2);
+            }
 
+            const motor = await HptCon.hpt_fetch_by_number(params.hpt, 'motor')
+            if (motor.length == 0){
+                setmotorSupplierco2(0);
+            }
+            else {
+                const totalMotorCo2 = motor[0].co2;
+                setmotorSupplierco2(totalMotorCo2);
+                console.log("total motor co2"+totalMotorCo2);
+            }
+
+            const battery = await HptCon.hpt_fetch_by_number(params.hpt, 'battery')
+            if (battery.length == 0){
+                setbatterySupplierco2(0);
+            }
+            else {
+                const totalBatteryCo2 = battery[0].co2
+                console.log("total battery co2"+totalBatteryCo2);
+                setbatterySupplierco2(totalBatteryCo2);
+            }
+
+
+            const groundtransport = await HptCon.hpt_fetch_by_number(params.hpt, 'groundtransport')
+            if (groundtransport.length == 0){
+                setgroundTransportationco2(0);
+            }
+            else{
+                const totalgroundco2 = groundtransport[0].co2;
+                setgroundTransportationco2(totalgroundco2);
+                console.log("total ground co2"+totalgroundco2);
+            }
+
+        }
     }
 
 
@@ -88,6 +114,7 @@ export default function Dashboard(){
                 {/* <Navbar.Toggle aria-controls="navbarScroll" /> */}
                 {/* <Navbar.Collapse id="navbarScroll" > */}
                     <Nav className="" >
+                        <Nav.Link href="battery" style={{paddingRight:'30px', color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}}>Battery</Nav.Link>
                         <Nav.Link href="dashboard" style={{paddingRight:'30px', color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}}>Dashboard</Nav.Link>
                         <Button href="login" title="login" variant="outline-success" style={{padding:'10', marginRight:'-72px'}}><FaUserAlt /></Button>
                     </Nav>

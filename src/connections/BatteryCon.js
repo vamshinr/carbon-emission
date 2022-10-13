@@ -10,7 +10,16 @@ class BatteryCon{
         return batteryResponse;
     }
 
-    async battery_add() {
+    async battery_create() {
+        const response = await clientauth.battery.add({
+            co2: 30,
+            costManufactured: 20,
+            dateManufactured: "2022-09-13",
+            partNumber: "3",
+            salesPrice: 50,
+            serialNumber: "113",
+        });
+        console.log("response for addition: "+response)
     }
 
 }
