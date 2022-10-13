@@ -20,6 +20,7 @@ import logo from './logos/sac_state_logo.jpg';
 import BatteryCon from '../connections/BatteryCon';
 import Breakdown from "./Breakdown";
 import cloud from './logos/cloud_co2.png'
+import HptCon from "../connections/HptCon";
 
 export default function Dashboard(){
 
@@ -27,11 +28,48 @@ export default function Dashboard(){
     const [buffHPT, setbuffHPT] = useState('');
     const [HPT, setHPT] = useState('');
     const [showResults,setShowResults] = useState(false);
-    const handleSubmit = (e)=>{
-        setShowResults(true)
-        setHPT(buffHPT)
+    const [hptco2,setHPTco2] = useState();
+    const [seaTransportationco2,setseaTransportationco2] = useState();
+    const [groundTransportationco2,setgroundTransportationco2] = useState();
+    const [motorSupplierco2,setmotorSupplierco2] = useState();
+    const [batterySupplierco2, setbatterySupplierco2] = useState();
+
+    const get_data_from_vendia= async(params)=>{
+        const seatransport =  await HptCon.hpt_fetch_by_number(params.hpt, 'seatransport');
+        const totalseaco2 = seatransport[0].co2;
+        setseaTransportationco2(totalseaco2);
+        console.log("total sea co2"+totalseaco2);
+
+        const hptTotal = await HptCon.hpt_fetch_by_number(params.hpt)
+        const totalHPTCo2 = hptTotal[0].co2;
+        setHPTco2(totalHPTCo2);
+        console.log("total HPT co2"+totalHPTCo2);
+        
+        const motor = await HptCon.hpt_fetch_by_number(params.hpt, 'motor')
+        const totalMotorCo2 = motor[0].co2;
+        setmotorSupplierco2(totalMotorCo2);
+        console.log("total motor co2"+totalMotorCo2);
+    
+        const battery = await HptCon.hpt_fetch_by_number(params.hpt, 'battery')
+        const totalBatteryCo2 = battery[0].co2
+        console.log("total battery co2"+totalBatteryCo2);
+        setbatterySupplierco2(totalBatteryCo2);
+
+        const groundtransport = await HptCon.hpt_fetch_by_number(params.hpt, 'groundtransport')
+        const totalgroundco2 = groundtransport[0].co2;
+        setgroundTransportationco2(totalgroundco2);
+        console.log("total ground co2"+totalgroundco2);
+
     }
 
+
+    const handleSubmit = (e)=>{
+        console.log("handle submit");
+        setHPT(buffHPT);
+        console.log("buff"+buffHPT);
+        get_data_from_vendia({hpt : buffHPT});  
+        setShowResults(true);     
+    }
 
     return(
         <>
@@ -83,7 +121,9 @@ export default function Dashboard(){
                     <Card sx={{ maxWidth: '100%', minHeight:'75%' }}>
                         <CardContent>
                             {/* {showResults?<div>HPT Number is {HPT}</div>:null} */}
-                            {showResults? <RenderToolView hpt={HPT} /> :<DashboardTemplate />} 
+                            {showResults? <ToolView hpt = {HPT} seaTransportationco2 = {seaTransportationco2} 
+                            groundTransportationco2 = {groundTransportationco2} motorSupplierco2 = {motorSupplierco2}
+                             batterySupplierco2 = {batterySupplierco2} hptco2 = {hptco2}/> :<DashboardTemplate />} 
                         </CardContent>
                     </Card>
                 </div>
@@ -129,7 +169,8 @@ const DashboardTemplate = (params) =>{
     );
 }
 
-const RenderToolView = (params)=>{
-    return(
-    <ToolView hpt = {params.hpt} />);
-}
+// const RenderToolView = (params)=>{
+//     console.log("render view  call");
+//     return(
+//     <ToolView hpt = {params.hpt} />);
+// }

@@ -52,11 +52,10 @@ class HptCon{
 
         }
         if (objtype === 'seatransport'){
-
             const seadata = await clientauth.seaTransportation.list(
                 {
                  filter: {
-                     serialNumber: {
+                    trackingNumber: {
                        contains: hptdata.items[0].seaTransportId,
                      },
                 }
@@ -71,7 +70,7 @@ class HptCon{
             const grounddata = await clientauth.groundTransportation.list(
                 {
                  filter: {
-                     serialNumber: {
+                    trackingNumber: {
                        contains: hptdata.items[0].groundTransportId,
                      },
                 }

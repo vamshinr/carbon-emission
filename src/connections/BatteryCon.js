@@ -11,14 +11,6 @@ class BatteryCon{
     }
 
     async battery_add() {
-        const output = await clientauth.battery.add({
-            co2: 30,
-            costManufactured: 50,
-            dateManufactured: "2022-01-02",
-            partNumber: "2",
-            salesPrice: 100,
-            serialNumber: "112",
-        });
     }
 
 }

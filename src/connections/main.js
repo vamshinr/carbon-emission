@@ -9,7 +9,6 @@ function clientdetails() {
     });
 
     const {entities} = client;
-
     return entities;
 }
 
