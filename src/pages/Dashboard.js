@@ -34,7 +34,7 @@ export default function Dashboard(){
     const [motorSupplierco2,setmotorSupplierco2] = useState();
     const [batterySupplierco2, setbatterySupplierco2] = useState();
 
-    const get_data_from_vendia= async(params)=>{
+    const get_co2_info = async(params)=>{
         const seatransport =  await HptCon.hpt_fetch_by_number(params.hpt, 'seatransport');
         const totalseaco2 = seatransport[0].co2;
         setseaTransportationco2(totalseaco2);
@@ -67,7 +67,7 @@ export default function Dashboard(){
         console.log("handle submit");
         setHPT(buffHPT);
         console.log("buff"+buffHPT);
-        get_data_from_vendia({hpt : buffHPT});  
+        get_co2_info({hpt : buffHPT});  
         setShowResults(true);     
     }
 
