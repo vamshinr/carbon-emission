@@ -14,6 +14,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CustomPaginationActionsTable from './Table';
 import NavbarApp from "../pages/NavbarApp";
 import FooterApp from './FooterApp';
+import { useState } from 'react';
+import BatteryCon from "../connections/BatteryCon";
+// import Alert from '@mui/material/Alert';
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -46,6 +49,28 @@ export default function BatteryComponent(){
         setOpenNew(false);
     };
 
+    const [co2, setCO2] = useState();
+    const [costManufactured, setCostManufactured] = useState();
+    const [dateManufactured, setDateManufactured] = useState();
+    const [partNumber, setPartNumber] = useState();
+    const [salesPrice, setSalesPrice] = useState();
+    const [serialNumber, setSerialNumber] = useState();
+
+    const handleClickSubmit = () =>{
+        var coo2 = Number(co2);
+        var costManu = Number(costManufactured);
+        var dateManu = String(dateManufactured);
+        var partNum = String(partNumber);
+        var salesPr = Number(salesPrice);
+        var serialNum = String(serialNumber);
+        console.log("co2 : "+coo2);
+        console.log("costMan : "+costManufactured);
+        BatteryCon.battery_create(coo2,costManu,dateManu,partNum,salesPr,serialNum).then(function(result){
+            setOpenNew(false);
+        });
+
+    };
+
     return(
         
         <>
@@ -68,28 +93,28 @@ export default function BatteryComponent(){
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
                         <div>
-                            <TextField required id="co2" variant='filled' label="co2" type="number" defaultValue=""/>
+                            <TextField  id="co2" variant='filled' label="co2" defaultValue="" value={co2} onChange={e => setCO2(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required id="costManufactured" variant='filled' label="Cost of Manufacture" type="number" defaultValue=""/>
+                            <TextField  id="costManufactured" variant='filled' label="Cost of Manufacture" type="number" defaultValue="" value={costManufactured} onChange={e => setCostManufactured(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required id="dateManufactured" variant='filled' label="Date Manufactured" type="date" defaultValue=""/>
+                            <TextField  id="dateManufactured" variant='filled' label="Date Manufactured" type="date" defaultValue="" value={dateManufactured} onChange={e => setDateManufactured(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required id="partNumber" variant='filled' label="Part Number" defaultValue=""/>
+                            <TextField  id="partNumber" variant='filled' label="Part Number" defaultValue="" value={partNumber} onChange={e => setPartNumber(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required id="salesPrice" variant='filled' label="Sales Price ($)" type="number" defaultValue=""/>
+                            <TextField  id="salesPrice" variant='filled' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => setSalesPrice(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required id="serialNumber" variant='filled' label="Product Serial Number" defaultValue=""/>
+                            <TextField  id="serialNumber" variant='filled' label="Product Serial Number" defaultValue="" value={serialNumber} onChange={e => setSerialNumber(e.target.value)}/>
                         </div>
                     </Box>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
-                        <Button onClick={handleCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
+                        <Button onClick={handleClickSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
                     </DialogActions>
                 </Dialog>
             </div></div>

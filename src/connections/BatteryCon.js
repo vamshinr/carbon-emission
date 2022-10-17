@@ -10,14 +10,15 @@ class BatteryCon{
         return batteryResponse;
     }
 
-    async battery_create() {
+    async battery_create(coo2,costManu,dateManu,partNum,salesPr,serialNum) {
+        console.log("In battery Con")
         const response = await clientauth.battery.add({
-            co2: 30,
-            costManufactured: 20,
-            dateManufactured: "2022-09-13",
-            partNumber: "3",
-            salesPrice: 50,
-            serialNumber: "113",
+            co2: coo2,
+            costManufactured: costManu,
+            dateManufactured: dateManu,
+            partNumber: partNum,
+            salesPrice: salesPr,
+            serialNumber: serialNum,
         });
         console.log("response for addition: "+response)
     }
