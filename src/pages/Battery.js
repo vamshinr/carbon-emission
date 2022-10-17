@@ -7,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import logo from './logos/sac_state_logo.jpg';
 // import loginlogo from './login_logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BatteryCon from '../connections/BatteryCon';
+// import BatteryCon from '../connections/BatteryCon';
 
 export default function Battery(){
     var hide = true;
@@ -47,7 +47,7 @@ export default function Battery(){
                             <TextField required id="serialNumber" variant='filled' label="serialNumber" defaultValue=""/>
                         </div>
                         <div hidden={!hide} style={{float:'right', paddingTop:'15px', paddingRight:'27px'}}>
-                            <Button id="login" onClick={BatteryCon.battery_create()} variant="contained">SUBMIT</Button>
+                            <Button id="login" variant="contained">SUBMIT</Button>
                         </div>
                         <div hidden={hide}>
                             <LoadingButton loading variant="outlined">

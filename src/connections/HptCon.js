@@ -82,7 +82,7 @@ class HptCon{
         }
 
          console.log("HPT Items :",hptdata.items)
-         if (hptdata.items.length != 0){
+         if (hptdata.items.length !== 0){
             console.log("HPT ID:", hptdata.items[0].SerialNumber);
             console.log("HPT Moter :", hptdata.items[0].motorId);
             console.log("HPT Battery :", hptdata.items[0].BatteryId);

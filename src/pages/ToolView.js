@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
 // import Breakdown from "./Breakdown";
 import {FaTools} from 'react-icons/fa';
 import drill from './logos/drill.png';
 import Typography from '@mui/material/Typography';
-import HptCon from "../connections/HptCon";
-import { useState } from "react";
+// import HptCon from "../connections/HptCon";
+// import { useState } from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -13,22 +13,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import { json } from "react-router-dom";
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-
-// function createData(Component, Emission ) {
-//     return { Component, Emission };
-// }
-
-// const rows = [
-    
-//   ];
-
+// import { json } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

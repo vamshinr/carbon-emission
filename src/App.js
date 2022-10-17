@@ -3,7 +3,10 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Battery from './pages/Battery';
+// import Battery from './pages/Battery';
+import BatteryComponent from './pages/BatteryComponent';
+import MotorComponent from './pages/MotorComponent';
+import AdminComponent from './pages/AdminComponent';
 
 function App() {
   return (
@@ -12,7 +15,10 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Dashboard />}/>
       <Route path="/dashboard" element={<Dashboard />}/>
-      <Route path="/battery" element={<Battery />}/>
+      <Route path="/battery-supplier" element={<BatteryComponent/>}/>
+      <Route path="/motor-supplier" element={<MotorComponent/>}/>
+      <Route path="/admin" element={<AdminComponent />}/>
+      {/* <Route path="/battery" element={<Battery />}/> */}
     </Routes>
   </BrowserRouter>
   );
