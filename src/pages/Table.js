@@ -117,6 +117,10 @@ export default function CustomPaginationActionsTable(params) {
 
   const handleClickOpenEdit = () => {
       setOpenEdit(true);
+      if(type === "HPT"){
+        setField(true);
+      }
+    
   };
 
   const handleCloseEdit = () => {
@@ -125,10 +129,6 @@ export default function CustomPaginationActionsTable(params) {
 
 
   const [field, setField] = React.useState(false);
-
-  // if(type === "HPT"){
-  //   setField(true);
-  // }
 
   return (
     <>
@@ -159,21 +159,21 @@ export default function CustomPaginationActionsTable(params) {
                   <TextField required id="serialNumber" variant='filled' label="Product Serial Number" defaultValue=""/>
               </div>
 
-              {/* <div hidden={!field}>
-                  <Autocomplete disablePortal id="hptID" options="" sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="HPT ID" />}/>                       
+              <div hidden={!field}>
+                  <Autocomplete disablePortal id="hptID" options={top100Films} renderInput={(params) => <TextField {...params} label="HPT ID" />}/>                       
               </div>
               <div hidden={!field}>
-                  <Autocomplete disablePortal id="batteryID" options="" sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Battery ID" />}/>                       
+                  <Autocomplete disablePortal id="batteryID" options={top100Films} renderInput={(params) => <TextField {...params} label="Battery ID" />}/>                       
               </div>
               <div hidden={!field}>
-                  <Autocomplete disablePortal id="motorID" options="" sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Motor ID" />}/>                       
+                  <Autocomplete disablePortal id="motorID" options={top100Films} renderInput={(params) => <TextField {...params} label="Motor ID" />}/>                       
               </div>
               <div hidden={!field}>
-                  <Autocomplete disablePortal id="seaRouteID" options="" sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Sea Route" />}/>                       
+                  <Autocomplete disablePortal id="seaRouteID" options={top100Films} renderInput={(params) => <TextField {...params} label="Sea Route" />}/>                       
               </div>
               <div hidden={!field}>
-                  <Autocomplete disablePortal id="groundRouteID" options="" sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Ground Transport Route" />}/>                       
-              </div> */}
+                  <Autocomplete disablePortal id="groundRouteID" options={top100Films} renderInput={(params) => <TextField {...params} label="Ground Transport Route" />}/>                       
+              </div>
             </Box>
         </DialogContent>
         <DialogActions>
@@ -243,3 +243,6 @@ export default function CustomPaginationActionsTable(params) {
     </>
   );
 }
+
+const top100Films = [
+ ];

@@ -70,19 +70,19 @@ export default function AdminComponent(){
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
                         <div>
-                            <Autocomplete disablePortal id="hptID" options={top100Films} sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="HPT ID" />}/>                       
+                            <Autocomplete disablePortal id="hptID" options={top100Films} renderInput={(params) => <TextField {...params} label="HPT ID" />}/>                       
                         </div>
                         <div>
-                            <Autocomplete disablePortal id="batteryID" options={top100Films} sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Battery ID" />}/>                       
+                            <Autocomplete disablePortal id="batteryID" options={top100Films} renderInput={(params) => <TextField {...params} label="Battery ID" />}/>                       
                         </div>
                         <div>
-                            <Autocomplete disablePortal id="motorID" options={top100Films} sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Motor ID" />}/>                       
+                            <Autocomplete disablePortal id="motorID" options={top100Films} renderInput={(params) => <TextField {...params} label="Motor ID" />}/>                       
                         </div>
                         <div>
-                            <Autocomplete disablePortal id="seaRouteID" options={top100Films} sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Sea Route" />}/>                       
+                            <Autocomplete disablePortal id="seaRouteID" options={top100Films} renderInput={(params) => <TextField {...params} label="Sea Route" />}/>                       
                         </div>
                         <div>
-                            <Autocomplete disablePortal id="groundRouteID" options={top100Films} sx={{ width: 300 }}renderInput={(params) => <TextField {...params} label="Ground Transport Route" />}/>                       
+                            <Autocomplete disablePortal id="groundRouteID" options={top100Films} renderInput={(params) => <TextField {...params} label="Ground Transport Route" />}/>                       
                         </div>
                     </Box>
                     </DialogContent>
