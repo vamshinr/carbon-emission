@@ -18,29 +18,46 @@ import { useState } from 'react';
 import BatteryCon from "../connections/BatteryCon";
 // import Alert from '@mui/material/Alert';
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
+    return { co2,costManu,dateManu,partNum,salesPr,serialNum };
 }
+const rows = [];
 
-const rows = [
-    createData('Cupcake', 305, 3.7),
-    createData('Donut', 452, 25.0),
-    createData('Eclair', 262, 16.0),
-    createData('Frozen yoghurt', 159, 6.0),
-    createData('Gingerbread', 356, 16.0),
-    createData('Honeycomb', 408, 3.2),
-    createData('Ice cream sandwich', 237, 9.0),
-    createData('Jelly Bean', 375, 0.0),
-    createData('KitKat', 518, 26.0),
-    createData('Lollipop', 392, 0.2),
-    createData('Marshmallow', 318, 0),
-    createData('Nougat', 360, 19.0),
-    createData('Oreo', 437, 18.0),
-  ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
+// const rows = [
+//     createData('Cupcake', 305, 3.7),
+//     createData('Donut', 452, 25.0),
+//     createData('Eclair', 262, 16.0),
+//     createData('Frozen yoghurt', 159, 6.0),
+//     createData('Gingerbread', 356, 16.0),
+//     createData('Honeycomb', 408, 3.2),
+//     createData('Ice cream sandwich', 237, 9.0),
+//     createData('Jelly Bean', 375, 0.0),
+//     createData('KitKat', 518, 26.0),
+//     createData('Lollipop', 392, 0.2),
+//     createData('Marshmallow', 318, 0),
+//     createData('Nougat', 360, 19.0),
+//     createData('Oreo', 437, 18.0),
+//   ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
 export default function BatteryComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
+    
+    async function get_battery_info() {
+        debugger;
+        const batteryData = await BatteryCon.battery_fetch();
+        console.log("battery data :",batteryData);
 
+        if (rows.length==0){
+        for(var i = 0; i < batteryData.length; i++) {
+            rows.push(createData(batteryData[i].co2,batteryData[i].costManufactured,
+                batteryData[i].dateManufactured,batteryData[i].partNumber,batteryData[i].salesPrice,
+                batteryData[i].serialNumber));
+        }
+    }
+        rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
+    }
+    get_battery_info();
+    console.log("rows",rows);
     const handleClickOpenNew = () => {
         setOpenNew(true);
     };
@@ -49,17 +66,17 @@ export default function BatteryComponent(){
         setOpenNew(false);
     };
 
-    const [co2, setCO2] = useState();
-    const [costManufactured, setCostManufactured] = useState();
-    const [dateManufactured, setDateManufactured] = useState();
-    const [partNumber, setPartNumber] = useState();
-    const [salesPrice, setSalesPrice] = useState();
-    const [serialNumber, setSerialNumber] = useState();
+    const [co2, setCO2] = useState('');
+    const [costManufactured, setCostManufactured] = useState('');
+    const [dateManufactured, setDateManufactured] = useState('');
+    const [partNumber, setPartNumber] = useState('');
+    const [salesPrice, setSalesPrice] = useState('');
+    const [serialNumber, setSerialNumber] = useState('');
 
     const handleClickSubmit = () =>{
         var coo2 = Number(co2);
         var costManu = Number(costManufactured);
-        var dateManu = String(dateManufactured);
+        var dateManu = String(Date.parse(dateManufactured));
         var partNum = String(partNumber);
         var salesPr = Number(salesPrice);
         var serialNum = String(serialNumber);
@@ -68,9 +85,10 @@ export default function BatteryComponent(){
         BatteryCon.battery_create(coo2,costManu,dateManu,partNum,salesPr,serialNum).then(function(result){
             setOpenNew(false);
         });
+        
 
     };
-
+    debugger;
     return(
         
         <>
@@ -124,3 +142,6 @@ export default function BatteryComponent(){
         </>
     );
 }
+
+
+

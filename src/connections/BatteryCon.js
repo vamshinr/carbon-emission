@@ -7,7 +7,7 @@ class BatteryCon{
     async battery_fetch() {
         const batteryResponse = await clientauth.battery.list();
         console.log(batteryResponse.items);
-        return batteryResponse;
+        return batteryResponse.items;
     }
 
     async battery_create(coo2,costManu,dateManu,partNum,salesPr,serialNum) {

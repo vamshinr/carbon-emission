@@ -98,7 +98,7 @@ export default function CustomPaginationActionsTable(params) {
   const rows = params.rows;
   const type = params.type;
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(2);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -185,10 +185,13 @@ export default function CustomPaginationActionsTable(params) {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead style={{backgroundColor:'#0f5132'}}>
             <TableRow >
-            <TableCell style={{color:'#fff'}}>Dessert (100g serving)</TableCell>
-            <TableCell style={{color:'#fff'}} align="right">Calories</TableCell>
-            <TableCell style={{color:'#fff'}} align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell style={{color:'#fff'}} align="right">Actions</TableCell>
+            <TableCell style={{color:'#fff'}} align="right">co2</TableCell>
+            <TableCell style={{color:'#fff'}} align="right">costManufactured</TableCell>
+            <TableCell style={{color:'#fff'}} align="right">dateManufactured</TableCell>
+            <TableCell style={{color:'#fff'}} align="right">partNumber</TableCell>
+            <TableCell style={{color:'#fff'}} align="right">salesPrice</TableCell>
+            <TableCell style={{color:'#fff'}} align="right">serialNumber</TableCell>
+            <TableCell style={{color:'#fff'}} align="right">Edit</TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
@@ -196,15 +199,24 @@ export default function CustomPaginationActionsTable(params) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.name}>
+            <TableRow key={row.serialNum}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.co2}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.calories}
+                {row.costManu}
               </TableCell>
               <TableCell style={{ width: 160 }} align="right">
-                {row.fat}
+                {row.dateManu}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="right">
+                {row.partNum}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="right">
+                {row.salesPr}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="right">
+                {row.serialNum}
               </TableCell>
               <TableCell style={{width: 160}} align="right">
                 <Button id="edit" onClick={handleClickOpenEdit} title="Edit Battery Details" style={{color:'#004e38', backgroundColor:'#fff', border:'0.5px solid #004e38'}}><FaPencilAlt /></Button>
