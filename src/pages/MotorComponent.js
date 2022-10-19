@@ -22,10 +22,11 @@ import Snackbar from '@mui/material/Snackbar';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import MotorCon from '../connections/MotorCon';
 
-// function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
-//     return { co2,costManu,dateManu,partNum,salesPr,serialNum };
-// }
+function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
+    return { co2,costManu,dateManu,partNum,salesPr,serialNum };
+}
 
 const rows = [];
 
@@ -42,6 +43,26 @@ export default function MotorComponent(){
     const [alert, setAlert] = useState(false);
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
+    const [displayRows, setDisplayRows] = useState(false);
+
+    const get_motor_info = async()=>{
+        const motorData = await MotorCon.motor_fetch();
+        console.log("motor data :",motorData);
+
+        if (rows.length==0){
+        for(var i = 0; i < motorData.length; i++) {
+            rows.push(createData(motorData[i].co2,motorData[i].costManufactured,
+                motorData[i].dateManufactured,motorData[i].partNumber,motorData[i].salesPrice,
+                motorData[i].serialNumber));
+        }
+    }
+        rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
+        setDisplayRows(true);
+    }    
+    
+    get_motor_info();
+    console.log("display rows",displayRows);
+    console.log("rows",rows);
 
     const handleClickOpenNew = () => {
         setOpenNew(true);
@@ -175,7 +196,7 @@ export default function MotorComponent(){
                     </DialogActions>
                 </Dialog>
             </div></div>
-            <CustomPaginationActionsTable rows={rows} type='Motor'></CustomPaginationActionsTable>
+            {displayRows?<CustomPaginationActionsTable rows={rows} type='Motor'></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>
         </>

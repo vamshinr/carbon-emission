@@ -21,6 +21,7 @@ import Snackbar from '@mui/material/Snackbar';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useEffect } from 'react';
 
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
     return { co2,costManu,dateManu,partNum,salesPr,serialNum };
@@ -57,7 +58,10 @@ export default function BatteryComponent(){
         setDisplayRows(true);
     }    
     
-    get_battery_info();
+    useEffect(()=>{
+        get_battery_info();
+    },[]);
+
     console.log("display rows",displayRows);
     console.log("rows",rows);
     const handleClickOpenNew = () => {

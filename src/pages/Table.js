@@ -98,6 +98,13 @@ TablePaginationActions.propTypes = {
 
 // const rows = [];
 
+// const setHPTco2;
+// const setCostManufactured;
+// const setDateManufactured;
+// const setPartNumber;
+// const setSalesPrice;
+// const setSerialNumber;
+
 export default function CustomPaginationActionsTable(params) {
   const rows = params.rows;
   console.log("rows",rows);
@@ -121,7 +128,15 @@ export default function CustomPaginationActionsTable(params) {
   const [openEdit, setOpenEdit] = React.useState(false);
 
   const handleClickOpenEdit = () => {
-      setOpenEdit(true);
+
+      // setCO2(params.co2);
+      // setCostManufactured(params.costManu);
+      // setDateManufactured(params.dateManu);
+      // setPartNumber(params.partNum);
+      // setSalesPrice(params.salesPr);
+      // setSerialNumber(params.serialNum);
+      // setOpenEdit(true);
+
       if(type === "Sea Route" || type === "Ground Transport"){
         setField(true);
         setRoute(true);
