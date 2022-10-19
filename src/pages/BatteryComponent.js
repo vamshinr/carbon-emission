@@ -27,24 +27,7 @@ function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
 }
 const rows = [];
 
-// const rows = [
-//     createData('Cupcake', 305, 3.7),
-//     createData('Donut', 452, 25.0),
-//     createData('Eclair', 262, 16.0),
-//     createData('Frozen yoghurt', 159, 6.0),
-//     createData('Gingerbread', 356, 16.0),
-//     createData('Honeycomb', 408, 3.2),
-//     createData('Ice cream sandwich', 237, 9.0),
-//     createData('Jelly Bean', 375, 0.0),
-//     createData('KitKat', 518, 26.0),
-//     createData('Lollipop', 392, 0.2),
-//     createData('Marshmallow', 318, 0),
-//     createData('Nougat', 360, 19.0),
-//     createData('Oreo', 437, 18.0),
-//   ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
 export default function BatteryComponent(){  
-    const rows = [];
     const [openNew, setOpenNew] = React.useState(false);
     // const [dirty,setDirty] = useState(false);
     // const [openDirty, setOpenDirty] = React.useState(false);
@@ -57,9 +40,26 @@ export default function BatteryComponent(){
     const [alert, setAlert] = useState(false);
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
+    const [displayRows, setDisplayRows] = useState(false);
+    
+    const get_battery_info = async()=>{
+        const batteryData = await BatteryCon.battery_fetch();
+        console.log("battery data :",batteryData);
 
-
-
+        if (rows.length==0){
+        for(var i = 0; i < batteryData.length; i++) {
+            rows.push(createData(batteryData[i].co2,batteryData[i].costManufactured,
+                batteryData[i].dateManufactured,batteryData[i].partNumber,batteryData[i].salesPrice,
+                batteryData[i].serialNumber));
+        }
+    }
+        rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
+        setDisplayRows(true);
+    }    
+    
+    get_battery_info();
+    console.log("display rows",displayRows);
+    console.log("rows",rows);
     const handleClickOpenNew = () => {
         setOpenNew(true);
     };
@@ -83,7 +83,7 @@ export default function BatteryComponent(){
     const handleClickSubmit = () =>{
         var coo2 = Number(co2);
         var costManu = Number(costManufactured);
-        var dateManu = String(Date.parse(dateManufactured));
+        var dateManu = String(dateManufactured);
         var partNum = String(partNumber);
         var salesPr = Number(salesPrice);
         var serialNum = String(serialNumber);
@@ -136,8 +136,7 @@ export default function BatteryComponent(){
     // }
 
     return(
-        
-        <>
+     <>
         <NavbarApp></NavbarApp>
         {alert ? 
             <Snackbar open={alert} autoHideDuration={5000} onClose={handleAlertClose} anchorOrigin={{vertical,horizontal}}>
@@ -192,20 +191,7 @@ export default function BatteryComponent(){
                     </DialogActions>
                 </Dialog>
             </div></div>
-
-            {/* <Dialog open={openDirty} onClose={handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-                <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                    There are unsaved data. Do you wish to proceed?
-                </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={handleCloseDirty(0)}>No</Button>
-                <Button onClick={handleCloseDirty(1)}>Yes</Button>
-                </DialogActions>
-            </Dialog> */}
-            <CustomPaginationActionsTable rows={rows} type='Battery'></CustomPaginationActionsTable>
+              {displayRows?<CustomPaginationActionsTable rows={rows} type='Battery'></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>
         </>

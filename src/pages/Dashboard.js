@@ -36,7 +36,7 @@ export default function Dashboard(){
         if (hptTotal.length === 0){
             setHPTco2("not available");
             setShowResults(false);
-            setAlertContent("Failure! Couldn't Add New Battery Details");
+            setAlertContent("Failure! Couldn't Find Tool for HPT ID");
             setAlertSeverity("error")
             setAlert(true);
         }

@@ -100,9 +100,10 @@ TablePaginationActions.propTypes = {
 
 export default function CustomPaginationActionsTable(params) {
   const rows = params.rows;
+  console.log("rows",rows);
   const type = params.type;
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(2);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
