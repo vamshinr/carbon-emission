@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
-import { FaCarBattery, FaPlus} from 'react-icons/fa';
+import { FaPlus} from 'react-icons/fa';
+import {GiCargoShip} from 'react-icons/gi';
 import './Page.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
@@ -18,53 +19,36 @@ import { useState } from 'react';
 import BatteryCon from "../connections/BatteryCon";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
-    return { co2,costManu,dateManu,partNum,salesPr,serialNum };
+function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
 }
-const rows = [];
 
-// const rows = [
-//     createData('Cupcake', 305, 3.7),
-//     createData('Donut', 452, 25.0),
-//     createData('Eclair', 262, 16.0),
-//     createData('Frozen yoghurt', 159, 6.0),
-//     createData('Gingerbread', 356, 16.0),
-//     createData('Honeycomb', 408, 3.2),
-//     createData('Ice cream sandwich', 237, 9.0),
-//     createData('Jelly Bean', 375, 0.0),
-//     createData('KitKat', 518, 26.0),
-//     createData('Lollipop', 392, 0.2),
-//     createData('Marshmallow', 318, 0),
-//     createData('Nougat', 360, 19.0),
-//     createData('Oreo', 437, 18.0),
-//   ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
+const rows = [
+    createData('Cupcake', 305, 3.7),
+    createData('Donut', 452, 25.0),
+    createData('Eclair', 262, 16.0),
+    createData('Frozen yoghurt', 159, 6.0),
+    createData('Gingerbread', 356, 16.0),
+    createData('Honeycomb', 408, 3.2),
+    createData('Ice cream sandwich', 237, 9.0),
+    createData('Jelly Bean', 375, 0.0),
+    createData('KitKat', 518, 26.0),
+    createData('Lollipop', 392, 0.2),
+    createData('Marshmallow', 318, 0),
+    createData('Nougat', 360, 19.0),
+    createData('Oreo', 437, 18.0),
+  ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
-export default function BatteryComponent(){  
-    const rows = [];
+export default function SeaTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
-    // const [dirty,setDirty] = useState(false);
-    // const [openDirty, setOpenDirty] = React.useState(false);
-    const [co2, setCO2] = useState();
-    const [costManufactured, setCostManufactured] = useState();
-    const [dateManufactured, setDateManufactured] = React.useState(null);
-    const [partNumber, setPartNumber] = useState();
-    const [salesPrice, setSalesPrice] = useState();
-    const [serialNumber, setSerialNumber] = useState();
-    const [alert, setAlert] = useState(false);
-    const [alertContent, setAlertContent] = useState('');
-    const [alertSeverity, setAlertSeverity] = useState('');
-
-
+    const [openDirty, setOpenDirty] = React.useState(false);
 
     const handleClickOpenNew = () => {
         setOpenNew(true);
     };
 
-    const handleClickCloseNew = () => {
+    const handleCloseNew = () => {
         // if(dirty){
         //     setOpenDirty(true);
         // }
@@ -72,18 +56,29 @@ export default function BatteryComponent(){
             setOpenNew(false);
             setCO2();
             setCostManufactured();
-            setDateManufactured(null);
+            setDateManufactured();
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
         // }
         
     };
-    
+    const [dirty,setDirty] = useState(false);
+    const [co2, setCO2] = useState();
+    const [costManufactured, setCostManufactured] = useState();
+    const [dateManufactured, setDateManufactured] = useState();
+    const [partNumber, setPartNumber] = useState();
+    const [salesPrice, setSalesPrice] = useState();
+    const [serialNumber, setSerialNumber] = useState();
+
+    const [alert, setAlert] = useState(false);
+    const [alertContent, setAlertContent] = useState('');
+    const [alertSeverity, setAlertSeverity] = useState('');
+
     const handleClickSubmit = () =>{
         var coo2 = Number(co2);
         var costManu = Number(costManufactured);
-        var dateManu = String(Date.parse(dateManufactured));
+        var dateManu = String(dateManufactured);
         var partNum = String(partNumber);
         var salesPr = Number(salesPrice);
         var serialNum = String(serialNumber);
@@ -91,24 +86,23 @@ export default function BatteryComponent(){
         console.log("costMan : "+costManufactured);
         BatteryCon.battery_create(coo2,costManu,dateManu,partNum,salesPr,serialNum).then(response =>{
             setOpenNew(false);
-            setAlertContent("Success! New Battery Details Added");
+            setAlertContent("Success! New Sea Transport Details Added");
             setAlertSeverity("success");
             setAlert(true);
             console.log(response);
             setCO2();
             setCostManufactured();
-            setDateManufactured(null);
+            setDateManufactured();
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
 
         }).catch(error =>{
             console.log(error);
-            setAlertContent("Failure! Couldn't Add New Battery Details");
+            setAlertContent("Failure! Couldn't Add New Sea Transport Details");
             setAlertSeverity("error")
             setAlert(true);
         });
-        
 
     };
 
@@ -131,7 +125,7 @@ export default function BatteryComponent(){
     //     else{
     //         setOpenDirty(false);
     //         setDirty(false);
-    //         handleClickCloseNew();
+    //         handleCloseNew();
     //     }
     // }
 
@@ -150,44 +144,41 @@ export default function BatteryComponent(){
             <div className='row' style={{paddingBottom:'20px'}}>
             <div className='col-lg-10 col-md-10 col-sm-8 col-xs-6'>
                 <Typography gutterBottom variant="h5" component="div" align="left">
-                <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><FaCarBattery /></span> Hornet Battery Suppliers
+                <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><GiCargoShip /></span> Hornet Sea Transporters
                 </Typography>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
-                <Button onClick={handleClickOpenNew} title="Add New Battery Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Battery</span></Button>
-                <Dialog open={openNew} onClose={handleClickCloseNew}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Battery Details</DialogTitle>
+                <Button onClick={handleClickOpenNew} title="Add New Sea Route Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Route</span></Button>
+                <Dialog open={openNew} onClose={handleCloseNew}>
+                    <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Sea Route Details</DialogTitle>
                     <DialogContent>
                     <DialogContentText>
-                         Add New battery details here.
+                         Add New Sea Route details here.
                     </DialogContentText>
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
                         <div>
-                            <TextField required error={serialNumber !== null && serialNumber !== '' ? false : true} id="serialNumber" variant='outlined' label="Product Serial Number" defaultValue="" value={serialNumber} onChange={e => setSerialNumber(e.target.value)}/>
+                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='filled' label="co2" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); setDirty(true);}  }/>
                         </div>
                         <div>
-                            <TextField required error={partNumber !== null && partNumber !== '' ? false : true} id="partNumber" variant='outlined' label="Part Number" defaultValue="" value={partNumber} onChange={e => setPartNumber(e.target.value)}/>
+                            <TextField required error={costManufactured !== null && costManufactured !== '' ? false : true} id="costManufactured" variant='filled' label="Cost of Manufacture" type="number" defaultValue="" value={costManufactured} onChange={e => setCostManufactured(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="Co2 Emitted" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); /*setDirty(true);*/}  }/>
+                            <TextField required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" helperText="Date Manufactured" variant='filled' type="date" defaultValue="" value={dateManufactured} onChange={e => setDateManufactured(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={costManufactured !== null && costManufactured !== '' ? false : true} id="costManufactured" variant='outlined' label="Cost of Manufacture ($)" type="number" defaultValue="" value={costManufactured} onChange={e => setCostManufactured(e.target.value)}/>
+                            <TextField required error={partNumber !== null && partNumber !== '' ? false : true} id="partNumber" variant='filled' label="Part Number" defaultValue="" value={partNumber} onChange={e => setPartNumber(e.target.value)}/>
                         </div>
-                        {/* <div> */}
-                            {/* <TextField required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" helperText="Date Manufactured" variant='outlined' type="date" defaultValue="" value={dateManufactured} onChange={e => setDateManufactured(e.target.value)}/> */}
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker label="Date Manufactured" value={dateManufactured} onChange={(newVal) => setDateManufactured(newVal)} renderInput={(params) => <TextField {...params} />}/>
-                            </LocalizationProvider>
-                        {/* </div>s */}
                         <div>
-                            <TextField required error={salesPrice !== null && salesPrice !== '' ? false : true} id="salesPrice" variant='outlined' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => setSalesPrice(e.target.value)}/>
+                            <TextField required error={salesPrice !== null && salesPrice !== '' ? false : true} id="salesPrice" variant='filled' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => setSalesPrice(e.target.value)}/>
+                        </div>
+                        <div>
+                            <TextField required error={serialNumber !== null && serialNumber !== '' ? false : true} id="serialNumber" variant='filled' label="Product Serial Number" defaultValue="" value={serialNumber} onChange={e => setSerialNumber(e.target.value)}/>
                         </div>
                     </Box>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClickCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
+                        <Button onClick={handleCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
                         <Button onClick={handleClickSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
                     </DialogActions>
                 </Dialog>
@@ -205,7 +196,7 @@ export default function BatteryComponent(){
                 <Button onClick={handleCloseDirty(1)}>Yes</Button>
                 </DialogActions>
             </Dialog> */}
-            <CustomPaginationActionsTable rows={rows} type='Battery'></CustomPaginationActionsTable>
+            <CustomPaginationActionsTable rows={rows} type='Sea Route'></CustomPaginationActionsTable>
         </div>
         <FooterApp></FooterApp>
         </>

@@ -16,6 +16,8 @@ import cloud from './logos/cloud_co2.png'
 import HptCon from "../connections/HptCon";
 import NavbarApp from "../pages/NavbarApp";
 import FooterApp from "./FooterApp";
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 export default function Dashboard(){
 
@@ -33,6 +35,10 @@ export default function Dashboard(){
         const hptTotal = await HptCon.hpt_fetch_by_number(params.hpt)
         if (hptTotal.length === 0){
             setHPTco2("not available");
+            setShowResults(false);
+            setAlertContent("Failure! Couldn't Add New Battery Details");
+            setAlertSeverity("error")
+            setAlert(true);
         }
         else{
             const totalHPTCo2 = hptTotal[0].co2;
@@ -92,9 +98,32 @@ export default function Dashboard(){
         setShowResults(true);     
     }
 
+    const [alert, setAlert] = useState(false);
+    const [alertContent, setAlertContent] = useState('');
+    const [alertSeverity, setAlertSeverity] = useState('');
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setAlertContent("");
+        setAlertSeverity("");
+        setAlert(false);
+    };
+
+    const vertical = 'top';
+    const horizontal = 'center';
+
     return(
         <>
             <NavbarApp></NavbarApp>
+            {alert ? 
+            <Snackbar open={alert} autoHideDuration={5000} onClose={handleAlertClose} anchorOrigin={{vertical,horizontal}}>
+              <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: '100%' }}>
+                {alertContent}
+              </Alert>
+            </Snackbar>      
+            : <></>}
             <div className="row hpt-body" style={{backgroundColor:'#d8d2b8', paddingTop: '20px', paddingLeft: '20px'}}>
                 <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                     <Card sx={{ maxWidth: '100%', height:'75%'}}>
@@ -110,7 +139,7 @@ export default function Dashboard(){
                         <CardActions>
                             <Stack spacing={2} sx={{ width: 300,  paddingBottom:'40px' }}>
                             <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '210px', backgroundColor:'#fff' }, paddingLeft:'15px', '& .MuiButton-root':{width:'80px',backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
-                                <span><TextField id="hpt-sno-search-text" label="HPT ID" variant="outlined"  style={{marginRight:'0px'}} onChange = {(e) => setbuffHPT(e.target.value)} name="hpt-id" /></span>
+                                <span><TextField id="hpt-sno-search-text" label="HPT ID" variant="outlined"  style={{marginRight:'0px'}} onChange = {(e) => {setbuffHPT(e.target.value);}} name="hpt-id" /></span>
                                 <span><Button variant="outlined" onClick={handleSubmit} style={{marginTop:'8px', border:'1px solid', height:'56px', width:'66px', borderRadius:'0px 6px 6px 0px', backgroundColor:'#a17f0f', color:'#fff'}}><FaSearch /></Button></span>
                              </Box>   
                             </Stack>

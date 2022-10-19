@@ -5,6 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { FaUserAlt } from 'react-icons/fa';
 import Container from 'react-bootstrap/Container';
+import './Page.css';
 
 export default function NavbarApp(){
     return(
@@ -19,9 +20,9 @@ export default function NavbarApp(){
                 <Nav className="" >
                     <NavDropdown style={{paddingRight:'10px', color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'20px'}} title="Suppliers" id="navbarScrollingDropdown">
                         <NavDropdown.Item  href="battery-supplier" style={{color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}} id="option1">Battery Supplier</NavDropdown.Item>
-                        <NavDropdown.Item  href="motor-supplier" style={{color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}} id="option2">Motor Supplier</NavDropdown.Item>
-                        <NavDropdown.Item  href="batterycomponent" style={{color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}} id="option3">Ground Transport</NavDropdown.Item>
-                        <NavDropdown.Item  href="batterycomponent" style={{color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}} id="option4">Sea Route Transport</NavDropdown.Item>
+                        <NavDropdown.Item  href="motor-supplier"   style={{color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}} id="option2">Motor Supplier</NavDropdown.Item>
+                        <NavDropdown.Item  href="ground-transport" style={{color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}} id="option3">Ground Transport</NavDropdown.Item>
+                        <NavDropdown.Item  href="sea-transport"    style={{color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}} id="option4">Sea Route Transport</NavDropdown.Item>
                     </NavDropdown>
                     <Nav.Link href="dashboard" style={{paddingRight:'30px', color:'#004e38',  fontFamily: 'Trajan Pro Bold', fontSize:'19px'}}>Dashboard</Nav.Link>
                     <Button href="login" title="login" style={{padding:'10', marginRight:'-72px', color:'#004e38', backgroundColor:'#fff', border:'0.5px solid #004e38'}}><FaUserAlt /></Button>
