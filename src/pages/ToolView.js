@@ -53,11 +53,11 @@ export default function ToolView(params){
                         segments={5}
                         height = {'18'}
                         segmentColors={[
-                            "#385828",
-                            "#34812E",
-                            "#4E9E48",
+                            "#75CA6F",
                             "#68B063",
-                            "#75CA6F"
+                            "#4E9E48",
+                            "#34812E",
+                            "#385828",
                           ]}
                         ringWidth={70}
                         currentValueText=" "
