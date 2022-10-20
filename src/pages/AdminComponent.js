@@ -93,7 +93,7 @@ export default function AdminComponent(){
                 </Dialog>
                 </div>
             </div>
-            <CustomPaginationActionsTable rows={rows} type='HPT'></CustomPaginationActionsTable>
+            <CustomPaginationActionsTable rows={rows} type="HPT"></CustomPaginationActionsTable>
         </div>
         <FooterApp></FooterApp>
         </>

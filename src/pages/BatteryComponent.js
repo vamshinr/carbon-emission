@@ -18,10 +18,11 @@ import { useState } from 'react';
 import BatteryCon from "../connections/BatteryCon";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useEffect } from 'react';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { Today } from '@mui/icons-material';
 
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
     return { co2,costManu,dateManu,partNum,salesPr,serialNum };
@@ -34,7 +35,7 @@ export default function BatteryComponent(){
     // const [openDirty, setOpenDirty] = React.useState(false);
     const [co2, setCO2] = useState();
     const [costManufactured, setCostManufactured] = useState();
-    const [dateManufactured, setDateManufactured] = React.useState(null);
+    const [dateManufactured, setDateManufactured] = React.useState();
     const [partNumber, setPartNumber] = useState();
     const [salesPrice, setSalesPrice] = useState();
     const [serialNumber, setSerialNumber] = useState();
@@ -47,7 +48,7 @@ export default function BatteryComponent(){
         const batteryData = await BatteryCon.battery_fetch();
         console.log("battery data :",batteryData);
 
-        if (rows.length==0){
+        if (rows.length===0){
         for(var i = 0; i < batteryData.length; i++) {
             rows.push(createData(batteryData[i].co2,batteryData[i].costManufactured,
                 batteryData[i].dateManufactured,batteryData[i].partNumber,batteryData[i].salesPrice,
@@ -76,7 +77,7 @@ export default function BatteryComponent(){
             setOpenNew(false);
             setCO2();
             setCostManufactured();
-            setDateManufactured(null);
+            setDateManufactured();
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
@@ -87,6 +88,7 @@ export default function BatteryComponent(){
     const handleClickSubmit = () =>{
         var coo2 = Number(co2);
         var costManu = Number(costManufactured);
+        console.log("date:      ",dateManufactured);
         var dateManu = String(dateManufactured);
         var partNum = String(partNumber);
         var salesPr = Number(salesPrice);
@@ -101,7 +103,7 @@ export default function BatteryComponent(){
             console.log(response);
             setCO2();
             setCostManufactured();
-            setDateManufactured(null);
+            setDateManufactured();
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
@@ -178,12 +180,12 @@ export default function BatteryComponent(){
                         <div>
                             <TextField required error={costManufactured !== null && costManufactured !== '' ? false : true} id="costManufactured" variant='outlined' label="Cost of Manufacture ($)" type="number" defaultValue="" value={costManufactured} onChange={e => setCostManufactured(e.target.value)}/>
                         </div>
-                        {/* <div> */}
-                            {/* <TextField required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" helperText="Date Manufactured" variant='outlined' type="date" defaultValue="" value={dateManufactured} onChange={e => setDateManufactured(e.target.value)}/> */}
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker label="Date Manufactured" value={dateManufactured} onChange={(newVal) => setDateManufactured(newVal)} renderInput={(params) => <TextField {...params} />}/>
-                            </LocalizationProvider>
-                        {/* </div>s */}
+                        <div>
+                            <TextField InputLabelProps={{ shrink: true }} required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" variant='outlined' type="date" label="Date Manufactured" value={dateManufactured} onChange={e => setDateManufactured(e.target.value)}/>
+                            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker dateFormat="MM/dd/yyyy" label="Date Manufactured" value={dateManufactured} onChange={(newVal) => setDateManufactured(newVal)} renderInput={(params) => <TextField {...params} />}/>
+                            </LocalizationProvider> */}
+                        </div>
                         <div>
                             <TextField required error={salesPrice !== null && salesPrice !== '' ? false : true} id="salesPrice" variant='outlined' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => setSalesPrice(e.target.value)}/>
                         </div>
