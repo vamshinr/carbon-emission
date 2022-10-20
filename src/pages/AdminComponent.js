@@ -15,38 +15,96 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CustomPaginationActionsTable from './Table';
 import NavbarApp from "../pages/NavbarApp";
 import FooterApp from './FooterApp';
+import HptCon from '../connections/HptCon';
+import { useState } from 'react';
+import SeaTransportCon from '../connections/SeaTransportCon';
+import GroundTransportCon from '../connections/GroundTransportCon';
 
-
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+function createData(tooltype,serialNumAdmin,co2,partscost,motorid,
+    batteryid,seaid,groundid) {
+    return { tooltype,serialNumAdmin,co2,partscost,motorid,
+        batteryid,seaid,groundid };
 }
 
-const rows = [
-    createData('Cupcake', 305, 3.7),
-    createData('Donut', 452, 25.0),
-    createData('Eclair', 262, 16.0),
-    createData('Frozen yoghurt', 159, 6.0),
-    createData('Gingerbread', 356, 16.0),
-    createData('Honeycomb', 408, 3.2),
-    createData('Ice cream sandwich', 237, 9.0),
-    createData('Jelly Bean', 375, 0.0),
-    createData('KitKat', 518, 26.0),
-    createData('Lollipop', 392, 0.2),
-    createData('Marshmallow', 318, 0),
-    createData('Nougat', 360, 19.0),
-    createData('Oreo', 437, 18.0),
-  ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
+const rows = [];
 
 export default function AdminComponent(){
 
     const [openNew, setOpenNew] = React.useState(false);
+    const [displayRows, setDisplayRows]= React.useState(false);
 
+    const [toolType, settoolType] = useState();
+    const [SerialNumber, setSerialNumber] = useState();
+    const [co2, setCO2] = useState();
+    const [partsCost, setPartscost] = useState();
+    const [motorId, setMotorid] = useState();
+    const [BatteryId, setBatteryid] = useState();
+    const [seaTransportId, setSeaid] = useState();
+    const [groundTransportId, setGroundid] = useState();
+    const [alert, setAlert] = useState(false);
+    const [alertContent, setAlertContent] = useState('');
+    const [alertSeverity, setAlertSeverity] = useState('');
+    
+    const get_hpt_info = async()=>{
+        //setDisplayRows(false);
+        const hptData = await HptCon.hpt_fetch();
+        console.log("motor data :",hptData);
+
+        if (rows.length===0){
+        for(var i = 0; i < hptData.length; i++) {
+            rows.push(createData(hptData[i].toolType,hptData[i].SerialNumber,
+                hptData[i].co2,hptData[i].partsCost,hptData[i].motorId,hptData[i].BatteryId,
+                hptData[i].seaTransportId,hptData[i].groundTransportId));
+        }
+    }
+        rows.sort((a, b) => (a.SerialNumber > b.SerialNumber ? -1 : 1));
+        setDisplayRows(true);
+    }    
+    
+    get_hpt_info();
     const handleClickOpenNew = () => {
         setOpenNew(true);
     };
 
     const handleCloseNew = () => {
         setOpenNew(false);
+    };
+
+    const handleClickSubmit = () =>{
+        var tooltype = Number(toolType);
+        var serialNumAdmin = Number(SerialNumber);
+        var coo2 = String(co2);
+        var partscost = String(partsCost);
+        var motorid = Number(motorId);
+        var batteryid = Number(BatteryId);
+        var seaid = Number(seaTransportId);
+        var groundid = Number(groundTransportId);
+        // console.log("co2 : "+coo2);
+        // console.log("costMan : "+costManufactured);
+        HptCon.hpt_fetch(tooltype,serialNumAdmin,coo2,partscost,motorid,
+            batteryid,seaid,groundid).then(response =>{
+            setOpenNew(false);
+            setAlertContent("Success! New HPT tool Details Added");
+            setAlertSeverity("success");
+            setAlert(true);
+            console.log(response);
+            setCO2();
+            setSerialNumber();
+            settoolType();
+            setPartscost();
+            setMotorid();
+            setBatteryid();
+            setSeaid();
+            setGroundid();
+            //setTimeout(() => window.location.reload(false), 1000);
+
+        }).catch(error =>{
+            console.log(error);
+            setAlertContent("Failure! Couldn't Add New HPT tool Details");
+            setAlertSeverity("error")
+            setAlert(true);
+        });
+
     };
 
     return(
@@ -56,7 +114,7 @@ export default function AdminComponent(){
             <div className='row' style={{paddingBottom:'20px'}}>
                 <div className='col-lg-10 col-md-10 col-sm-8 col-xs-6'>
                     <Typography gutterBottom variant="h5" component="div" align="left">
-                    <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><FaTools/></span> Hornet Power Tools
+                    <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><FaTools/></span> Hornet Power Tools Admin
                     </Typography>
                 </div>
                 <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
@@ -88,23 +146,16 @@ export default function AdminComponent(){
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
-                        <Button onClick={handleCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
+                        <Button onClick={handleClickSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
                     </DialogActions>
                 </Dialog>
                 </div>
             </div>
-            <CustomPaginationActionsTable rows={rows} type="HPT"></CustomPaginationActionsTable>
+            {displayRows?<CustomPaginationActionsTable rows={rows} type="HPT"></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>
         </>
     );
 }
 
-const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 }];
+const top100Films = [];

@@ -6,7 +6,23 @@ class HptCon{
     async hpt_fetch() {
         const hptResponse = await clientauth.hornetPowerTools.list();
         console.log("hpt data: ", hptResponse.items);
-        return (hptResponse);
+        return hptResponse.items;
+    }
+
+    async hpt_create(tooltype,serialNumAdmin,coo2,partscost,motorid,
+        batteryid,seaid,groundid) {
+        console.log("In HPT Con")
+        const response = await clientauth.hpt.add({
+            co2: coo2,
+            tooltype: tooltype,
+            SerialNumber: serialNumAdmin,
+            partsCost: partscost,
+            motorId: motorid,
+            BatteryId: batteryid,
+            seaTransportId: seaid,
+            groundTransportId: groundid
+        });
+        console.log("response for addition: "+response)
     }
 
     async hpt_fetch_by_number(hpt, objtype){

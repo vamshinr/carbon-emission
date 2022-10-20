@@ -13,12 +13,13 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import {FaPencilAlt} from 'react-icons/fa';
+import BatteryCon from '../connections/BatteryCon';
 
 export default function AddEditPageComponent(params){
     // debugger;
     // console.log("PARAM ROW "+params.row);
     //const co2 = params.row.co2
-
+    const [id,setid] = useState(params.row.id);
     const [co2, setCO2] = useState(params.row.co2);
     //Battery and Motor Components
     const [costManufactured, setCostManufactured] = useState(params.row.costManu);
@@ -28,12 +29,12 @@ export default function AddEditPageComponent(params){
     const [serialNumber, setSerialNumber] = useState(params.row.serialNum);
 
     // Sea and Ground Transport Components
-    const [trackingNum, setTrackingNum] = useState(params.row.costManu);
-    const [routeID, setRouteID] = useState(params.row.dateManu);
-    const [shipID, setShipID] = useState(params.row.partNum);
-    const [fuelCost, setFuelCost] = useState(params.row.salesPr);
-    const [labourCost, setLabourCost] = useState(params.row.salesPr);
-    const [customerCost, setCustomerCost] = useState(params.row.salesPr);
+    const [trackingNum, setTrackingNum] = useState(params.row.trackNum);
+    const [routeID, setRouteID] = useState(params.row.rouID);
+    const [transportID, setTransportID] = useState(params.row.transportID);
+    const [fuelCost, setFuelCost] = useState(params.row.fuelCo);
+    const [labourCost, setLabourCost] = useState(params.row.labCo);
+    const [customerCost, setCustomerCost] = useState(params.row.custCo);
     // const [openEdit, setOpenEdit] = React.useState(params.row.openEdit);
 
    
@@ -64,7 +65,21 @@ export default function AddEditPageComponent(params){
         field = true;
         route = true;
     }
-
+    const handleEditSubmit = () => {
+        if(type=='Battery'){
+            var data = {
+                _id: id,
+                co2: Number(co2),
+                costManufactured: Number(costManufactured),
+                dateManufactured: dateManufactured,
+                partNumber: partNumber,
+                salesPrice: Number(salesPrice),
+                serialNumber: serialNumber,
+            }
+            console.log("id:",id)
+            BatteryCon.battery_update(data);
+        }
+    };
 
     return(
         <Dialog open={params.open} onClose={handleCloseEdit}>
@@ -107,7 +122,7 @@ export default function AddEditPageComponent(params){
                   <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="CO2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value);}  }/>
               </div>
               <div  hidden={route}>
-                  <TextField required error={shipID !== null && shipID !== '' ? false : true} id="shipID" variant='outlined' label="Ship ID" defaultValue="" value={shipID} onChange={e => setShipID(e.target.value)}/>
+                  <TextField required error={transportID !== null && transportID !== '' ? false : true} id="transportID" variant='outlined' label={type==="Sea Route" ? "Ship ID": "Truck ID"} defaultValue="" value={transportID} onChange={e => setTransportID(e.target.value)}/>
               </div>
               <div hidden={route}>
                   <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='outlined' label="Fuel Cost ($)" type="number" defaultValue="" value={fuelCost} onChange={e => setFuelCost(e.target.value)}/>
@@ -138,7 +153,7 @@ export default function AddEditPageComponent(params){
         </DialogContent>
         <DialogActions>
             <Button onClick={handleCloseEdit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
-            <Button onClick={handleCloseEdit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
+            <Button onClick={handleEditSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
         </DialogActions>
     </Dialog>
     );

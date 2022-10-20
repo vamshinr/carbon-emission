@@ -46,6 +46,7 @@ export default function MotorComponent(){
     const [displayRows, setDisplayRows] = useState(false);
 
     const get_motor_info = async()=>{
+        //setDisplayRows(false);
         const motorData = await MotorCon.motor_fetch();
         console.log("motor data :",motorData);
 
@@ -106,6 +107,7 @@ export default function MotorComponent(){
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
+            //setTimeout(() => window.location.reload(false), 1000);
 
         }).catch(error =>{
             console.log(error);

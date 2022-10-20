@@ -23,6 +23,11 @@ class BatteryCon{
         console.log("response for addition: "+response)
     }
 
+    async battery_update(data) {
+        console.log("in battery update");
+        const updateProductResponse = await clientauth.battery.update(data);
+        console.log("update response",updateProductResponse);
+    }
 }
 
 export default new BatteryCon();

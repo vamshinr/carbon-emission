@@ -21,8 +21,8 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';
 
-function createData(coo2,fuelCo,rouID,trackNum,labCo,tID,custCo) {
-    return { coo2,fuelCo,rouID,trackNum,labCo,tID,custCo };
+function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
+    return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
 }
 
 const rows = [];
@@ -44,14 +44,15 @@ export default function GroundTransportComponent(){
     const [displayRows, setDisplayRows] = useState(false);
 
     const get_ground_info = async()=>{
+        setDisplayRows(false);
         const groundData = await GroundTransportCon.ground_fetch();
         console.log("ground data :",groundData);
 
-        if (rows.length==0){
+        if (rows.length === 0){
         for(var i = 0; i < groundData.length; i++) {
             rows.push(createData(groundData[i].co2,groundData[i].fuelCost,
-                groundData[i].routeID,groundData[i].trackNumber,groundData[i].laborCost,
-                groundData[i].truckID,groundData[i].custCost));
+                groundData[i].routeId,groundData[i].trackingNumber,groundData[i].laborCost,
+                groundData[i].truckId,groundData[i].customerCost));
         }
     }
         rows.sort((a, b) => (a.fuelCost < b.fuelCost ? -1 : 1));
@@ -62,8 +63,6 @@ export default function GroundTransportComponent(){
         get_ground_info();
     },[]);
 
-    console.log("display rows",displayRows);
-    console.log("rows",rows);
 
     const handleClickOpenNew = () => {
         setOpenNew(true);
@@ -88,6 +87,7 @@ export default function GroundTransportComponent(){
 
 
     const handleClickSubmit = () =>{
+        console.log("entering handle click");
         var coo2 = Number(co2);
         var fuelCo = Number(fuelCost);
         var rouID = String(routeID);
@@ -110,6 +110,7 @@ export default function GroundTransportComponent(){
             setLaborCost();
             setTruckID();
             setCustCost();
+            setTimeout(() => window.location.reload(false), 1000);
 
         }).catch(error =>{
             console.log(error);
@@ -117,6 +118,7 @@ export default function GroundTransportComponent(){
             setAlertSeverity("error")
             setAlert(true);
         });
+        
 
     };
 
@@ -213,7 +215,7 @@ export default function GroundTransportComponent(){
                 <Button onClick={handleCloseDirty(1)}>Yes</Button>
                 </DialogActions>
             </Dialog> */}
-            <CustomPaginationActionsTable rows={rows} type='Ground Route'></CustomPaginationActionsTable>
+            {displayRows?<CustomPaginationActionsTable rows={rows} type='Ground Transport'></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>
         </>

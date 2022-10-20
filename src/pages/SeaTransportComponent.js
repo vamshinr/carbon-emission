@@ -21,8 +21,8 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';  
 
-function createData(coo2,fuelCo,rouID,trackNum,labCo,sID,custCo) {
-    return { coo2,fuelCo,rouID,trackNum,labCo,sID,custCo };
+function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
+    return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
 }
 
 const rows = [];
@@ -44,14 +44,15 @@ export default function SeaTransportComponent(){
     const [displayRows, setDisplayRows] = useState(false);
 
     const get_sea_info = async()=>{
+        setDisplayRows(false);
         const seaData = await SeaTransportCon.sea_fetch();
         console.log("sea data :",seaData);
 
-        if (rows.length==0){
+        if (rows.length === 0){
         for(var i = 0; i < seaData.length; i++) {
             rows.push(createData(seaData[i].co2,seaData[i].fuelCost,
-                seaData[i].routeID,seaData[i].trackNumber,seaData[i].laborCost,
-                seaData[i].shipID,seaData[i].custCost));
+                seaData[i].routeId,seaData[i].trackingNumber,seaData[i].laborCost,
+                seaData[i].shipId,seaData[i].customerCost));
         }
     }
         rows.sort((a, b) => (a.shipID < b.shipID ? -1 : 1));
@@ -110,6 +111,7 @@ export default function SeaTransportComponent(){
             setLaborCost();
             setShipID();
             setCustCost();
+            setTimeout(() => window.location.reload(false), 1000);
 
         }).catch(error =>{
             console.log(error);

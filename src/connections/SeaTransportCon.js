@@ -7,19 +7,19 @@ class SeaTransportCon{
     async sea_fetch() {
         const seaResponse = await clientauth.seaTransportation.list();
         console.log(seaResponse.items);
-        return (seaResponse);
+        return seaResponse.items;
     }
 
     async sea_create(coo2,fuelCo,rouID,trackNum,labCo,sID,custCo) {
         console.log("In Sea Transport Con")
-        const response = await clientauth.sea.add({
+        const response = await clientauth.seaTransportation.add({
             co2: coo2,
             fuelCost: fuelCo,
-            routeID: rouID,
-            trackNumber: trackNum,  
+            routeId: rouID,
+            trackingNumber: trackNum,  
             laborCost: labCo,
-            shipID: sID,
-            custCost: custCo,
+            shipId: sID,
+            customerCost: custCo,
         });
         console.log("response for addition: "+response)
     }

@@ -170,13 +170,14 @@ export default function CustomPaginationActionsTable(params) {
   // }
   // const [field, setField] = React.useState(false);
   // const [route, setRoute] = React.useState(false);
-
+  var order_num = 0;
   return (
     <>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead style={{backgroundColor:'#0f5132'}}>
             <TableRow >
+            <TableCell style={{color:'#fff'}} align="center" >Order Number</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={field}>Serial Number</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={field}>Part Number</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={field}>CO<sub>2</sub> Emitted</TableCell>
@@ -205,7 +206,10 @@ export default function CustomPaginationActionsTable(params) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.name}>
+            <TableRow key={order_num}>
+              <TableCell style={{ width: 140 }} align="center" >
+                {order_num+=1}
+              </TableCell>
               {/* Battery and Motor Components Table */}
               <TableCell style={{ width: 140 }} align="center" hidden={field}>
                 {row.serialNum}
@@ -227,48 +231,49 @@ export default function CustomPaginationActionsTable(params) {
               </TableCell>
               {/* Sea and Road Transport cols*/}
               <TableCell style={{ width: 160 }} align="center" hidden={route}>
-                {rows.trackNum}
+                {row.trackNum}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={route}>
-                {rows.routeID}
+                {row.rouID}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={route}>
-                {rows.co2}
+                {row.co2}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={route}>
-                {rows.shipID}
+              {/* {type === "Sea Route" ? row.sID : row.tID}{} */}
+              {row.transportID}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={route}>
-                {rows.fuelCost}
+                {row.fuelCo}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={route}>
-                {rows.labourCost}
+                {row.labCo}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={route}>
-                {rows.customerCost}
+                {row.custCo}
               </TableCell>
               
               {/* Admin Components Table */}
               <TableCell style={{ width: 160 }} align="center" hidden={admin}>
-                {row.serialNum}
+                {row.serialNumAdmin}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={admin}>
-                {row.hptId}
+                {row.tooltype}
               </TableCell>
               <TableCell style={{ width: 160 }}align="center" hidden={admin}>
-                {row.batteryId}
+                {row.batteryid}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={admin}>
-                {row.motorId}
+                {row.motorid}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={admin}>
-                {row.seaRouteId}
+                {row.seaid}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={admin}>
-                {row.groundId}
+                {row.groundid}
               </TableCell>
               <TableCell style={{ width: 160 }} align="center" hidden={admin}>
-                {row.totalCo2}
+                {row.co2}
               </TableCell>
               <TableCell style={{width: 160}} align="center">
                 <Button id="edit" onClick={()=>handleClickOpenEdit(row)} title="Edit Battery Details" style={{color:'#004e38', backgroundColor:'#fff', border:'0.5px solid #004e38'}}><FaPencilAlt /></Button>

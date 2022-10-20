@@ -24,8 +24,8 @@ import { useEffect } from 'react';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { Today } from '@mui/icons-material';
 
-function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
-    return { co2,costManu,dateManu,partNum,salesPr,serialNum };
+function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
+    return { co2,costManu,dateManu,partNum,salesPr,serialNum,id };
 }
 const rows = [];
 
@@ -45,6 +45,7 @@ export default function BatteryComponent(){
     const [displayRows, setDisplayRows] = useState(false);
     
     const get_battery_info = async()=>{
+        setDisplayRows(false);
         const batteryData = await BatteryCon.battery_fetch();
         console.log("battery data :",batteryData);
 
@@ -52,10 +53,10 @@ export default function BatteryComponent(){
         for(var i = 0; i < batteryData.length; i++) {
             rows.push(createData(batteryData[i].co2,batteryData[i].costManufactured,
                 batteryData[i].dateManufactured,batteryData[i].partNumber,batteryData[i].salesPrice,
-                batteryData[i].serialNumber));
+                batteryData[i].serialNumber,batteryData[i]._id));
         }
     }
-        rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
+        rows.sort((a, b) => (a.serialNumber > b.serialNumber ? -1 : 1));
         setDisplayRows(true);
     }    
     
@@ -94,7 +95,7 @@ export default function BatteryComponent(){
         var salesPr = Number(salesPrice);
         var serialNum = String(serialNumber);
         console.log("co2 : "+coo2);
-        console.log("costMan : "+costManufactured);
+        console.log("costMan : "+costManu);
         BatteryCon.battery_create(coo2,costManu,dateManu,partNum,salesPr,serialNum).then(response =>{
             setOpenNew(false);
             setAlertContent("Success! New Battery Details Added");
@@ -107,6 +108,8 @@ export default function BatteryComponent(){
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
+            setTimeout(() => window.location.reload(false), 1000);
+            
 
         }).catch(error =>{
             console.log(error);
@@ -114,8 +117,7 @@ export default function BatteryComponent(){
             setAlertSeverity("error")
             setAlert(true);
         });
-        
-
+    
     };
 
     const handleAlertClose = (event, reason) => {
@@ -159,6 +161,7 @@ export default function BatteryComponent(){
                 </Typography>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
+            {/* <Button onClick={window.location.reload} title="Add New Battery Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>Reload</span></Button> */}
                 <Button onClick={handleClickOpenNew} title="Add New Battery Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Battery</span></Button>
                 <Dialog open={openNew} onClose={handleClickCloseNew}>
                     <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Battery Details</DialogTitle>
