@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-// import ReactSpeedometer from "react-d3-speedometer";
+import ReactSpeedometer from "react-d3-speedometer";
 // import { json } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -47,7 +47,7 @@ export default function ToolView(params){
                     {/* <img src={drill} alt='Sacramento State' style={{width: '225px', height: '200px'}} /> */}
                 </div>
                 <div className="align-self-center col-lg-6 col-md-6 col-sm-6 col-xs-12" style={{fontSize:'25px', fontWeight:'bold'}}>
-                {/* <ReactSpeedometer
+                <ReactSpeedometer
                         minValue={0}
                         maxValue={500}
                         segments={5}
@@ -62,7 +62,7 @@ export default function ToolView(params){
                         ringWidth={70}
                         currentValueText=" "
                         value={parseInt(hptco2, 10)}
-                    /> */}
+                    />
                     <span style={{color:'#00573d', fontSize:'25px', paddingLeft: '10px'}}> Total CO<sub>2</sub> Emission : {hptco2}</span>   
                     
                 </div>

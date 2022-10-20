@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import LineChart from 'react-linechart';
+import LineChart from 'react-linechart';
  
 
 function createData(year, co2) {
@@ -27,11 +27,11 @@ export default class History extends Component {
             <div>
                 <div className = 'app'>
                         <h1>LineChart</h1>
-                        {/* <LineChart 
+                        <LineChart 
                             width={600}
                             height={400}
                             data={data}
-                        /> */}
+                        />
                     </div>		
             </div>		
         );
