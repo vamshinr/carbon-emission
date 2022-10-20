@@ -36,7 +36,7 @@ export default function MotorComponent(){
     // const [dirty,setDirty] = useState(false);
     const [co2, setCO2] = useState();
     const [costManufactured, setCostManufactured] = useState();
-    const [dateManufactured, setDateManufactured] = React.useState(null);
+    const [dateManufactured, setDateManufactured] = React.useState();
     const [partNumber, setPartNumber] = useState();
     const [salesPrice, setSalesPrice] = useState();
     const [serialNumber, setSerialNumber] = useState();
@@ -49,7 +49,7 @@ export default function MotorComponent(){
         const motorData = await MotorCon.motor_fetch();
         console.log("motor data :",motorData);
 
-        if (rows.length==0){
+        if (rows.length===0){
         for(var i = 0; i < motorData.length; i++) {
             rows.push(createData(motorData[i].co2,motorData[i].costManufactured,
                 motorData[i].dateManufactured,motorData[i].partNumber,motorData[i].salesPrice,
@@ -76,7 +76,7 @@ export default function MotorComponent(){
             setOpenNew(false);
             setCO2();
             setCostManufactured();
-            setDateManufactured(null);
+            setDateManufactured();
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
@@ -102,7 +102,7 @@ export default function MotorComponent(){
             console.log(response);
             setCO2();
             setCostManufactured();
-            setDateManufactured(null);
+            setDateManufactured();
             setPartNumber();
             setSalesPrice();
             setSerialNumber();

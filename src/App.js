@@ -8,8 +8,12 @@ import BatteryComponent from './pages/BatteryComponent';
 import MotorComponent from './pages/MotorComponent';
 import AdminComponent from './pages/AdminComponent';
 import SeaTransportComponent from './pages/SeaTransportComponent';
+<<<<<<< HEAD
 import GroundTransportComponent from './pages/GroundTransportComponent';
 
+=======
+import History from './pages/History';
+>>>>>>> b657d1ecc4cdb2cdd7ba19ec1172d88a6985680d
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +26,7 @@ function App() {
       <Route path="/sea-transport" element={<SeaTransportComponent/>}/>
       <Route path="/ground-transport" element={<GroundTransportComponent/>}/>
       <Route path="/admin" element={<AdminComponent />}/>
+      <Route path="/history" element={<History />}/>
       {/* <Route path="/battery" element={<Battery />}/> */}
     </Routes>
   </BrowserRouter>
