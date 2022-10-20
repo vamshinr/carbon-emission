@@ -16,50 +16,50 @@ import CustomPaginationActionsTable from './Table';
 import NavbarApp from "../pages/NavbarApp";
 import FooterApp from './FooterApp';
 import { useState } from 'react';
-import SeaTransportCon from "../connections/SeaTransportCon";
-import Alert from '@mui/material/Alert';
+import GroundTransportCon from "../connections/GroundTransportCon";
+import Alert from '@mui/material/Alert';    
 import Snackbar from '@mui/material/Snackbar';
-import { useEffect } from 'react';  
+import { useEffect } from 'react';
 
-function createData(coo2,fuelCo,rouID,trackNum,labCo,sID,custCo) {
-    return { coo2,fuelCo,rouID,trackNum,labCo,sID,custCo };
+function createData(coo2,fuelCo,rouID,trackNum,labCo,tID,custCo) {
+    return { coo2,fuelCo,rouID,trackNum,labCo,tID,custCo };
 }
 
 const rows = [];
 
-export default function SeaTransportComponent(){  
+export default function GroundTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
     //const [openDirty, setOpenDirty] = React.useState(false);
     //const [dirty,setDirty] = useState(false);
     const [co2, setCO2] = useState();
     const [fuelCost, setFuelCost] = useState();
     const [routeID, setRouteID] = useState();
-    const [trackNumber, setTrackNumber] = useState();
+    const [trackNumber, setTrackNumber] = useState();   
     const [laborCost, setLaborCost] = useState();
-    const [shipID, setShipID] = useState();
-    const [custCost, setCustCost] = useState(); 
+    const [truckID, setTruckID] = useState();
+    const [custCost, setCustCost] = useState();
     const [alert, setAlert] = useState(false);
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
     const [displayRows, setDisplayRows] = useState(false);
 
-    const get_sea_info = async()=>{
-        const seaData = await SeaTransportCon.sea_fetch();
-        console.log("sea data :",seaData);
+    const get_ground_info = async()=>{
+        const groundData = await GroundTransportCon.ground_fetch();
+        console.log("ground data :",groundData);
 
         if (rows.length==0){
-        for(var i = 0; i < seaData.length; i++) {
-            rows.push(createData(seaData[i].co2,seaData[i].fuelCost,
-                seaData[i].routeID,seaData[i].trackNumber,seaData[i].laborCost,
-                seaData[i].shipID,seaData[i].custCost));
+        for(var i = 0; i < groundData.length; i++) {
+            rows.push(createData(groundData[i].co2,groundData[i].fuelCost,
+                groundData[i].routeID,groundData[i].trackNumber,groundData[i].laborCost,
+                groundData[i].truckID,groundData[i].custCost));
         }
     }
-        rows.sort((a, b) => (a.shipID < b.shipID ? -1 : 1));
+        rows.sort((a, b) => (a.fuelCost < b.fuelCost ? -1 : 1));
         setDisplayRows(true);
     }    
     
     useEffect(()=>{
-        get_sea_info();
+        get_ground_info();
     },[]);
 
     console.log("display rows",displayRows);
@@ -80,7 +80,7 @@ export default function SeaTransportComponent(){
             setRouteID();
             setTrackNumber();
             setLaborCost();
-            setShipID();
+            setTruckID();
             setCustCost();
         // }
         
@@ -93,13 +93,13 @@ export default function SeaTransportComponent(){
         var rouID = String(routeID);
         var trackNum = String(trackNumber);
         var labCo = Number(laborCost);
-        var sID = String(shipID);
+        var tID = String(truckID);
         var custCo = Number(custCost);
         console.log("co2 : "+coo2);
         console.log("costMan : "+fuelCost);
-        SeaTransportCon.sea_create(coo2,fuelCo,rouID,trackNum,labCo,sID,custCo).then(response =>{
+        GroundTransportCon.ground_create(coo2,fuelCo,rouID,trackNum,labCo,tID,custCo).then(response =>{
             setOpenNew(false);
-            setAlertContent("Success! New Sea Transport Details Added");
+            setAlertContent("Success! New Ground Transport Details Added");
             setAlertSeverity("success");
             setAlert(true);
             console.log(response);
@@ -108,12 +108,12 @@ export default function SeaTransportComponent(){
             setRouteID();
             setTrackNumber();
             setLaborCost();
-            setShipID();
+            setTruckID();
             setCustCost();
 
         }).catch(error =>{
             console.log(error);
-            setAlertContent("Failure! Couldn't Add New Sea Transport Details");
+            setAlertContent("Failure! Couldn't Add New Ground Transport Details");
             setAlertSeverity("error")
             setAlert(true);
         });
@@ -158,16 +158,16 @@ export default function SeaTransportComponent(){
             <div className='row' style={{paddingBottom:'20px'}}>
             <div className='col-lg-10 col-md-10 col-sm-8 col-xs-6'>
                 <Typography gutterBottom variant="h5" component="div" align="left">
-                <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><GiCargoShip /></span> Hornet Sea Transporters
+                <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><GiCargoShip /></span> Hornet Ground Transporters
                 </Typography>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
-                <Button onClick={handleClickOpenNew} title="Add New Sea Route Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Route</span></Button>
+                <Button onClick={handleClickOpenNew} title="Add New Ground Route Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Route</span></Button>
                 <Dialog open={openNew} onClose={handleCloseNew}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Sea Route Details</DialogTitle>
+                    <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Ground Route Details</DialogTitle>
                     <DialogContent>
                     <DialogContentText>
-                         Add New Sea Route details here.
+                         Add New Ground Route details here.
                     </DialogContentText>
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
@@ -175,7 +175,7 @@ export default function SeaTransportComponent(){
                             <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='filled' label="co2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); /*setDirty(true);*/}  }/>
                         </div>
                         <div>
-                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Cost Fuel on Sea" type="number" defaultValue="" value={fuelCost} onChange={e => setFuelCost(e.target.value)}/>
+                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Cost Fuel on Ground" type="number" defaultValue="" value={fuelCost} onChange={e => setFuelCost(e.target.value)}/>
                         </div>
                         <div>
                             <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => setRouteID(e.target.value)}/>
@@ -187,7 +187,7 @@ export default function SeaTransportComponent(){
                             <TextField required error={laborCost !== null && laborCost !== '' ? false : true} id="laborCost" variant='filled' label="Labor Cost" type="number" defaultValue="" value={laborCost} onChange={e => setLaborCost(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={shipID !== null && shipID !== '' ? false : true} id="shipID" variant='filled' label="Ship ID" defaultValue="" value={shipID} onChange={e => setShipID(e.target.value)}/>
+                            <TextField required error={truckID !== null && truckID !== '' ? false : true} id="truckID" variant='filled' label="Truck ID" defaultValue="" value={truckID} onChange={e => setTruckID(e.target.value)}/>
                         </div>
                         <div>
                             <TextField required error={custCost !== null && custCost !== '' ? false : true} id="custCost" variant='filled' label="Customer Cost" type="number" defaultValue="" value={custCost} onChange={e => setCustCost(e.target.value)}/>
@@ -213,7 +213,7 @@ export default function SeaTransportComponent(){
                 <Button onClick={handleCloseDirty(1)}>Yes</Button>
                 </DialogActions>
             </Dialog> */}
-            <CustomPaginationActionsTable rows={rows} type='Sea Route'></CustomPaginationActionsTable>
+            <CustomPaginationActionsTable rows={rows} type='Ground Route'></CustomPaginationActionsTable>
         </div>
         <FooterApp></FooterApp>
         </>

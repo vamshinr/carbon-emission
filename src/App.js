@@ -8,6 +8,7 @@ import BatteryComponent from './pages/BatteryComponent';
 import MotorComponent from './pages/MotorComponent';
 import AdminComponent from './pages/AdminComponent';
 import SeaTransportComponent from './pages/SeaTransportComponent';
+import GroundTransportComponent from './pages/GroundTransportComponent';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/battery-supplier" element={<BatteryComponent/>}/>
       <Route path="/motor-supplier" element={<MotorComponent/>}/>
       <Route path="/sea-transport" element={<SeaTransportComponent/>}/>
+      <Route path="/ground-transport" element={<GroundTransportComponent/>}/>
       <Route path="/admin" element={<AdminComponent />}/>
       {/* <Route path="/battery" element={<Battery />}/> */}
     </Routes>
