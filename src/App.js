@@ -22,7 +22,7 @@ function App() {
       <Route path="/sea-transport" element={<SeaTransportComponent/>}/>
       <Route path="/ground-transport" element={<GroundTransportComponent/>}/>
       <Route path="/admin" element={<AdminComponent />}/>
-      <Route path="/history" element={<History />}/>
+      {/* <Route path="/history" element={<History />}/> */}
       {/* <Route path="/battery" element={<Battery />}/> */}
     </Routes>
   </BrowserRouter>
