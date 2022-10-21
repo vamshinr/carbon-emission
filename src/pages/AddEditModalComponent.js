@@ -14,6 +14,8 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import {FaPencilAlt} from 'react-icons/fa';
 import BatteryCon from '../connections/BatteryCon';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 export default function AddEditPageComponent(params){
     // debugger;
@@ -21,6 +23,9 @@ export default function AddEditPageComponent(params){
     //const co2 = params.row.co2
     const [id,setid] = useState(params.row.id);
     const [co2, setCO2] = useState(params.row.co2);
+    const [alert, setAlert] = useState(false);
+    const [alertContent, setAlertContent] = useState('');
+    const [alertSeverity, setAlertSeverity] = useState('');
     //Battery and Motor Components
     const [costManufactured, setCostManufactured] = useState(params.row.costManu);
     const [dateManufactured, setDateManufactured] = useState(params.row.dateManu);
@@ -65,6 +70,18 @@ export default function AddEditPageComponent(params){
         field = true;
         route = true;
     }
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setAlertContent("");
+        setAlertSeverity("");
+        setAlert(false);
+    };
+
+    const vertical = 'top';
+    const horizontal = 'center';
+
     const handleEditSubmit = () => {
         if(type=='Battery'){
             var data = {
@@ -77,11 +94,34 @@ export default function AddEditPageComponent(params){
                 serialNumber: serialNumber,
             }
             console.log("id:",id)
-            BatteryCon.battery_update(data);
+            BatteryCon.battery_update(data).then(response =>{
+                params.close(false);
+                setAlertContent("Success! Editted Battery Details");
+                setAlertSeverity("success");
+                setAlert(true);
+                console.log(response);
+                setTimeout(() => window.location.reload(false), 2000);
+                
+    
+            }).catch(error =>{
+                console.log(error);
+                setAlertContent("Failure! Couldn't Edit Battery Details");
+                setAlertSeverity("error")
+                setAlert(true);
+            });
+
         }
     };
 
     return(
+        <>
+        {alert ? 
+            <Snackbar open={alert} autoHideDuration={5000} onClose={handleAlertClose} anchorOrigin={{vertical,horizontal}}>
+              <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: '100%' }}>
+                {alertContent}
+              </Alert>
+            </Snackbar>      
+        : <></>}
         <Dialog open={params.open} onClose={handleCloseEdit}>
         <DialogTitle><span style={{paddingRight:'10px'}}><FaPencilAlt/></span>Edit {type} Details</DialogTitle>
         <DialogContent>
@@ -156,6 +196,8 @@ export default function AddEditPageComponent(params){
             <Button onClick={handleEditSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
         </DialogActions>
     </Dialog>
+    
+    </>
     );
 }
 

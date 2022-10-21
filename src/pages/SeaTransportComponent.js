@@ -20,6 +20,7 @@ import SeaTransportCon from "../connections/SeaTransportCon";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';  
+import loader from './logos/loader3.gif';
 
 function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
     return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
@@ -56,7 +57,8 @@ export default function SeaTransportComponent(){
         }
     }
         rows.sort((a, b) => (a.shipID < b.shipID ? -1 : 1));
-        setDisplayRows(true);
+        setTimeout(() => setDisplayRows(true), 1500);
+        //setDisplayRows(true);
     }    
     
     useEffect(()=>{
@@ -215,7 +217,12 @@ export default function SeaTransportComponent(){
                 <Button onClick={handleCloseDirty(1)}>Yes</Button>
                 </DialogActions>
             </Dialog> */}
-            <CustomPaginationActionsTable rows={rows} type='Sea Route'></CustomPaginationActionsTable>
+             {!displayRows? 
+                <div style={{textAlign:'center'}}>
+                    
+                    <img src={loader} alt="" style={{width:'60%', height:'50%'}}/>
+                </div>:<></>}
+            {displayRows?<CustomPaginationActionsTable rows={rows} type='Sea Route'></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>
         </>

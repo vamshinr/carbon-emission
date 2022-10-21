@@ -57,7 +57,8 @@ export default function GroundTransportComponent(){
         }
     }
         rows.sort((a, b) => (a.fuelCost < b.fuelCost ? -1 : 1));
-        setDisplayRows(true);
+        setTimeout(() => setDisplayRows(true), 1500);
+        //setDisplayRows(true);
     }    
     
     useEffect(()=>{

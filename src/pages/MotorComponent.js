@@ -59,7 +59,8 @@ export default function MotorComponent(){
         }
     }
         rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
-        setDisplayRows(true);
+        setTimeout(() => setDisplayRows(true), 1500);
+        //setDisplayRows(true);
     }    
     
     get_motor_info();
