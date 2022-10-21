@@ -12,7 +12,7 @@ export default function NavbarApp(){
         <>
             <Navbar bg="white">
                 <Container style={{marginLeft:'10px' }}>
-                <Navbar.Brand href="#home" style={{ fontFamily: 'Trajan Pro Bold', color:'#004e38', padding:'15px', paddingLeft:'0px', fontSize:'22px'}}>
+                <Navbar.Brand href="/dashboard" style={{ fontFamily: 'Trajan Pro Bold', color:'#004e38', padding:'15px', paddingLeft:'0px', fontSize:'22px'}}>
                     <img
                     alt="" src="https://logos-world.net/wp-content/uploads/2020/07/Sacramento-State-Hornets-Logo.png" width="50" height="40" className="d-inline-block align-top" />{' '}
                     Hornet Power Tools
