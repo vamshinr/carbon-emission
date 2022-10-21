@@ -20,6 +20,7 @@ import GroundTransportCon from "../connections/GroundTransportCon";
 import Alert from '@mui/material/Alert';    
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';
+import loader from './logos/loader3.gif';
 
 function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
     return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
@@ -215,6 +216,11 @@ export default function GroundTransportComponent(){
                 <Button onClick={handleCloseDirty(1)}>Yes</Button>
                 </DialogActions>
             </Dialog> */}
+            {!displayRows? 
+                <div style={{textAlign:'center'}}>
+                    
+                    <img src={loader} alt="" style={{width:'60%', height:'50%'}}/>
+                </div>:<></>}
             {displayRows?<CustomPaginationActionsTable rows={rows} type='Ground Transport'></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>

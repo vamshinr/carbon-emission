@@ -23,6 +23,7 @@ import { useEffect } from 'react';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { Today } from '@mui/icons-material';
+import loader from './logos/loader3.gif';
 
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
     return { co2,costManu,dateManu,partNum,salesPr,serialNum,id };
@@ -200,7 +201,12 @@ export default function BatteryComponent(){
                     </DialogActions>
                 </Dialog>
             </div></div>
-              {displayRows?<CustomPaginationActionsTable rows={rows} type='Battery'></CustomPaginationActionsTable>:<></>}
+            {!displayRows? 
+                <div style={{textAlign:'center'}}>
+                    
+                    <img src={loader} alt="" style={{width:'60%', height:'50%'}}/>
+                </div>:<></>}
+            {displayRows?<CustomPaginationActionsTable rows={rows} type='Battery'></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>
         </>

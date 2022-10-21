@@ -23,6 +23,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import MotorCon from '../connections/MotorCon';
+import loader from './logos/loader3.gif';
 
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
     return { co2,costManu,dateManu,partNum,salesPr,serialNum };
@@ -198,6 +199,11 @@ export default function MotorComponent(){
                     </DialogActions>
                 </Dialog>
             </div></div>
+            {!displayRows? 
+                <div style={{textAlign:'center'}}>
+                    
+                    <img src={loader} alt="" style={{width:'60%', height:'50%'}}/>
+                </div>:<></>}
             {displayRows?<CustomPaginationActionsTable rows={rows} type='Motor'></CustomPaginationActionsTable>:<></>}
         </div>
         <FooterApp></FooterApp>
