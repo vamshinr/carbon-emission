@@ -42,10 +42,17 @@ export default function AddEditPageComponent(params){
     const [customerCost, setCustomerCost] = useState(params.row.custCo);
     // const [openEdit, setOpenEdit] = React.useState(params.row.openEdit);
 
-   
+    const [dirty,setDirty] = useState(false);
+    const [openDirty, setOpenDirty] = React.useState(false);
+
     const handleCloseEdit = () => {
         // setOpenEdit(false);
-        params.close(false);
+        if(dirty){
+            setOpenDirty(true);
+        }
+        else{
+            params.close(false);
+        }
     };
 
     const type = params.type;
@@ -83,7 +90,7 @@ export default function AddEditPageComponent(params){
     const horizontal = 'center';
 
     const handleEditSubmit = () => {
-        if(type=='Battery'){
+        if(type==='Battery'){
             var data = {
                 _id: id,
                 co2: Number(co2),
@@ -113,6 +120,18 @@ export default function AddEditPageComponent(params){
         }
     };
 
+    const handleCloseDirty = (x) =>{
+        if(x === 0){
+            setOpenDirty(false);
+        }
+        else{
+            setDirty(false);
+            setOpenDirty(false);
+            // handleClickCloseNew();
+            handleCloseEdit();    
+        }
+    }
+
     return(
         <>
         {alert ? 
@@ -131,47 +150,47 @@ export default function AddEditPageComponent(params){
 
             <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
               <div  hidden={field}>
-                  <TextField required error={serialNumber !== null && serialNumber !== '' ? false : true} id="serialNumber" variant='outlined' label="Product Serial Number" defaultValue="" value={serialNumber} onChange={e => setSerialNumber(e.target.value)}/>
+                  <TextField disabled required error={serialNumber !== null && serialNumber !== '' ? false : true} id="serialNumber" variant='outlined' label="Product Serial Number" defaultValue="" value={serialNumber} onChange={e => {setSerialNumber(e.target.value);}}/>
               </div>
               <div  hidden={field}>
-                  <TextField required error={partNumber !== null && partNumber !== '' ? false : true} id="partNumber" variant='outlined' label="Part Number" defaultValue="" value={partNumber} onChange={e => setPartNumber(e.target.value)}/>
+                  <TextField required error={partNumber !== null && partNumber !== '' ? false : true} id="partNumber" variant='outlined' label="Part Number" defaultValue="" value={partNumber} onChange={e => {setPartNumber(e.target.value); setDirty(true);}}/>
               </div>
               <div hidden={field}>
-                  <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="CO2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value);}  }/>
+                  <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="CO2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); setDirty(true);}}/>
               </div>
               <div hidden={field}>
-                  <TextField required error={costManufactured !== null && costManufactured !== '' ? false : true} id="costManufactured" variant='outlined' label="Cost of Manufacture ($)" type="number" defaultValue="" value={costManufactured} onChange={e => setCostManufactured(e.target.value)}/>
+                  <TextField required error={costManufactured !== null && costManufactured !== '' ? false : true} id="costManufactured" variant='outlined' label="Cost of Manufacture ($)" type="number" defaultValue="" value={costManufactured} onChange={e => {setCostManufactured(e.target.value); setDirty(true);}}/>
               </div>
               <div  hidden={field}>
-                  <TextField required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" variant='outlined' type="date" label="Date Manufactured" value={dateManufactured} onChange={e => setDateManufactured(e.target.value)} InputLabelProps={{ shrink: true }}/>
+                  <TextField required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" variant='outlined' type="date" label="Date Manufactured" value={dateManufactured} onChange={e => {setDateManufactured(e.target.value); setDirty(true);}} InputLabelProps={{ shrink: true }}/>
                   {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker label="Date Manufactured" renderInput={(params) => <TextField {...params} />} value={dateManufactured} onChange={(newVal) => setDateManufactured(newVal)} />
                   </LocalizationProvider> */}
               </div>
               <div hidden={field}>
-                    <TextField required error={salesPrice !== null && salesPrice !== '' ? false : true} id="salesPrice" variant='outlined' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => setSalesPrice(e.target.value)}/>
+                    <TextField required error={salesPrice !== null && salesPrice !== '' ? false : true} id="salesPrice" variant='outlined' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => {setSalesPrice(e.target.value); setDirty(true);}}/>
               </div>
 
               <div  hidden={route}>
-                  <TextField required error={trackingNum !== null && trackingNum !== '' ? false : true} id="trackingNum" variant='outlined' label="Tracking Number" type="number" defaultValue="" value={trackingNum} onChange={e => setTrackingNum(e.target.value)}/>
+                  <TextField disabled required error={trackingNum !== null && trackingNum !== '' ? false : true} id="trackingNum" variant='outlined' label="Tracking Number" type="number" defaultValue="" value={trackingNum} onChange={e => setTrackingNum(e.target.value)}/>
               </div>
               <div  hidden={route}>
-                  <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" variant='outlined' label="Route ID" defaultValue="" value={routeID} onChange={e => setRouteID(e.target.value)}/>
-              </div>
-              <div hidden={route}>
-                  <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="CO2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value);}  }/>
+                  <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" variant='outlined' label="Route ID" defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true);}}/>
               </div>
               <div  hidden={route}>
-                  <TextField required error={transportID !== null && transportID !== '' ? false : true} id="transportID" variant='outlined' label={type==="Sea Route" ? "Ship ID": "Truck ID"} defaultValue="" value={transportID} onChange={e => setTransportID(e.target.value)}/>
+                  <TextField disabled required error={transportID !== null && transportID !== '' ? false : true} id="transportID" variant='outlined' label={type==="Sea Route" ? "Ship ID": "Truck ID"} defaultValue="" value={transportID} onChange={e => {setTransportID(e.target.value); setDirty(true);}}/>
               </div>
               <div hidden={route}>
-                  <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='outlined' label="Fuel Cost ($)" type="number" defaultValue="" value={fuelCost} onChange={e => setFuelCost(e.target.value)}/>
+                  <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="CO2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); setDirty(true);}}/>
               </div>
               <div hidden={route}>
-                  <TextField required error={labourCost !== null && labourCost !== '' ? false : true} id="labourCost" variant='outlined' label="Labour Cost ($)" type="number" defaultValue="" value={labourCost} onChange={e => setLabourCost(e.target.value)}/>
+                  <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='outlined' label="Fuel Cost ($)" type="number" defaultValue="" value={fuelCost} onChange={e => {setFuelCost(e.target.value); setDirty(true);}}/>
               </div>
               <div hidden={route}>
-                  <TextField required error={customerCost !== null && customerCost !== '' ? false : true} id="customerCost" variant='outlined' label="Customer Cost ($)" type="number" defaultValue="" value={customerCost} onChange={e => setCustomerCost(e.target.value)}/>
+                  <TextField required error={labourCost !== null && labourCost !== '' ? false : true} id="labourCost" variant='outlined' label="Labour Cost ($)" type="number" defaultValue="" value={labourCost} onChange={e => {setLabourCost(e.target.value); setDirty(true);}}/>
+              </div>
+              <div hidden={route}>
+                  <TextField required error={customerCost !== null && customerCost !== '' ? false : true} id="customerCost" variant='outlined' label="Customer Cost ($)" type="number" defaultValue="" value={customerCost} onChange={e => {setCustomerCost(e.target.value); setDirty(true);}}/>
               </div>
 
               <div hidden={admin}>
@@ -196,7 +215,18 @@ export default function AddEditPageComponent(params){
             <Button onClick={handleEditSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
         </DialogActions>
     </Dialog>
-    
+    <Dialog open={openDirty} onClose={()=>handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
+        <DialogTitle>{"Confirm"}</DialogTitle>
+        <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+            There are unsaved data. Do you wish to proceed?
+        </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={()=>handleCloseDirty(0)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>No</Button>
+        <Button onClick={()=>handleCloseDirty(1)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Yes</Button>
+        </DialogActions>
+    </Dialog>
     </>
     );
 }

@@ -32,8 +32,8 @@ const rows = [];
 
 export default function BatteryComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
-    // const [dirty,setDirty] = useState(false);
-    // const [openDirty, setOpenDirty] = React.useState(false);
+    const [dirty,setDirty] = useState(false);
+    const [openDirty, setOpenDirty] = React.useState(false);
     const [co2, setCO2] = useState();
     const [costManufactured, setCostManufactured] = useState();
     const [dateManufactured, setDateManufactured] = React.useState();
@@ -73,10 +73,10 @@ export default function BatteryComponent(){
     };
 
     const handleClickCloseNew = () => {
-        // if(dirty){
-        //     setOpenDirty(true);
-        // }
-        // else{
+        if(dirty){
+            setOpenDirty(true);
+        }
+        else{
             setOpenNew(false);
             setCO2();
             setCostManufactured();
@@ -84,7 +84,7 @@ export default function BatteryComponent(){
             setPartNumber();
             setSalesPrice();
             setSerialNumber();
-        // }
+        }
         
     };
     
@@ -134,16 +134,16 @@ export default function BatteryComponent(){
     const vertical = 'top';
     const horizontal = 'center';
 
-    // const handleCloseDirty = (x) =>{
-    //     if(x===0){
-    //         setOpenDirty(false);
-    //     }
-    //     else{
-    //         setOpenDirty(false);
-    //         setDirty(false);
-    //         handleClickCloseNew();
-    //     }
-    // }
+    const handleCloseDirty = (x) =>{
+        if(x === 0){
+            setOpenDirty(false);
+        }
+        else{
+            setDirty(false);
+            setOpenDirty(false);
+            handleClickCloseNew();
+        }
+    }
 
     return(
      <>
@@ -177,22 +177,22 @@ export default function BatteryComponent(){
                             <TextField required error={serialNumber !== null && serialNumber !== '' ? false : true} id="serialNumber" variant='outlined' label="Product Serial Number" defaultValue="" value={serialNumber} onChange={e => setSerialNumber(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={partNumber !== null && partNumber !== '' ? false : true} id="partNumber" variant='outlined' label="Part Number" defaultValue="" value={partNumber} onChange={e => setPartNumber(e.target.value)}/>
+                            <TextField required error={partNumber !== null && partNumber !== '' ? false : true} id="partNumber" variant='outlined' label="Part Number" defaultValue="" value={partNumber} onChange={e => {setPartNumber(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="Co2 Emitted" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); /*setDirty(true);*/}  }/>
+                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='outlined' label="Co2 Emitted" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); setDirty(true);}  }/>
                         </div>
                         <div>
-                            <TextField required error={costManufactured !== null && costManufactured !== '' ? false : true} id="costManufactured" variant='outlined' label="Cost of Manufacture ($)" type="number" defaultValue="" value={costManufactured} onChange={e => setCostManufactured(e.target.value)}/>
+                            <TextField required error={costManufactured !== null && costManufactured !== '' ? false : true} id="costManufactured" variant='outlined' label="Cost of Manufacture ($)" type="number" defaultValue="" value={costManufactured} onChange={e => {setCostManufactured(e.target.value); setDirty(true)}}/>
                         </div>
                         <div>
-                            <TextField InputLabelProps={{ shrink: true }} required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" variant='outlined' type="date" label="Date Manufactured" value={dateManufactured} onChange={e => setDateManufactured(e.target.value)}/>
+                            <TextField InputLabelProps={{ shrink: true }} required error={dateManufactured !== null && dateManufactured !== '' ? false : true} id="dateManufactured" variant='outlined' type="date" label="Date Manufactured" value={dateManufactured} onChange={e => {setDateManufactured(e.target.value); setDirty(true);}}/>
                             {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker dateFormat="MM/dd/yyyy" label="Date Manufactured" value={dateManufactured} onChange={(newVal) => setDateManufactured(newVal)} renderInput={(params) => <TextField {...params} />}/>
                             </LocalizationProvider> */}
                         </div>
                         <div>
-                            <TextField required error={salesPrice !== null && salesPrice !== '' ? false : true} id="salesPrice" variant='outlined' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => setSalesPrice(e.target.value)}/>
+                            <TextField required error={salesPrice !== null && salesPrice !== '' ? false : true} id="salesPrice" variant='outlined' label="Sales Price ($)" type="number" defaultValue="" value={salesPrice} onChange={e => {setSalesPrice(e.target.value); setDirty(true);}}/>
                         </div>
                     </Box>
                     </DialogContent>
@@ -208,6 +208,19 @@ export default function BatteryComponent(){
                     <img src={loader} alt="" style={{width:'60%', height:'50%'}}/>
                 </div>:<></>}
             {displayRows?<CustomPaginationActionsTable rows={rows} type='Battery'></CustomPaginationActionsTable>:<></>}
+
+            <Dialog open={openDirty} onClose={()=>handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
+                <DialogTitle>{"Confirm"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    There are unsaved data. Do you wish to proceed?
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={()=>handleCloseDirty(0)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>No</Button>
+                <Button onClick={()=>handleCloseDirty(1)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Yes</Button>
+                </DialogActions>
+            </Dialog>
         </div>
         <FooterApp></FooterApp>
         </>
