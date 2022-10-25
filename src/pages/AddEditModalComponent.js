@@ -51,7 +51,7 @@ export default function AddEditPageComponent(params){
             setOpenDirty(true);
         }
         else{
-            params.close(false);
+            params.exit(false);
         }
     };
 
@@ -103,9 +103,9 @@ export default function AddEditPageComponent(params){
             console.log("id:",id)
             BatteryCon.battery_update(data).then(response =>{
                 params.close(false);
-                setAlertContent("Success! Editted Battery Details");
-                setAlertSeverity("success");
-                setAlert(true);
+                // setAlertContent("Success! Editted Battery Details");
+                // setAlertSeverity("success");
+                // setAlert(true);
                 console.log(response);
                 setTimeout(() => window.location.reload(false), 2000);
                 

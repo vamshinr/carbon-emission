@@ -31,6 +31,9 @@ import Button from 'react-bootstrap/Button';
 // import { useState } from 'react';
 import './Table.css';
 import AddEditPageComponent from './AddEditModalComponent';
+import { useState } from 'react';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -157,6 +160,15 @@ export default function CustomPaginationActionsTable(params) {
   const handleChild = (isOpen) =>{
       setOpenEdit(isOpen);
       console.log(isOpen);
+      setAlertContent("Success! Updated "+ type +" Details");
+      setAlertSeverity("success");
+      setAlert(true);
+  }
+
+  const handleChildExit = (isOpen) =>{
+    setOpenEdit(isOpen);
+    console.log(isOpen);
+    
   }
 
   // function handleCloseModal(event, data) {
@@ -169,9 +181,32 @@ export default function CustomPaginationActionsTable(params) {
   // }
   // const [field, setField] = React.useState(false);
   // const [route, setRoute] = React.useState(false);
+
+  const [alert, setAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('');
+  const handleAlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertContent("");
+    setAlertSeverity("");
+    setAlert(false);
+  };
+
+  const vertical = 'top';
+  const horizontal = 'center';
+
   var order_num = 0;
   return (
     <>
+    {alert ? 
+          <Snackbar open={alert} autoHideDuration={5000} onClose={handleAlertClose} anchorOrigin={{vertical,horizontal}}>
+            <Alert onClose={handleAlertClose} severity={alertSeverity} sx={{ width: '100%' }}>
+              {alertContent}
+            </Alert>
+          </Snackbar>      
+      : <></>}
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead style={{backgroundColor:'#0f5132'}}>
@@ -308,7 +343,7 @@ export default function CustomPaginationActionsTable(params) {
         </TableFooter>
       </Table>
     </TableContainer>
-    {openEdit?<AddEditPageComponent  open={true} close={handleChild} type={params.type} row={curRow}></AddEditPageComponent> :<></>}
+    {openEdit?<AddEditPageComponent  open={true} exit={handleChildExit} close={handleChild} type={params.type} row={curRow}></AddEditPageComponent> :<></>}
     </>
   );
 }
