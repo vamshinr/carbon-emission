@@ -147,7 +147,6 @@ export default function CustomPaginationActionsTable(params) {
   // var curRow = {};
 
   const handleClickOpenEdit = (rowdata) => {
-    debugger;
     console.log("params in table component",rowdata);
     // curRow = rowdata;
     setCurRow(rowdata);
