@@ -97,7 +97,7 @@ export default function MotorComponent(){
         var serialNum = String(serialNumber);
         // console.log("co2 : "+coo2);
         // console.log("costMan : "+costManufactured);
-        BatteryCon.battery_create(coo2,costManu,dateManu,partNum,salesPr,serialNum).then(response =>{
+        MotorCon.motor_create(coo2,costManu,dateManu,partNum,salesPr,serialNum).then(response =>{
             setOpenNew(false);
             setAlertContent("Success! New Motor Details Added");
             setAlertSeverity("success");
