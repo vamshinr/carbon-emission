@@ -25,13 +25,21 @@ import { useEffect } from 'react';
 // import { Today } from '@mui/icons-material';
 import loader from './logos/loader3.gif';
 
+import { Line } from "react-chartjs-2";
+import {CategoryScale} from 'chart.js'; 
+import Chart from 'chart.js/auto'
+Chart.register(CategoryScale);
+
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
     return { co2,costManu,dateManu,partNum,salesPr,serialNum,id };
 }
 const rows = [];
+const data1 = [];
+const data2 = [];
 
 export default function BatteryComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
+    const [openHistory, setOpenHistory] = useState(false);
     const [dirty,setDirty] = useState(false);
     const [openDirty, setOpenDirty] = React.useState(false);
     const [co2, setCO2] = useState();
@@ -44,6 +52,7 @@ export default function BatteryComponent(){
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
     const [displayRows, setDisplayRows] = useState(false);
+    const label = "Battery Co2";
     
     const get_battery_info = async()=>{
         setDisplayRows(false);
@@ -52,10 +61,13 @@ export default function BatteryComponent(){
 
         if (rows.length===0){
         for(var i = 0; i < batteryData.length; i++) {
+            data1.push(batteryData[i].dateManufactured)
+            data2.push(batteryData[i].co2)
             rows.push(createData(batteryData[i].co2,batteryData[i].costManufactured,
                 batteryData[i].dateManufactured,batteryData[i].partNumber,batteryData[i].salesPrice,
                 batteryData[i].serialNumber,batteryData[i]._id));
         }
+    
     }
         rows.sort((a, b) => (a.serialNumber > b.serialNumber ? -1 : 1));
         setTimeout(() => setDisplayRows(true), 1500);
@@ -68,10 +80,17 @@ export default function BatteryComponent(){
 
     console.log("display rows",displayRows);
     console.log("rows",rows);
+
+    const handleHistoryOpen = () =>{
+        setOpenHistory(true);
+    };
+    const handleHistoryClose = () => {
+        setOpenHistory(false)
+    };
     const handleClickOpenNew = () => {
         setOpenNew(true);
     };
-
+    
     const handleClickCloseNew = () => {
         if(dirty){
             setOpenDirty(true);
@@ -145,6 +164,21 @@ export default function BatteryComponent(){
         }
     }
 
+    const data3 = {
+        labels: data1,
+        datasets: [
+            {
+            label: label,
+            data: data2,
+            fill: true,
+            backgroundColor: "rgba(75,192,192,0.2)",
+            borderColor: "rgba(75,192,192,1)"
+            },
+            
+        ]
+    };
+
+
     return(
      <>
         <NavbarApp></NavbarApp>
@@ -164,7 +198,10 @@ export default function BatteryComponent(){
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
             {/* <Button onClick={window.location.reload} title="Add New Battery Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>Reload</span></Button> */}
+            <div>
+                <Button  onClick={handleHistoryOpen} title="Battery History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}><span style={{paddingLeft:'1px'}}>View History</span></Button>
                 <Button onClick={handleClickOpenNew} title="Add New Battery Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Battery</span></Button>
+                </div>
                 <Dialog open={openNew} onClose={handleClickCloseNew}>
                     <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Battery Details</DialogTitle>
                     <DialogContent>
@@ -200,6 +237,14 @@ export default function BatteryComponent(){
                         <Button onClick={handleClickCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
                         <Button onClick={handleClickSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
                     </DialogActions>
+                </Dialog>
+                <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
+                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
+                    <div>
+                    <Box>   
+                    <Line data={data3} />
+                    </Box>
+                    </div>
                 </Dialog>
             </div></div>
             {!displayRows? 

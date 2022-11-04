@@ -24,15 +24,22 @@ import Snackbar from '@mui/material/Snackbar';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import MotorCon from '../connections/MotorCon';
 import loader from './logos/loader3.gif';
+import { Line } from "react-chartjs-2";
+import {CategoryScale} from 'chart.js'; 
+import Chart from 'chart.js/auto'
+Chart.register(CategoryScale);
 
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
     return { co2,costManu,dateManu,partNum,salesPr,serialNum };
 }
 
 const rows = [];
+const data1 = [];
+const data2 = [];
 
 export default function MotorComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
+    const [openHistory, setOpenHistory] = useState(false);
     const [openDirty, setOpenDirty] = React.useState(false);
     const [dirty,setDirty] = useState(false);
     const [co2, setCO2] = useState();
@@ -53,6 +60,9 @@ export default function MotorComponent(){
 
         if (rows.length===0){
         for(var i = 0; i < motorData.length; i++) {
+
+            data1.push(motorData[i].dateManufactured)
+            data2.push(motorData[i].co2)
             rows.push(createData(motorData[i].co2,motorData[i].costManufactured,
                 motorData[i].dateManufactured,motorData[i].partNumber,motorData[i].salesPrice,
                 motorData[i].serialNumber));
@@ -66,6 +76,13 @@ export default function MotorComponent(){
     get_motor_info();
     console.log("display rows",displayRows);
     console.log("rows",rows);
+
+    const handleHistoryOpen = () =>{
+        setOpenHistory(true);
+    }
+    const handleHistoryClose = () => {
+        setOpenHistory(false)
+    };
 
     const handleClickOpenNew = () => {
         setOpenNew(true);
@@ -142,7 +159,19 @@ export default function MotorComponent(){
             handleClickCloseNew();
         }
     }
-
+    const data3 = {
+        labels: data1,
+        datasets: [
+            {
+            label: "Motor Co2",
+            data: data2,
+            fill: true,
+            backgroundColor: "rgba(75,192,192,0.2)",
+            borderColor: "rgba(75,192,192,1)"
+            },
+            
+        ]
+    };
 
     return(  
         <>
@@ -162,6 +191,7 @@ export default function MotorComponent(){
                 </Typography>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
+             <Button  onClick={handleHistoryOpen} title="Motor History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}><span style={{paddingLeft:'1px'}}>View History</span></Button>
                 <Button onClick={handleClickOpenNew} title="Add New Motor Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Motor</span></Button>
                 <Dialog open={openNew} onClose={handleClickCloseNew}>
                     <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Motor Details</DialogTitle>
@@ -198,6 +228,14 @@ export default function MotorComponent(){
                         <Button onClick={handleClickCloseNew} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
                         <Button onClick={handleClickSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
                     </DialogActions>
+                </Dialog>
+                <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
+                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
+                    <div>
+                    <Box>   
+                    <Line data={data3} />
+                    </Box>
+                    </div>
                 </Dialog>
             </div></div>
             {!displayRows? 

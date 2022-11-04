@@ -7,3 +7,9 @@ Button:hover{
   background-color: #004e38 !important;
   color: #fff !important;
 }
+.History{
+  font-family: sans-serif;
+  text-align: center;
+  padding-left: 25%;
+  width: 80%;
+}

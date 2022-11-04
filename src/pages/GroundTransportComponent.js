@@ -13,25 +13,52 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CustomPaginationActionsTable from './Table';
-import NavbarApp from "../pages/NavbarApp";
+import NavbarApp from "./NavbarApp";
 import FooterApp from './FooterApp';
 import { useState } from 'react';
 import GroundTransportCon from "../connections/GroundTransportCon";
 import Alert from '@mui/material/Alert';    
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';
-import loader from './logos/loader3.gif';
+import loader from './logos/loader3.gif';import {
+    Chart as ChartJS,
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    LineController,
+    BarController,
+  } from 'chart.js';
+  import { Chart } from 'react-chartjs-2';
+ChartJS.register(
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    LineController,
+    BarController
+  );
 
 function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
     return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
 }
 
 const rows = [];
+const data1 = [];
+const data2 = [];
+const data4 = [];
 
 export default function GroundTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
-    const [openDirty, setOpenDirty] = React.useState(false);
-    const [dirty,setDirty] = useState(false);
+    const [openHistory, setOpenHistory] = useState(false);
+    //const [openDirty, setOpenDirty] = React.useState(false);
+    //const [dirty,setDirty] = useState(false);
     const [co2, setCO2] = useState();
     const [fuelCost, setFuelCost] = useState();
     const [routeID, setRouteID] = useState();
@@ -51,6 +78,9 @@ export default function GroundTransportComponent(){
 
         if (rows.length === 0){
         for(var i = 0; i < groundData.length; i++) {
+            data1.push(groundData[i].routeId)
+            data2.push(groundData[i].co2)
+            data4.push(groundData[i].laborCost+groundData[i].fuelCost)
             rows.push(createData(groundData[i].co2,groundData[i].fuelCost,
                 groundData[i].routeId,groundData[i].trackingNumber,groundData[i].laborCost,
                 groundData[i].truckId,groundData[i].customerCost));
@@ -65,16 +95,21 @@ export default function GroundTransportComponent(){
         get_ground_info();
     },[]);
 
-
+    const handleHistoryOpen = () =>{
+        setOpenHistory(true);
+    };
+    const handleHistoryClose = () => {
+        setOpenHistory(false)
+    };
     const handleClickOpenNew = () => {
         setOpenNew(true);
     };
 
     const handleCloseNew = () => {
-        if(dirty){
-            setOpenDirty(true);
-        }
-        else{
+        // if(dirty){
+        //     setOpenDirty(true);
+        // }
+        // else{
             setOpenNew(false);
             setCO2();
             setFuelCost();
@@ -83,7 +118,7 @@ export default function GroundTransportComponent(){
             setLaborCost();
             setTruckID();
             setCustCost();
-        }
+        // }
         
     };
 
@@ -136,16 +171,39 @@ export default function GroundTransportComponent(){
     const vertical = 'top';
     const horizontal = 'center';
 
-    const handleCloseDirty = (x) =>{
-        if(x===0){
-            setOpenDirty(false);
-        }
-        else{
-            setOpenDirty(false);
-            setDirty(false);
-            handleCloseNew();
-        }
-    }
+    // const handleCloseDirty = (x) =>{
+    //     if(x===0){
+    //         setOpenDirty(false);
+    //     }
+    //     else{
+    //         setOpenDirty(false);
+    //         setDirty(false);
+    //         handleCloseNew();
+    //     }
+    // }
+
+    const data3 = {
+        labels: data1,
+        datasets: [
+            {
+              type: 'bar',
+              label: 'Ground Transport Co2',
+              backgroundColor: "rgba(75,192,192,0.2)",
+              borderColor: "rgba(75,192,192,1)",
+              borderWidth: 2,
+              data: data2,
+            },
+            {
+              type: 'bar',
+              label: 'Ground Transport Labor + Fuel Cost',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: data4,
+              borderColor: 'red',
+              borderWidth: 2,
+              fill: false,
+            },
+          ],
+    };
 
     return(
         
@@ -166,6 +224,7 @@ export default function GroundTransportComponent(){
                 </Typography>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
+            <Button  onClick={handleHistoryOpen} title="Ground Transport History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}><span style={{paddingLeft:'1px'}}>View History</span></Button>
                 <Button onClick={handleClickOpenNew} title="Add New Ground Route Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Route</span></Button>
                 <Dialog open={openNew} onClose={handleCloseNew}>
                     <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Ground Route Details</DialogTitle>
@@ -176,26 +235,25 @@ export default function GroundTransportComponent(){
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
                         <div>
-                            <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Track Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
+                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='filled' label="co2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); /*setDirty(true);*/}  }/>
                         </div>
                         <div>
-                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true);}}/>
+                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Cost Fuel on Ground" type="number" defaultValue="" value={fuelCost} onChange={e => setFuelCost(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={truckID !== null && truckID !== '' ? false : true} id="truckID" variant='filled' label="Truck ID" defaultValue="" value={truckID} onChange={e => {setTruckID(e.target.value); setDirty(true);}}/>
+                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => setRouteID(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='filled' label="co2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); setDirty(true);}}/>
+                            <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Track Number" defaultValue="" value={trackNumber} onChange={e => setTrackNumber(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Cost Fuel on Sea" type="number" defaultValue="" value={fuelCost} onChange={e => {setFuelCost(e.target.value); setDirty(true);}}/>
+                            <TextField required error={laborCost !== null && laborCost !== '' ? false : true} id="laborCost" variant='filled' label="Labor Cost" type="number" defaultValue="" value={laborCost} onChange={e => setLaborCost(e.target.value)}/>
                         </div>
                         <div>
-                            <TextField required error={laborCost !== null && laborCost !== '' ? false : true} id="laborCost" variant='filled' label="Labor Cost" type="number" defaultValue="" value={laborCost} onChange={e => {setLaborCost(e.target.value); setDirty(true);}}/>
+                            <TextField required error={truckID !== null && truckID !== '' ? false : true} id="truckID" variant='filled' label="Truck ID" defaultValue="" value={truckID} onChange={e => setTruckID(e.target.value)}/>
                         </div>
-                        
                         <div>
-                            <TextField required error={custCost !== null && custCost !== '' ? false : true} id="custCost" variant='filled' label="Customer Cost" type="number" defaultValue="" value={custCost} onChange={e => {setCustCost(e.target.value); setDirty(true);}}/>
+                            <TextField required error={custCost !== null && custCost !== '' ? false : true} id="custCost" variant='filled' label="Customer Cost" type="number" defaultValue="" value={custCost} onChange={e => setCustCost(e.target.value)}/>
                         </div>
                     </Box>
                     </DialogContent>
@@ -204,20 +262,28 @@ export default function GroundTransportComponent(){
                         <Button onClick={handleClickSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
                     </DialogActions>
                 </Dialog>
+                <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
+                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
+                    <div>
+                    <Box>   
+                    <Chart type='bar' data={data3} />
+                    </Box>
+                    </div>
+                </Dialog>
             </div></div>
 
-            <Dialog open={openDirty} onClose={()=>handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle>{"Confirm"}</DialogTitle>
+            {/* <Dialog open={openDirty} onClose={handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
+                <DialogTitle>{"Use Google's location service?"}</DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
                     There are unsaved data. Do you wish to proceed?
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={()=>handleCloseDirty(0)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>No</Button>
-                <Button onClick={()=>handleCloseDirty(1)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Yes</Button>
+                <Button onClick={handleCloseDirty(0)}>No</Button>
+                <Button onClick={handleCloseDirty(1)}>Yes</Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
             {!displayRows? 
                 <div style={{textAlign:'center'}}>
                     
