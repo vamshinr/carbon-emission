@@ -265,7 +265,7 @@ export default function AdminComponent(){
                             <TextField required error={SerialNumber !== null && SerialNumber !== '' ? false : true} id="serial number" variant='outlined' label="HPT ID" defaultValue="" value={SerialNumber} onChange={e => setSerialNumber(e.target.value)}/>                       
                         </div>
                         <div>
-                            <TextField required error={toolId !== null && toolId !== '' ? false : true} id="toolid" variant='outlined' label="Tool num" defaultValue="" value={toolId} onChange={e => setToolId(e.target.value)}/>                       
+                            <TextField required error={toolId !== null && toolId !== '' ? false : true} id="toolid" variant='outlined' label="Tool Type" defaultValue="" value={toolId} onChange={e => setToolId(e.target.value)}/>                       
                         </div>
                         <div>
                             <TextField required error={partsCost !== null && partsCost !== '' ? false : true} id="partscost" variant='outlined' label="Parts cost ID" defaultValue="" value={partsCost} onChange={e => setPartscost(e.target.value)}/>                       
