@@ -20,11 +20,30 @@ import GroundTransportCon from "../connections/GroundTransportCon";
 import Alert from '@mui/material/Alert';    
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';
-import loader from './logos/loader3.gif';
-import { Bar } from "react-chartjs-2";
-import {CategoryScale} from 'chart.js'; 
-import Chart from 'chart.js/auto'
-Chart.register(CategoryScale);
+import loader from './logos/loader3.gif';import {
+    Chart as ChartJS,
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    LineController,
+    BarController,
+  } from 'chart.js';
+  import { Chart } from 'react-chartjs-2';
+ChartJS.register(
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    LineController,
+    BarController
+  );
 
 function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
     return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
@@ -33,6 +52,7 @@ function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
 const rows = [];
 const data1 = [];
 const data2 = [];
+const data4 = [];
 
 export default function GroundTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -60,6 +80,7 @@ export default function GroundTransportComponent(){
         for(var i = 0; i < groundData.length; i++) {
             data1.push(groundData[i].routeId)
             data2.push(groundData[i].co2)
+            data4.push(groundData[i].laborCost+groundData[i].fuelCost)
             rows.push(createData(groundData[i].co2,groundData[i].fuelCost,
                 groundData[i].routeId,groundData[i].trackingNumber,groundData[i].laborCost,
                 groundData[i].truckId,groundData[i].customerCost));
@@ -165,16 +186,24 @@ export default function GroundTransportComponent(){
         labels: data1,
         datasets: [
             {
-            label: "Ground Transport Co2",
-            data: data2,
-            fill: true,
-            backgroundColor: "rgba(75,192,192,0.2)",
-            borderColor: "rgba(75,192,192,1)"
+              type: 'bar',
+              label: 'Ground Transport Co2',
+              backgroundColor: "rgba(75,192,192,0.2)",
+              borderColor: "rgba(75,192,192,1)",
+              borderWidth: 2,
+              data: data2,
             },
-            
-        ]
+            {
+              type: 'bar',
+              label: 'Ground Transport Labor + Fuel Cost',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: data4,
+              borderColor: 'red',
+              borderWidth: 2,
+              fill: false,
+            },
+          ],
     };
-
 
     return(
         
@@ -237,7 +266,7 @@ export default function GroundTransportComponent(){
                     <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
                     <div>
                     <Box>   
-                    <Bar data={data3} />
+                    <Chart type='bar' data={data3} />
                     </Box>
                     </div>
                 </Dialog>

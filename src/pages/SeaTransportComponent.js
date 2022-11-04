@@ -21,10 +21,30 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';  
 import loader from './logos/loader3.gif';
-import { Bar } from "react-chartjs-2";
-import {CategoryScale} from 'chart.js'; 
-import Chart from 'chart.js/auto'
-Chart.register(CategoryScale);
+import {
+    Chart as ChartJS,
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    LineController,
+    BarController,
+  } from 'chart.js';
+  import { Chart } from 'react-chartjs-2';
+ChartJS.register(
+    LinearScale,
+    CategoryScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    LineController,
+    BarController
+  );
 
 function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
     return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
@@ -33,6 +53,7 @@ function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
 const rows = [];
 const data1 = [];
 const data2 = [];
+const data4 = [];
 
 export default function SeaTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -60,6 +81,7 @@ export default function SeaTransportComponent(){
         for(var i = 0; i < seaData.length; i++) {
             data1.push(seaData[i].routeId)
             data2.push(seaData[i].co2)
+            data4.push(seaData[i].laborCost+seaData[i].fuelCost)
             rows.push(createData(seaData[i].co2,seaData[i].fuelCost,
                 seaData[i].routeId,seaData[i].trackingNumber,seaData[i].laborCost,
                 seaData[i].shipId,seaData[i].customerCost));
@@ -168,14 +190,23 @@ export default function SeaTransportComponent(){
         labels: data1,
         datasets: [
             {
-            label: "Sea Transport Co2",
-            data: data2,
-            fill: true,
-            backgroundColor: "rgba(75,192,192,0.2)",
-            borderColor: "rgba(75,192,192,1)"
+              type: 'bar',
+              label: 'Sea Transport Co2',
+              backgroundColor: "rgba(75,192,192,0.2)",
+              borderColor: "rgba(75,192,192,1)",
+              borderWidth: 2,
+              data: data2,
             },
-            
-        ]
+            {
+              type: 'bar',
+              label: 'Sea Transport Labor + Fuel Cost',
+              backgroundColor: 'rgb(255, 99, 132)',
+              data: data4,
+              borderColor: 'red',
+              borderWidth: 2,
+              fill: false,
+            },
+          ],
     };
 
     return(
@@ -236,6 +267,15 @@ export default function SeaTransportComponent(){
                         <Button onClick={handleClickSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
                     </DialogActions>
                 </Dialog>
+                <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
+                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
+                    <div>
+                    <Box>   
+                    
+                    <Chart type='bar' data={data3} />
+                    </Box>
+                    </div>
+                </Dialog>
             </div></div>
 
             <Dialog open={openDirty} onClose={()=>handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
@@ -250,14 +290,7 @@ export default function SeaTransportComponent(){
                 <Button onClick={()=>handleCloseDirty(1)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Yes</Button>
                 </DialogActions>
             </Dialog>
-            <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
-                    <div>
-                    <Box>   
-                    <Bar data={data3} />
-                    </Box>
-                    </div>
-                </Dialog>
+            
              {!displayRows? 
                 <div style={{textAlign:'center'}}>
                     
