@@ -16,24 +16,19 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import {FaPencilAlt} from 'react-icons/fa';
+import {FaPencilAlt, FaTrashAlt} from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
-// import TextField from '@mui/material/TextField';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import Autocomplete from '@mui/material/Autocomplete';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { useState } from 'react';
 import './Table.css';
 import AddEditPageComponent from './AddEditModalComponent';
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import HptAddEditTool from './HptAddEditTool';
+import BatteryCon from "../connections/BatteryCon";
+import MotorCon from '../connections/MotorCon';
+import SeaTransportCon from "../connections/SeaTransportCon";
+import GroundTransportCon from "../connections/GroundTransportCon";
+import HptCon from '../connections/HptCon';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -145,7 +140,7 @@ export default function CustomPaginationActionsTable(params) {
   };
 
   const [openEdit, setOpenEdit] = React.useState(false);
-
+  const [hptEdit, setHPTEdit] = React.useState(false);
   const [curRow, setCurRow] = React.useState({});
   // var curRow = {};
 
@@ -153,12 +148,99 @@ export default function CustomPaginationActionsTable(params) {
     console.log("params in table component",rowdata);
     // curRow = rowdata;
     setCurRow(rowdata);
-    setOpenEdit(true);
     // this.props.open(false);
+    if(type === "HPT"){
+      setHPTEdit(true);
+    }
+    else{
+      setOpenEdit(true);
+    }
+
   };
+
+  const handleClickOpenDelete = (rowdata) => {
+    console.log("On Delete");
+    if(type === "Sea Route"){
+      SeaTransportCon.searoute_delete(rowdata.id).then(response =>{
+        // params.close(false);
+        setAlertContent("Success! Deleted Sea Route Details");
+        setAlertSeverity("success");
+        setAlert(true);
+        console.log(response);
+        setTimeout(() => window.location.reload(false), 2000);
+      }).catch(error =>{
+          console.log(error);
+          setAlertContent("Failure! Couldn't Delete Sea Route Details");
+          setAlertSeverity("error")
+          setAlert(true);
+      });
+       
+    }
+    else if(type === "Ground Transport"){
+      GroundTransportCon.groundroute_delete(rowdata.id).then(response =>{
+        // params.close(false);
+        setAlertContent("Success! Deleted Ground Transport Details");
+        setAlertSeverity("success");
+        setAlert(true);
+        console.log(response);
+        setTimeout(() => window.location.reload(false), 2000);
+      }).catch(error =>{
+          console.log(error);
+          setAlertContent("Failure! Couldn't Delete Ground Transport Details");
+          setAlertSeverity("error")
+          setAlert(true);
+      });
+    }
+    else if(type === 'Battery'){
+      BatteryCon.battery_delete(rowdata.id).then(response =>{
+        // params.close(false);
+        setAlertContent("Success! Deleted Battery Details");
+        setAlertSeverity("success");
+        setAlert(true);
+        console.log(response);
+        setTimeout(() => window.location.reload(false), 2000);
+      }).catch(error =>{
+          console.log(error);
+          setAlertContent("Failure! Couldn't Delete Battery Details");
+          setAlertSeverity("error")
+          setAlert(true);
+      });
+    }
+    else if(type === 'Motor'){
+      MotorCon.motor_delete(rowdata.id).then(response =>{
+        // params.close(false);
+        setAlertContent("Success! Editted Motor Details");
+        setAlertSeverity("success");
+        setAlert(true);
+        console.log(response);
+        setTimeout(() => window.location.reload(false), 2000);
+      }).catch(error =>{
+          console.log(error);
+          setAlertContent("Failure! Couldn't Delete Motor Details");
+          setAlertSeverity("error")
+          setAlert(true);
+      });
+    }
+    else if(type === "HPT"){
+      HptCon.hpt_delete(rowdata.id).then(response =>{
+        // params.close(false);
+        setAlertContent("Success! Deleted HPT Details");
+        setAlertSeverity("success");
+        setAlert(true);
+        console.log(response);
+        setTimeout(() => window.location.reload(false), 2000);
+      }).catch(error =>{
+          console.log(error);
+          setAlertContent("Failure! Couldn't Delete HPT Details");
+          setAlertSeverity("error")
+          setAlert(true);
+      });
+    }
+  }
 
   const handleChild = (isOpen) =>{
       setOpenEdit(isOpen);
+      setHPTEdit(isOpen);
       console.log(isOpen);
       setAlertContent("Success! Updated "+ type +" Details");
       setAlertSeverity("success");
@@ -167,6 +249,7 @@ export default function CustomPaginationActionsTable(params) {
 
   const handleChildExit = (isOpen) =>{
     setOpenEdit(isOpen);
+    setHPTEdit(isOpen);
     console.log(isOpen);
     
   }
@@ -310,7 +393,8 @@ export default function CustomPaginationActionsTable(params) {
                 {row.co2}
               </TableCell>
               <TableCell style={{width: 160}} align="center">
-                <Button id="edit" onClick={()=>handleClickOpenEdit(row)} title="Edit Battery Details" style={{color:'#004e38', backgroundColor:'#fff', border:'0.5px solid #004e38'}}><FaPencilAlt /></Button>
+                <Button id="edit" onClick={()=>handleClickOpenEdit(row)} title="Edit Battery Details" style={{color:'#004e38', backgroundColor:'#fff', border:'0.5px solid #fff'}}><FaPencilAlt /></Button>
+                <Button id="delete" title="Delete Battery Details" onClick={()=>handleClickOpenDelete(row)} style={{color:'#dc3545', backgroundColor:'#fff', border:'0.5px solid #fff'}}><FaTrashAlt /></Button>
               </TableCell>
             </TableRow>
           ))}
@@ -325,7 +409,7 @@ export default function CustomPaginationActionsTable(params) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5]}
-              colSpan={3}
+              colSpan={type === 'Battery' || type === 'Motor' ? 8 : 9}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
@@ -338,12 +422,14 @@ export default function CustomPaginationActionsTable(params) {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               ActionsComponent={TablePaginationActions}
+              style={{marginBottom:'0px'}}
             />
           </TableRow>
         </TableFooter>
       </Table>
     </TableContainer>
     {openEdit?<AddEditPageComponent  open={true} exit={handleChildExit} close={handleChild} type={params.type} row={curRow}></AddEditPageComponent> :<></>}
+    {hptEdit? <HptAddEditTool open={true} exit={handleChildExit} close={handleChild} type={params.type} row={curRow}></HptAddEditTool>: <></>}
     </>
   );
 }

@@ -21,6 +21,8 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';  
 import loader from './logos/loader3.gif';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import HomeIcon from '@mui/icons-material/Home';
 import {
     Chart as ChartJS,
     LinearScale,
@@ -46,8 +48,9 @@ ChartJS.register(
     BarController
   );
 
-function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
-    return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
+
+function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo,id) {
+    return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo,id };
 }
 
 const rows = [];
@@ -84,7 +87,7 @@ export default function SeaTransportComponent(){
             data4.push(seaData[i].laborCost+seaData[i].fuelCost)
             rows.push(createData(seaData[i].co2,seaData[i].fuelCost,
                 seaData[i].routeId,seaData[i].trackingNumber,seaData[i].laborCost,
-                seaData[i].shipId,seaData[i].customerCost));
+                seaData[i].shipId,seaData[i].customerCost,seaData[i]._id));
         }
     }
         rows.sort((a, b) => (a.shipID < b.shipID ? -1 : 1));
@@ -239,7 +242,7 @@ export default function SeaTransportComponent(){
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
                         <div>
-                            <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Track Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
+                            <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Tracking Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
                             <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true);}}/>
@@ -251,7 +254,7 @@ export default function SeaTransportComponent(){
                             <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='filled' label="co2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Cost Fuel on Sea" type="number" defaultValue="" value={fuelCost} onChange={e => {setFuelCost(e.target.value); setDirty(true);}}/>
+                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Fuel Cost" type="number" defaultValue="" value={fuelCost} onChange={e => {setFuelCost(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
                             <TextField required error={laborCost !== null && laborCost !== '' ? false : true} id="laborCost" variant='filled' label="Labor Cost" type="number" defaultValue="" value={laborCost} onChange={e => {setLaborCost(e.target.value); setDirty(true);}}/>
@@ -276,7 +279,27 @@ export default function SeaTransportComponent(){
                     </Box>
                     </div>
                 </Dialog>
-            </div></div>
+            </div>
+            <div role="presentation">
+                <Breadcrumbs aria-label="breadcrumb" style={{paddingLeft:'15px'}}>
+                    <a
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="#004e38"
+                    href="/dashboard"
+                    >
+                    <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+                    Dashboard
+                    </a>
+                    <Typography
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="text.primary"
+                    >
+                    <GiCargoShip sx={{ mr: 1 }} fontSize="inherit" style={{marginRight: '5px'}} />
+                    {" Sea Transport Details"}
+                    </Typography>
+                </Breadcrumbs>
+            </div>
+            </div>
 
             <Dialog open={openDirty} onClose={()=>handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
                 <DialogTitle>{"Confirm"}</DialogTitle>

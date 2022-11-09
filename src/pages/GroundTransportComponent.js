@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
-import { FaPlus} from 'react-icons/fa';
-import {GiCargoShip} from 'react-icons/gi';
+import { FaPlus, FaShippingFast} from 'react-icons/fa';
 import './Page.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
@@ -20,7 +19,10 @@ import GroundTransportCon from "../connections/GroundTransportCon";
 import Alert from '@mui/material/Alert';    
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';
-import loader from './logos/loader3.gif';import {
+import loader from './logos/loader3.gif';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import HomeIcon from '@mui/icons-material/Home';
+import {
     Chart as ChartJS,
     LinearScale,
     CategoryScale,
@@ -32,7 +34,7 @@ import loader from './logos/loader3.gif';import {
     LineController,
     BarController,
   } from 'chart.js';
-  import { Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
 ChartJS.register(
     LinearScale,
     CategoryScale,
@@ -45,8 +47,9 @@ ChartJS.register(
     BarController
   );
 
-function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo) {
-    return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo };
+
+function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo,id) {
+    return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo,id };
 }
 
 const rows = [];
@@ -57,8 +60,8 @@ const data4 = [];
 export default function GroundTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
     const [openHistory, setOpenHistory] = useState(false);
-    //const [openDirty, setOpenDirty] = React.useState(false);
-    //const [dirty,setDirty] = useState(false);
+    const [openDirty, setOpenDirty] = React.useState(false);
+    const [dirty,setDirty] = useState(false);
     const [co2, setCO2] = useState();
     const [fuelCost, setFuelCost] = useState();
     const [routeID, setRouteID] = useState();
@@ -83,7 +86,7 @@ export default function GroundTransportComponent(){
             data4.push(groundData[i].laborCost+groundData[i].fuelCost)
             rows.push(createData(groundData[i].co2,groundData[i].fuelCost,
                 groundData[i].routeId,groundData[i].trackingNumber,groundData[i].laborCost,
-                groundData[i].truckId,groundData[i].customerCost));
+                groundData[i].truckId,groundData[i].customerCost, groundData[i]._id));
         }
     }
         rows.sort((a, b) => (a.fuelCost < b.fuelCost ? -1 : 1));
@@ -106,10 +109,10 @@ export default function GroundTransportComponent(){
     };
 
     const handleCloseNew = () => {
-        // if(dirty){
-        //     setOpenDirty(true);
-        // }
-        // else{
+        if(dirty){
+            setOpenDirty(true);
+        }
+        else{
             setOpenNew(false);
             setCO2();
             setFuelCost();
@@ -118,7 +121,7 @@ export default function GroundTransportComponent(){
             setLaborCost();
             setTruckID();
             setCustCost();
-        // }
+        }
         
     };
 
@@ -171,16 +174,16 @@ export default function GroundTransportComponent(){
     const vertical = 'top';
     const horizontal = 'center';
 
-    // const handleCloseDirty = (x) =>{
-    //     if(x===0){
-    //         setOpenDirty(false);
-    //     }
-    //     else{
-    //         setOpenDirty(false);
-    //         setDirty(false);
-    //         handleCloseNew();
-    //     }
-    // }
+    const handleCloseDirty = (x) =>{
+        if(x===0){
+            setOpenDirty(false);
+        }
+        else{
+            setOpenDirty(false);
+            setDirty(false);
+            handleCloseNew();
+        }
+    }
 
     const data3 = {
         labels: data1,
@@ -220,7 +223,7 @@ export default function GroundTransportComponent(){
             <div className='row' style={{paddingBottom:'20px'}}>
             <div className='col-lg-10 col-md-10 col-sm-8 col-xs-6'>
                 <Typography gutterBottom variant="h5" component="div" align="left">
-                <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><GiCargoShip /></span> Hornet Ground Transporters
+                <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><FaShippingFast /></span> Hornet Ground Transporters
                 </Typography>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
@@ -234,26 +237,27 @@ export default function GroundTransportComponent(){
                     </DialogContentText>
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
-                        <div>
-                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='filled' label="co2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); /*setDirty(true);*/}  }/>
+                    <div>
+                            <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Tracking Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Cost Fuel on Ground" type="number" defaultValue="" value={fuelCost} onChange={e => setFuelCost(e.target.value)}/>
+                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => setRouteID(e.target.value)}/>
+                            <TextField required error={truckID !== null && truckID !== '' ? false : true} id="truckId" variant='filled' label="Truck ID" defaultValue="" value={truckID} onChange={e => {setTruckID(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Track Number" defaultValue="" value={trackNumber} onChange={e => setTrackNumber(e.target.value)}/>
+                            <TextField required error={co2 !== null && co2 !== '' ? false : true} id="co2" variant='filled' label="co2" type="number" defaultValue="" value={co2} onChange={e =>{setCO2(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={laborCost !== null && laborCost !== '' ? false : true} id="laborCost" variant='filled' label="Labor Cost" type="number" defaultValue="" value={laborCost} onChange={e => setLaborCost(e.target.value)}/>
+                            <TextField required error={fuelCost !== null && fuelCost !== '' ? false : true} id="fuelCost" variant='filled' label="Fuel Cost" type="number" defaultValue="" value={fuelCost} onChange={e => {setFuelCost(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={truckID !== null && truckID !== '' ? false : true} id="truckID" variant='filled' label="Truck ID" defaultValue="" value={truckID} onChange={e => setTruckID(e.target.value)}/>
+                            <TextField required error={laborCost !== null && laborCost !== '' ? false : true} id="laborCost" variant='filled' label="Labor Cost" type="number" defaultValue="" value={laborCost} onChange={e => {setLaborCost(e.target.value); setDirty(true);}}/>
                         </div>
+                        
                         <div>
-                            <TextField required error={custCost !== null && custCost !== '' ? false : true} id="custCost" variant='filled' label="Customer Cost" type="number" defaultValue="" value={custCost} onChange={e => setCustCost(e.target.value)}/>
+                            <TextField required error={custCost !== null && custCost !== '' ? false : true} id="custCost" variant='filled' label="Customer Cost" type="number" defaultValue="" value={custCost} onChange={e => {setCustCost(e.target.value); setDirty(true);}}/>
                         </div>
                     </Box>
                     </DialogContent>
@@ -270,20 +274,41 @@ export default function GroundTransportComponent(){
                     </Box>
                     </div>
                 </Dialog>
-            </div></div>
+            </div>
+            <div role="presentation">
+                <Breadcrumbs aria-label="breadcrumb" style={{paddingLeft:'15px'}}>
+                    <a
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="#004e38"
+                    href="/dashboard"
+                    >
+                    <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+                    Dashboard
+                    </a>
+                    <Typography
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="text.primary"
+                    >
+                    <FaShippingFast sx={{ mr: 1 }} fontSize="inherit" style={{marginRight: '5px'}} />
+                    {" Ground Transport Details"}
+                    </Typography>
+                </Breadcrumbs>
+            </div>
+            </div>
 
-            {/* <Dialog open={openDirty} onClose={handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+            <Dialog open={openDirty} onClose={()=>handleCloseDirty(0)} aria-describedby="alert-dialog-slide-description">
+                <DialogTitle>{"Confirm"}</DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
                     There are unsaved data. Do you wish to proceed?
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={handleCloseDirty(0)}>No</Button>
-                <Button onClick={handleCloseDirty(1)}>Yes</Button>
+                <Button onClick={()=>handleCloseDirty(0)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>No</Button>
+                <Button onClick={()=>handleCloseDirty(1)} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Yes</Button>
                 </DialogActions>
-            </Dialog> */}
+            </Dialog>
+            
             {!displayRows? 
                 <div style={{textAlign:'center'}}>
                     

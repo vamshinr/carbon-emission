@@ -23,6 +23,20 @@ class SeaTransportCon{
         });
         console.log("response for addition: "+response)
     }
+
+    async searoute_update(data) {
+        console.log("in searoute update");
+        const updateProductResponse = await clientauth.seaTransportation.update(data);
+        console.log("update response",updateProductResponse);
+        return updateProductResponse;
+    }
+
+    async searoute_delete(data) {
+        console.log("in sea route delete");
+        const deleteProductResponse = await clientauth.seaTransportation.remove(data);
+        console.log("delete response",deleteProductResponse);
+        return deleteProductResponse;
+    }
 }
 
 export default new SeaTransportCon();

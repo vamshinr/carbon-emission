@@ -12,7 +12,7 @@ class HptCon{
     async hpt_create(tooltype,serialNumAdmin,coo2,partscost,motorid,
         batteryid,seaid,groundid) {
         console.log("In HPT Con")
-        const response = await clientauth.hpt.add({
+        const response = await clientauth.hornetPowerTools.add({
             co2: coo2,
             tooltype: tooltype,
             SerialNumber: serialNumAdmin,
@@ -108,7 +108,12 @@ class HptCon{
          return hptdata.items;
      }
 
-
+    async hpt_delete(data) {
+        console.log("in hpt delete");
+        const deleteProductResponse = await clientauth.hornetPowerTools.remove(data);
+        console.log("delete response",deleteProductResponse);
+        return deleteProductResponse;
+    }
 }
 
 export default new HptCon();

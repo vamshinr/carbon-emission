@@ -22,6 +22,20 @@ class MotorCon {
         });
         console.log("response for addition: "+response)
     }
+
+    async motor_update(data) {
+        console.log("in motor update");
+        const updateProductResponse = await clientauth.motor.update(data);
+        console.log("update response",updateProductResponse);
+        return updateProductResponse;
+    }
+
+    async motor_delete(data) {
+        console.log("in motor delete");
+        const deleteProductResponse = await clientauth.motor.remove(data);
+        console.log("delete response",deleteProductResponse);
+        return deleteProductResponse;
+    }
 }
 
 export default new MotorCon();

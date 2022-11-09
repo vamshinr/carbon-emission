@@ -23,8 +23,20 @@ class GroundTransportCon{
         });
         console.log("response for addition: "+response)
     }
+    
+    async groundroute_update(data) {
+        console.log("in groundroute update");
+        const updateProductResponse = await clientauth.groundTransportation.update(data);
+        console.log("update response",updateProductResponse);
+        return updateProductResponse;
+    }
 
-
+    async groundroute_delete(data) {
+        console.log("in ground route delete");
+        const deleteProductResponse = await clientauth.groundTransportation.remove(data);
+        console.log("delete response",deleteProductResponse);
+        return deleteProductResponse;
+    }
 }
 
 export default new GroundTransportCon();

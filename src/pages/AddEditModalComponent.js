@@ -16,6 +16,9 @@ import {FaPencilAlt} from 'react-icons/fa';
 import BatteryCon from '../connections/BatteryCon';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import MotorCon from '../connections/MotorCon';
+import SeaTransportCon from '../connections/SeaTransportCon';
+import GroundTransportCon from '../connections/GroundTransportCon';
 
 export default function AddEditPageComponent(params){
     // debugger;
@@ -113,6 +116,92 @@ export default function AddEditPageComponent(params){
             }).catch(error =>{
                 console.log(error);
                 setAlertContent("Failure! Couldn't Edit Battery Details");
+                setAlertSeverity("error")
+                setAlert(true);
+            });
+
+        }
+        else if(type==='Motor'){
+            data = {
+                _id: id,
+                co2: Number(co2),
+                costManufactured: Number(costManufactured),
+                dateManufactured: dateManufactured,
+                partNumber: partNumber,
+                salesPrice: Number(salesPrice),
+                serialNumber: serialNumber,
+            }
+            console.log("id:",id)
+            MotorCon.motor_update(data).then(response =>{
+                params.close(false);
+                // setAlertContent("Success! Editted Battery Details");
+                // setAlertSeverity("success");
+                // setAlert(true);
+                console.log(response);
+                setTimeout(() => window.location.reload(false), 2000);
+                
+    
+            }).catch(error =>{
+                console.log(error);
+                setAlertContent("Failure! Couldn't Edit Motor Details");
+                setAlertSeverity("error")
+                setAlert(true);
+            });
+
+        }
+        else if(type==='Sea Route'){
+            data = {
+                _id: id,
+                co2: Number(co2),
+                trackingNumber: String(trackingNum),
+                routeId: String(routeID),
+                fuelCost: Number(fuelCost),
+                laborCost: Number(labourCost),
+                shipId:  String(transportID),
+                customerCost: Number(customerCost)
+            }
+            console.log("id:",id)
+            SeaTransportCon.searoute_update(data).then(response =>{
+                params.close(false);
+                // setAlertContent("Success! Editted Battery Details");
+                // setAlertSeverity("success");
+                // setAlert(true);
+                console.log(response);
+                setTimeout(() => window.location.reload(false), 2000);
+                
+    
+            }).catch(error =>{
+                console.log(error);
+                setAlertContent("Failure! Couldn't Edit Sea Route Details");
+                setAlertSeverity("error")
+                setAlert(true);
+            });
+
+        }
+        else if(type==='Ground Transport'){
+            data = {
+                _id: id,
+                co2: Number(co2),
+                trackingNumber: String(trackingNum),
+                routeId: String(routeID),
+                fuelCost: Number(fuelCost),
+                laborCost: Number(labourCost),
+                truckId:  String(transportID),
+                customerCost: Number(customerCost)
+            }
+            console.log("id:",id)
+            GroundTransportCon.groundroute_update(data).then(response =>{
+                params.close(false);
+                // setAlertContent("Success! Editted Battery Details");
+                // setAlertSeverity("success");
+                // setAlert(true);
+                console.log(response);
+                setTimeout(() => window.location.reload(false), 2000);
+                
+    
+            }).catch(error =>{
+                console.log(error);
+                setAlertContent("Failure! Couldn't Edit Ground Transport Details");
                 setAlertSeverity("error")
                 setAlert(true);
             });

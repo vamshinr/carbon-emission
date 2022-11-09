@@ -14,3 +14,7 @@ Button:hover{
   background-color: #fff !important;
   color: #004e38;
 }
+
+p{
+  margin-bottom: 0px !important;
+}

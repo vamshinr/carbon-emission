@@ -16,21 +16,20 @@ import CustomPaginationActionsTable from './Table';
 import NavbarApp from "../pages/NavbarApp";
 import FooterApp from './FooterApp';
 import {useState} from 'react';
-import BatteryCon from '../connections/BatteryCon';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import MotorCon from '../connections/MotorCon';
 import loader from './logos/loader3.gif';
 import { Line } from "react-chartjs-2";
 import {CategoryScale} from 'chart.js'; 
 import Chart from 'chart.js/auto'
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import HomeIcon from '@mui/icons-material/Home';
 Chart.register(CategoryScale);
 
-function createData(co2,costManu,dateManu,partNum,salesPr,serialNum) {
-    return { co2,costManu,dateManu,partNum,salesPr,serialNum };
+
+function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
+    return { co2,costManu,dateManu,partNum,salesPr,serialNum,id};
 }
 
 const rows = [];
@@ -65,7 +64,7 @@ export default function MotorComponent(){
             data2.push(motorData[i].co2)
             rows.push(createData(motorData[i].co2,motorData[i].costManufactured,
                 motorData[i].dateManufactured,motorData[i].partNumber,motorData[i].salesPrice,
-                motorData[i].serialNumber));
+                motorData[i].serialNumber,motorData[i]._id));
         }
     }
         rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
@@ -237,7 +236,27 @@ export default function MotorComponent(){
                     </Box>
                     </div>
                 </Dialog>
-            </div></div>
+            </div>
+            <div role="presentation">
+                <Breadcrumbs aria-label="breadcrumb" style={{paddingLeft:'15px'}}>
+                    <a
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="#004e38"
+                    href="/dashboard"
+                    >
+                    <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+                    Dashboard
+                    </a>
+                    <Typography
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="text.primary"
+                    >
+                    <FiSettings sx={{ mr: 1 }} fontSize="inherit" style={{marginRight: '5px'}} />
+                    {" Motor Details"}
+                    </Typography>
+                </Breadcrumbs>
+            </div>
+            </div>
             {!displayRows? 
                 <div style={{textAlign:'center'}}>
                     

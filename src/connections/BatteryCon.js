@@ -21,12 +21,21 @@ class BatteryCon{
             serialNumber: serialNum,
         });
         console.log("response for addition: "+response)
+        return response;
     }
 
     async battery_update(data) {
         console.log("in battery update");
         const updateProductResponse = await clientauth.battery.update(data);
         console.log("update response",updateProductResponse);
+        return updateProductResponse;
+    }
+
+    async battery_delete(data) {
+        console.log("in battery delete");
+        const deleteProductResponse = await clientauth.battery.remove(data);
+        console.log("delete response",deleteProductResponse);
+        return deleteProductResponse;
     }
 }
 

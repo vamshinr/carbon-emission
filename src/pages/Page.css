@@ -13,3 +13,29 @@ Button:hover{
   padding-left: 25%;
   width: 80%;
 }
+
+#delete:hover{
+  background-color: #fff !important;
+  color: #dc3545 !important;
+}
+
+#edit:hover{
+  background-color: #fff !important;
+  color: #004e38 !important;
+}
+
+a:link {
+  color: #004e38;
+}
+ 
+a:visited {
+  color: #004e38;
+}
+ 
+a:hover {
+ color: #004e38;
+}  
+ 
+a:active {
+ color: #004e38;
+}

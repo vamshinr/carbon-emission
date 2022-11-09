@@ -24,6 +24,8 @@ import { useEffect } from 'react';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { Today } from '@mui/icons-material';
 import loader from './logos/loader3.gif';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import HomeIcon from '@mui/icons-material/Home';
 
 import { Line } from "react-chartjs-2";
 import {CategoryScale} from 'chart.js'; 
@@ -246,7 +248,27 @@ export default function BatteryComponent(){
                     </Box>
                     </div>
                 </Dialog>
-            </div></div>
+            </div>
+            <div role="presentation">
+                <Breadcrumbs aria-label="breadcrumb" style={{paddingLeft:'15px'}}>
+                    <a
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="#004e38"
+                    href="/dashboard"
+                    >
+                    <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+                    Dashboard
+                    </a>
+                    <Typography
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                    color="text.primary"
+                    >
+                    <FaCarBattery sx={{ mr: 1 }} fontSize="inherit" style={{marginRight: '5px'}} />
+                    {" Battery Details"}
+                    </Typography>
+                </Breadcrumbs>
+            </div>
+            </div>
             {!displayRows? 
                 <div style={{textAlign:'center'}}>
                     
