@@ -19,17 +19,13 @@ import BatteryCon from "../connections/BatteryCon";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect } from 'react';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { Today } from '@mui/icons-material';
 import loader from './logos/loader3.gif';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import HomeIcon from '@mui/icons-material/Home';
-
 import { Line } from "react-chartjs-2";
 import {CategoryScale} from 'chart.js'; 
-import Chart from 'chart.js/auto'
+import Chart from 'chart.js/auto';
+import {BsGraphUp} from 'react-icons/bs';
 Chart.register(CategoryScale);
 
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
@@ -201,7 +197,7 @@ export default function BatteryComponent(){
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
             {/* <Button onClick={window.location.reload} title="Add New Battery Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>Reload</span></Button> */}
             <div>
-                <Button  onClick={handleHistoryOpen} title="Battery History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}><span style={{paddingLeft:'1px'}}>View History</span></Button>
+                <Button  onClick={handleHistoryOpen} title="Battery History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38',marginTop:'10px', marginRight:'10px' }}><span style={{paddingLeft:'1px'}}><BsGraphUp /></span></Button>
                 <Button onClick={handleClickOpenNew} title="Add New Battery Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Battery</span></Button>
                 </div>
                 <Dialog open={openNew} onClose={handleClickCloseNew}>

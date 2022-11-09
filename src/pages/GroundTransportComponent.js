@@ -22,6 +22,7 @@ import { useEffect } from 'react';
 import loader from './logos/loader3.gif';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import HomeIcon from '@mui/icons-material/Home';
+import {BsGraphUp} from 'react-icons/bs';
 import {
     Chart as ChartJS,
     LinearScale,
@@ -227,7 +228,7 @@ export default function GroundTransportComponent(){
                 </Typography>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
-            <Button  onClick={handleHistoryOpen} title="Ground Transport History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}><span style={{paddingLeft:'1px'}}>View History</span></Button>
+            <Button  onClick={handleHistoryOpen} title="Ground Transport History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38',marginTop:'10px', marginRight:'10px' }}><span style={{paddingLeft:'1px'}}><BsGraphUp /></span></Button>
                 <Button onClick={handleClickOpenNew} title="Add New Ground Route Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Route</span></Button>
                 <Dialog open={openNew} onClose={handleCloseNew}>
                     <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Ground Route Details</DialogTitle>
@@ -267,7 +268,7 @@ export default function GroundTransportComponent(){
                     </DialogActions>
                 </Dialog>
                 <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
+                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Ground Transport History</DialogTitle>
                     <div>
                     <Box>   
                     <Chart type='bar' data={data3} />
