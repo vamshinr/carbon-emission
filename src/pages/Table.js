@@ -308,8 +308,8 @@ export default function CustomPaginationActionsTable(params) {
             <TableCell style={{color:'#fff'}} align="center" hidden={route}>Fuel Cost ($)</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={route}>Labour Cost ($)</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={route}>Customer Cost ($)</TableCell>
-            <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Serial Number</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={admin}>HPT ID</TableCell>
+            <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Tool Type</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Battery ID</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Motor ID</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Sea Route ID</TableCell>
