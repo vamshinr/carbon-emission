@@ -39,3 +39,18 @@ a:hover {
 a:active {
  color: #004e38;
 }
+
+.multiselect-container .option{ 
+	color: #004e38;
+  background-color: #fff;
+  }
+
+.multiselect-container .option:hover{ 
+	color: #fff;
+  background-color: #004e38;
+}
+
+.multiselect-container .chip{ 
+	color: #fff;
+  background-color: #004e38;
+}

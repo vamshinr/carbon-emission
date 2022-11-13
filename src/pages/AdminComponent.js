@@ -12,7 +12,7 @@ import HptCon from '../connections/HptCon';
 import loader from './logos/loader3.gif';
 import HptAddEditTool from './HptAddEditTool';
 import { Box } from '@mui/system';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -23,9 +23,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Multiselect from 'multiselect-react-dropdown';
+import BatteryCon from "../connections/BatteryCon";
+import MotorCon from "../connections/MotorCon";
+import SeaTransportCon from "../connections/SeaTransportCon";
+import GroundTransportCon from '../connections/GroundTransportCon';
 
 const state = {
-    options: [{name: 'Option 1', id: 1},{name: 'Option 2', id: 2}]
+    options: [
+    ],
 };
 
 function createData(tooltype,serialNumAdmin,co2,partscost,motorid,
@@ -113,14 +118,13 @@ export default function AdminComponent(){
 
     const handleFilter = async()=> {
         setOpenFilter(false);
-        // const hptData = await HptCon.hpt_filter_fetch();
         selectedItemsList.forEach(element =>{
-            console.log(element.id);
+            console.log(element);
         });
     }
 
     const handleItemSelect = (selectedList, selectedItem) => {
-        console.log("Selected Item >> "+selectedItem.id);
+        console.log("Selected Item >> "+selectedItem);
         selectedItemsList.push(selectedItem);
         selectedItemsList.forEach(element =>{
             console.log(element.id);
@@ -128,12 +132,70 @@ export default function AdminComponent(){
     }
 
     const handleItemRemove = (selectedList, removedItem) => {
-        console.log("Removed Item >> "+removedItem.id)
+        console.log("Removed Item >> "+removedItem)
         selectedItemsList.pop(removedItem);
         selectedItemsList.forEach(element =>{
             console.log(element.id);
         });
     }
+
+    
+
+    const get_battery_info = async()=>{
+        const batteryData = await BatteryCon.battery_fetch();
+        console.log("battery data :",batteryData);
+        // if (batteryOptions.length===0){
+            for(var i = 0; i < batteryData.length; i++) {
+                // batteryOptions.push(batteryData[i].serialNumber);
+                var option = {key: 'Battery ID', value: batteryData[i].serialNumber};
+                state.options.push(option);
+            }
+        // }
+    }  
+    const get_motor_info = async()=>{
+        const motorData = await MotorCon.motor_fetch();
+        console.log("motor data :",motorData);
+
+        // if (motorOptions.length===0){
+            for(var i = 0; i < motorData.length; i++) {
+                // motorOptions.push(motorData[i].serialNumber);
+                var option = {key: 'Motor ID', value: motorData[i].serialNumber};
+                state.options.push(option);
+            }
+        // }
+    }  
+    const get_sea_info = async()=>{
+        const seaData = await SeaTransportCon.sea_fetch();
+        console.log("sea data :",seaData);
+
+        // if (seaRouteOptions.length === 0){
+            for(var i = 0; i < seaData.length; i++) {
+                // seaRouteOptions.push(seaData[i].routeId);
+                var option = {key: 'Sea Route ID', value: seaData[i].trackingNumber};
+                state.options.push(option);
+            }
+        // }
+    }  
+
+    const get_ground_info = async()=>{
+        const groundData = await GroundTransportCon.ground_fetch();
+        console.log("ground data :",groundData);
+
+        // if (groundRouteOptions.length === 0){
+            for(var i = 0; i < groundData.length; i++) {
+                // groundRouteOptions.push(groundData[i].routeId);
+                var option = {key: 'Ground Route ID', value: groundData[i].trackingNumber};
+                state.options.push(option);
+            }
+        // }
+    }
+    
+    useEffect(()=>{
+        get_battery_info();
+        get_motor_info();
+        get_sea_info();
+        get_ground_info();
+    },[]);
 
     return(
         <>
@@ -184,25 +246,29 @@ export default function AdminComponent(){
                 </div>:<></>}
             {displayRows?<CustomPaginationActionsTable rows={rows} type="HPT"></CustomPaginationActionsTable>:<></>}
 
-            <Dialog open={openFilter} onClose={handleReset} sx={{"& .MuiDialog-container": {"& .MuiPaper-root": {maxWidth: "100%", minHeight:'40%', minWidth:'30%'},},}}>
+            <Dialog open={openFilter} onClose={handleReset} sx={{"& .MuiDialog-container": {"& .MuiPaper-root": {maxWidth: "30%", minHeight:'40%', minWidth:'30%', maxHeight:'60%'},},}}>
                 <DialogTitle><span style={{paddingRight:'10px'}}><FaFilter/></span>Filter 
                 <a onClick={handleReset} style={{float:'right', cursor:'pointer'}}>
                     <AiOutlineCloseCircle style={{color:'#004e38', fontSize:'25px'}} />
                 </a>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText  style={{paddingBottom:'20px'}}>
                             Filter Components of HPT tool.
                     </DialogContentText>
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
-                    <Multiselect
-                        style={{}}
-                        options={state.options} // Options to display in the dropdown
-                        selectedValues={selectedItemsList} // Preselected value to persist in dropdown
-                        onSelect={handleItemSelect} // Function will trigger on select event
-                        onRemove={handleItemRemove} // Function will trigger on remove event
-                        displayValue="name" // Property name to display in the dropdown options
-                        />
+                        <div style={{paddingBottom:'15px'}}>
+                            <Multiselect
+                                options={state.options} // Options to display in the dropdown
+                                selectedValues={selectedItemsList} // Preselected value to persist in dropdown
+                                onSelect={handleItemSelect} // Function will trigger on select event
+                                onRemove={handleItemRemove} // Function will trigger on remove event
+                                displayValue="value" // Property name to display in the dropdown options
+                                placeholder='Filter Items'
+                                showCheckbox='true'
+                                groupBy='key'
+                            />
+                        </div>
                     </Box>
                 </DialogContent>
                 <DialogActions>

@@ -315,7 +315,7 @@ export default function CustomPaginationActionsTable(params) {
             <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Sea Route ID</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Ground Transport ID</TableCell>
             <TableCell style={{color:'#fff'}} align="center" hidden={admin}>Total CO<sub>2</sub> Emitted</TableCell>
-            <TableCell style={{color:'#fff'}} align="center" >Edit</TableCell>
+            <TableCell style={{color:'#fff'}} align="center" >Actions</TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
