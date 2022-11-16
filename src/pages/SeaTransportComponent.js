@@ -24,6 +24,11 @@ import loader from './logos/loader3.gif';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import HomeIcon from '@mui/icons-material/Home';
 import {BsGraphUp} from 'react-icons/bs';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import { MdLocationOn, MdOutlineLocationOn } from "react-icons/md";
+import { TbArrowBigRightLines } from "react-icons/tb";
+import { RiShip2Fill } from "react-icons/ri";
 import {
     Chart as ChartJS,
     LinearScale,
@@ -53,6 +58,10 @@ ChartJS.register(
 function createData(co2,fuelCo,rouID,trackNum,labCo,transportID,custCo,id) {
     return { co2,fuelCo,rouID,trackNum,labCo,transportID,custCo,id };
 }
+
+const ListItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.8),
+}));
 
 const rows = [];
 const data1 = [];
@@ -242,6 +251,27 @@ export default function SeaTransportComponent(){
                     </DialogContentText>
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
+                        <div>
+                        <Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
+                        <ListItem key="totalCo2">
+                            <MdOutlineLocationOn style={{color:'#004e38', fontSize:'25px'}}/>
+                        </ListItem>
+                        <ListItem key="battery">
+                            <TbArrowBigRightLines style={{color:'#004e38', fontSize:'25px'}}/>
+                        </ListItem>
+                        <ListItem key="battery">
+                            <RiShip2Fill style={{color:'#004e38', fontSize:'25px'}}/>
+                        </ListItem>
+                        <ListItem key="battery">
+                            <TbArrowBigRightLines style={{color:'#004e38', fontSize:'25px'}}/>
+                        </ListItem>
+                        <ListItem key="totalCo2">
+                            <MdLocationOn style={{color:'#004e38', fontSize:'25px'}}/>
+                        </ListItem>
+                        
+                    </Paper>
+                        </div>
+
                         <div>
                             <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Tracking Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
                         </div>
