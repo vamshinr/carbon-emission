@@ -82,7 +82,9 @@ export default function AdminComponent(){
         setDisplayRows(true);
     }    
     
+    useEffect(()=>{
     get_hpt_info();
+    },[]);
 
     const handleClickOpenNew = () => {
         setOpenEdit(true);
@@ -104,6 +106,7 @@ export default function AdminComponent(){
     const handleClickOpenFilter = () =>{
         console.log("filter");
         setOpenFilter(true);
+        getFilterOptions();
     }
 
     const handleReset = () => {
@@ -121,6 +124,8 @@ export default function AdminComponent(){
         selectedItemsList.forEach(element =>{
             console.log(element);
         });
+
+        
     }
 
     const handleItemSelect = (selectedList, selectedItem) => {
@@ -189,13 +194,13 @@ export default function AdminComponent(){
             }
         // }
     }
-    
-    useEffect(()=>{
+
+    const getFilterOptions = ()=>{
         get_battery_info();
         get_motor_info();
         get_sea_info();
         get_ground_info();
-    },[]);
+    };
 
     return(
         <>
