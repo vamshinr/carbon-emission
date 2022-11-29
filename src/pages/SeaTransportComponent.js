@@ -29,6 +29,7 @@ import { styled } from '@mui/material/styles';
 import { MdLocationOn, MdOutlineLocationOn } from "react-icons/md";
 import { TbArrowBigRightLines } from "react-icons/tb";
 import { RiShip2Fill } from "react-icons/ri";
+import RouteInfo from '../connections/RouteInfo';
 import {
     Chart as ChartJS,
     LinearScale,
@@ -84,6 +85,9 @@ export default function SeaTransportComponent(){
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
     const [displayRows, setDisplayRows] = useState(false);
+    const [routedetails, setRouteDetails] = useState(false);
+    const [source, setSource] = useState();
+    const [destination,setDestination] = useState();
 
     const get_sea_info = async()=>{
         setDisplayRows(false);
@@ -125,6 +129,9 @@ export default function SeaTransportComponent(){
     };
 
     const handleCloseNew = () => {
+        setDestination();
+        setSource();
+        setRouteDetails(false);
         if(dirty){
             setOpenDirty(true);
         }
@@ -143,6 +150,7 @@ export default function SeaTransportComponent(){
 
 
     const handleClickSubmit = () =>{
+        setRouteDetails(false);
         var coo2 = Number(co2);
         var fuelCo = Number(fuelCost);
         var rouID = String(routeID);
@@ -252,7 +260,13 @@ export default function SeaTransportComponent(){
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
                         <div>
-                        <Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
+
+                        {routedetails?<Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
+                        
+                        <ListItem key="source">
+                            SMF
+                        </ListItem>
+                        
                         <ListItem key="totalCo2">
                             <MdOutlineLocationOn style={{color:'#004e38', fontSize:'25px'}}/>
                         </ListItem>
@@ -268,15 +282,19 @@ export default function SeaTransportComponent(){
                         <ListItem key="totalCo2">
                             <MdLocationOn style={{color:'#004e38', fontSize:'25px'}}/>
                         </ListItem>
+                        <ListItem key="destination">
+                            LAS
+                        </ListItem>
                         
-                    </Paper>
+                        
+                    </Paper>:<></>}
                         </div>
 
                         <div>
                             <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Tracking Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true);}}/>
+                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true); setRouteDetails(true);}}/>
                         </div>
                         <div>
                             <TextField required error={shipID !== null && shipID !== '' ? false : true} id="shipID" variant='filled' label="Ship ID" defaultValue="" value={shipID} onChange={e => {setShipID(e.target.value); setDirty(true);}}/>

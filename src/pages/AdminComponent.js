@@ -40,7 +40,7 @@ function createData(tooltype,serialNumAdmin,co2,partscost,motorid,
 }
 
 
-const rows = [];
+var rows = [];
 const initialList = [];
 
 export default function AdminComponent(){
@@ -67,7 +67,8 @@ export default function AdminComponent(){
     const horizontal = 'center';
     
     const get_hpt_info = async()=>{
-        //setDisplayRows(false);
+        setDisplayRows(false);
+        rows = [];
         const hptData = await HptCon.hpt_fetch(selectedItemsList);
         // console.log("motor data :",hptData);
 
@@ -126,7 +127,7 @@ export default function AdminComponent(){
         selectedItemsList.forEach(element =>{
             console.log(element);
         });
-        get_hpt_info();
+        await get_hpt_info();
 
     }
 
@@ -154,7 +155,7 @@ export default function AdminComponent(){
         // if (batteryOptions.length===0){
             for(var i = 0; i < batteryData.length; i++) {
                 // batteryOptions.push(batteryData[i].serialNumber);
-                var option = {key: 'Battery ID', value: batteryData[i].serialNumber};
+                var option = {key: 'Battery ID', name:'BatteryId', value: batteryData[i].serialNumber};
                 state.options.push(option);
             }
         // }
@@ -166,7 +167,7 @@ export default function AdminComponent(){
         // if (motorOptions.length===0){
             for(var i = 0; i < motorData.length; i++) {
                 // motorOptions.push(motorData[i].serialNumber);
-                var option = {key: 'Motor ID', value: motorData[i].serialNumber};
+                var option = {key: 'Motor ID', name:'motorId', value: motorData[i].serialNumber};
                 state.options.push(option);
             }
         // }
@@ -178,7 +179,7 @@ export default function AdminComponent(){
         // if (seaRouteOptions.length === 0){
             for(var i = 0; i < seaData.length; i++) {
                 // seaRouteOptions.push(seaData[i].routeId);
-                var option = {key: 'Sea Route ID', value: seaData[i].trackingNumber};
+                var option = {key: 'Sea Route ID',name:'seaTransportId', value: seaData[i].trackingNumber};
                 state.options.push(option);
             }
         // }
@@ -191,7 +192,7 @@ export default function AdminComponent(){
         // if (groundRouteOptions.length === 0){
             for(var i = 0; i < groundData.length; i++) {
                 // groundRouteOptions.push(groundData[i].routeId);
-                var option = {key: 'Ground Route ID', value: groundData[i].trackingNumber};
+                var option = {key: 'Ground Route ID',name:'groundTransportId', value: groundData[i].trackingNumber};
                 state.options.push(option);
             }
         // }

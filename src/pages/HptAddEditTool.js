@@ -25,7 +25,7 @@ import GroundTransportCon from '../connections/GroundTransportCon';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
-const toolTypeOptions = [];
+const toolTypeOptions = ["Drill","Tool1"];
 const batteryOptions = [];
 const motorOptions = [];
 const seaRouteOptions = [];
@@ -34,10 +34,9 @@ const groundRouteOptions = [];
 export default function HptAddEditTool(params){
     const rows = params.rows;
     console.log("rows",rows);
-    
     const [toolType, setToolType] = useState();
     const [serialNumber, setSerialNumber] = useState();
-    const [co2, setCO2] = useState();
+    const [co2, setCO2] = useState(0);
     const [partsCost, setPartscost] = useState();
     const [motorId, setMotorId] = useState();
     const [batteryId, setBatteryId] = useState();
@@ -46,7 +45,17 @@ export default function HptAddEditTool(params){
     const [alert, setAlert] = useState(false);
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
-
+    const [batteryco2, setBatteryCo2] = useState(0);
+    const [motorco2, setMotorCo2] = useState(0);
+    const [seaco2, setSeaCo2] = useState(0);
+    const [groundco2, setGroundCo2] = useState(0);
+    const [batteryDisplay, setBatteryDisplay] = useState(false);
+    const [motorDisplay, setMotorDisplay] = useState(false);
+    const [seaDisplay, setSeaDisplay] = useState(false);
+    const [groundDisplay, setGroundDisplay] = useState(false);
+    const [hptDisplay, setHptDisplay] = useState(false);
+    const [calco2, setCalCo2] = useState(0);
+    
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -68,17 +77,17 @@ export default function HptAddEditTool(params){
     };
 
     const handleClickSubmit = () =>{
-        var tooltype = Number(toolType);
-        var serialNumAdmin = Number(serialNumber);
-        var coo2 = String(co2);
-        var partscost = String(partsCost);
-        var motorid = Number(motorId);
-        var batteryid = Number(batteryId);
-        var seaid = Number(seaTransportId);
-        var groundid = Number(groundTransportId);
-        // console.log("co2 : "+coo2);
+        var toolType = "Drill";
+        var serialNumAdmin = (serialNumber);
+        var coo2 = Number(calco2);
+        var partscost = 0;
+        var motorid = (motorId);
+        var batteryid = (batteryId);
+        var seaid = (seaTransportId);
+        var groundid = (groundTransportId);
+        console.log("co2 : "+coo2);
         // console.log("costMan : "+costManufactured);
-        HptCon.hpt_create(tooltype,serialNumAdmin,coo2,partscost,motorid,
+        HptCon.hpt_create(toolType,serialNumAdmin,coo2,partscost,motorid,
             batteryid,seaid,groundid).then(response =>{
             // setOpenNew(false);
             params.close(false);
@@ -132,7 +141,7 @@ export default function HptAddEditTool(params){
 
         if (seaRouteOptions.length === 0){
             for(var i = 0; i < seaData.length; i++) {
-                seaRouteOptions.push(seaData[i].routeId);
+                seaRouteOptions.push(seaData[i].trackingNumber);
             }
         }
     }  
@@ -143,11 +152,60 @@ export default function HptAddEditTool(params){
 
         if (groundRouteOptions.length === 0){
             for(var i = 0; i < groundData.length; i++) {
-                groundRouteOptions.push(groundData[i].routeId);
+                groundRouteOptions.push(groundData[i].trackingNumber);
             }
         }
     }
     
+    const get_battery_co2 = async(params)=>{
+        const batteryData = await BatteryCon.battery_fetch();
+        console.log("battery data useeffect:",batteryData);
+        for(var i = 0; i < batteryData.length; i++) {
+            if (batteryData[i].serialNumber == params.bat){
+                setBatteryCo2(batteryData[i].co2);
+                //calco2 += batteryData[i].co2;
+                setCalCo2(calco2+batteryData[i].co2);
+                break
+            }
+        }
+    }
+    const get_motor_co2 = async(params)=>{
+        const motorData = await MotorCon.motor_fetch();
+        console.log("motor data useeffect:",motorData);
+        for(var i = 0; i < motorData.length; i++) {
+            if (motorData[i].serialNumber == params.bat){
+                setMotorCo2(motorData[i].co2);
+                //calco2 += motorData[i].co2;
+                setCalCo2(calco2+motorData[i].co2);
+                break
+            }
+        }
+    }
+    const get_sea_co2 = async(params)=>{
+        const seaData = await SeaTransportCon.sea_fetch();
+        console.log("sea data useeffect:",seaData);
+        for(var i = 0; i < seaData.length; i++) {
+            if (seaData[i].trackingNumber == params.bat){
+                setSeaCo2(seaData[i].co2);
+                //calco2 += seaData[i].co2;
+                setCalCo2(calco2+seaData[i].co2);
+                break
+            }
+        }
+    }
+    const get_ground_co2 = async(params)=>{
+        const groundData = await GroundTransportCon.ground_fetch();
+        console.log("ground data useeffect:",groundData);
+        for(var i = 0; i < groundData.length; i++) {
+            if (groundData[i].trackingNumber == params.bat){
+                setGroundCo2(groundData[i].co2);
+                //calco2 += groundData[i].co2;
+                setCalCo2(calco2+groundData[i].co2);
+                break
+            }
+        }
+    }
+
     useEffect(()=>{
         get_battery_info();
         get_motor_info();
@@ -155,6 +213,7 @@ export default function HptAddEditTool(params){
         get_ground_info();
     },[]);
 
+    
     
     return(
         <>
@@ -176,40 +235,50 @@ export default function HptAddEditTool(params){
                 
                 <div>
                     <Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
-                        <ListItem key="totalCo2">
+                        <ListItem key="totalCostco2"> 
+                        {hptDisplay?
+                            <p>TOTAL CO2</p>
+                            :<></>}
+                        </ListItem>
+                        <ListItem key="totalCo2"> 
+                            {hptDisplay?
                             <Chip
                             icon={<TbBuildingFactory style={{color:'#004e38', fontSize:'15px'}}/>}
-                            label={"150"}
+                            label={calco2}
                             onDelete={undefined}
-                            />
+                            />:<></>}
                         </ListItem>
                         <ListItem key="battery">
+                        {batteryDisplay? 
                             <Chip
-                            icon={<GiBatteryPack style={{color:'#004e38', fontSize:'15px'}}/>}
-                            label={"15"}
+                            icon={<GiBatteryPack style={{color:'#004e38', fontSize:'15px'}}></GiBatteryPack>}
+                            label={batteryco2}
                             onDelete={undefined}
-                            />
+                            />:<></>}
                         </ListItem>
                         <ListItem key="motor">
+                            {motorDisplay?
                             <Chip
                             icon={<FiSettings style={{color:'#004e38', fontSize:'15px'}}/>}
-                            label={"25"}
+                            label={motorco2}
                             onDelete={undefined}
-                            />
+                            />:<></>}
                         </ListItem>
                         <ListItem key="searoute">
+                            {seaDisplay?
                             <Chip
                             icon={<FaShip style={{color:'#004e38', fontSize:'15px'}}/>}
-                            label={"20"}
+                            label={seaco2}
                             onDelete={undefined}
-                            />
+                            />:<></>}
                         </ListItem>
                         <ListItem key="groundroute">
+                            {groundDisplay?
                             <Chip
                             icon={<FaShippingFast style={{color:'#004e38', fontSize:'15px'}}/>}
-                            label={"30"}
+                            label={groundco2}
                             onDelete={undefined}
-                            />
+                            />:<></>}
                         </ListItem>
                         
                     </Paper>
@@ -221,16 +290,16 @@ export default function HptAddEditTool(params){
                     <Autocomplete disablePortal id="toolTypeID" options={toolTypeOptions} renderInput={(params) => <TextField {...params} label="Tool Type" />} value={toolType} onChange={e => setToolType(e.target.value)}/>                       
                 </div>
                 <div>
-                    <Autocomplete disablePortal id="batteryID" options={batteryOptions} renderInput={(params) => <TextField {...params} label="Battery ID" />} value={batteryId} onChange={e => setBatteryId(e.target.value)}/>                       
+                    <Autocomplete disablePortal id="batteryID" options={batteryOptions} renderInput={(params) => <TextField {...params} label="Battery ID" />} value={batteryId} onChange={e => {setBatteryId(e.target.innerText); get_battery_co2({bat : e.target.innerText}); setBatteryDisplay(true); setHptDisplay(true); }}/>                       
                 </div>
                 <div>
-                    <Autocomplete disablePortal id="motorID" options={motorOptions} renderInput={(params) => <TextField {...params} label="Motor ID" />} value={motorId} onChange={e => setMotorId(e.target.value)}/>                       
+                    <Autocomplete disablePortal id="motorID" options={motorOptions} renderInput={(params) => <TextField {...params} label="Motor ID" />} value={motorId} onChange={e => {setMotorId(e.target.innerText); get_motor_co2({bat : e.target.innerText}); setMotorDisplay(true); setHptDisplay(true);}}/>                       
                 </div>
                 <div>
-                    <Autocomplete disablePortal id="seaRouteID" options={seaRouteOptions} renderInput={(params) => <TextField {...params} label="Sea Route" />} value={seaTransportId} onChange={e => setSeaTransportId(e.target.value)}/>                       
+                    <Autocomplete disablePortal id="seaRouteID" options={seaRouteOptions} renderInput={(params) => <TextField {...params} label="Sea Route" />} value={seaTransportId} onChange={e => {setSeaTransportId(e.target.innerText); get_sea_co2({bat : e.target.innerText}); setSeaDisplay(true); setHptDisplay(true);}}/>                       
                 </div>
                 <div>
-                    <Autocomplete disablePortal id="groundRouteID" options={groundRouteOptions} renderInput={(params) => <TextField {...params} label="Ground Transport Route" />} value={groundTransportId} onChange={e => setGroundTransportId(e.target.value)}/>                       
+                    <Autocomplete disablePortal id="groundRouteID" options={groundRouteOptions} renderInput={(params) => <TextField {...params} label="Ground Transport Route" />} value={groundTransportId} onChange={e => {setGroundTransportId(e.target.innerText); get_ground_co2({bat : e.target.innerText}); setGroundDisplay(true); setHptDisplay(true);}}/>                       
                 </div>
             </Box>
             

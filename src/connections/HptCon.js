@@ -4,37 +4,123 @@ import clientdetails from "./main";
 const clientauth = clientdetails();
 
 class HptCon{
+    // async hpt_filter_fetch(element){
+    //     var options = [];
+    //     var data = [];
+    //     selectedItemsList.forEach(element =>{
+    //         console.log("Key"+element.key+element.value);
+    //         const name = element.name;
+    //         const res =  clientauth.hornetPowerTools.list(
+    //             {
+    //                 filter: {
+    //                 name : {
+    //                     contains: element.value
+    //                     },
+    //             }
+    //         }
+    //         );
+    //         data.extend(items);
+    //         if(element.key === "Battery ID"){
+    //             options.push({batteryId: element.value});
+    //         }
+    //         else if(element.key === "Motor ID"){
+    //             options.push({motorId: element.value});
+    //         }
+    //         else if(element.key === "Sea Route ID"){
+    //             options.push({seaTransportId: element.value});
+    //         }
+    //         else if(element.key === "Ground Route ID"){
+    //             options.push({groundTransportId: element.value});
+    //         }
+    //     });
+    //     return res.items
+    // }
     async hpt_fetch(selectedItemsList) {
-        if(selectedItemsList == null){
-            const hptResponse = await clientauth.hornetPowerTools.list();
-            console.log("hpt data: ", hptResponse.items);
-            return hptResponse.items;
+        console.log(selectedItemsList);
+        const hptResponse = await clientauth.hornetPowerTools.list();
+        if (selectedItemsList.length != 0){
+            var options = [];
+            var data = [];
+            selectedItemsList.forEach(element =>{
+                console.log("Key"+element.key+element.value);
+                const res = hptResponse.items;
+                console.log("res",res);
+                console.log("going beyond");
+                console.log(element.value);
+                console.log(res[0]);
+                for(var i = 0; i < res.length; i++) {
+                    var flag = 0;
+                    if(element.key === "Battery ID"){
+                        if (res[i].BatteryId==element.value){
+                            for (var j=0; j < data.length; j++){
+                                if (data[j].BatteryId == res[i].BatteryId){
+                                    flag = 1;
+                                }
+                            }
+                            if (flag!=1){
+                                data.push(res[i]);
+                                flag = 0;
+                            }
+                            
+                        }
+                        options.push({batteryId: element.value});
+                    }
+                    else if(element.key === "Motor ID"){
+                        if (res[i].motorId==element.value){
+                            for (var j=0; j < data.length; j++){
+                                if (data[j].motorId == res[i].motorId){
+                                    flag = 1;
+                                }
+                            }
+                            if (flag!=1){
+                                data.push(res[i]);
+                                flag = 0;
+                            }
+                            
+                        }
+                        options.push({motorId: element.value});
+                    }
+                    else if(element.key === "Sea Route ID"){
+                        if (res[i].seaTransportId==element.value){
+                            for (var j=0; j < data.length; j++){
+                                if (data[j].seaTransportId == res[i].seaTransportId){
+                                    flag = 1;
+                                }
+                            }
+                            if (flag!=1){
+                                data.push(res[i]);
+                                flag = 0;
+                            }
+                            
+                        }
+                        options.push({seaTransportId: element.value});
+                    }
+                    else if(element.key === "Ground Route ID"){
+                        if (res[i].groundTransportId==element.value){
+                            for (var j=0; j < data.length; j++){
+                                if (data[j].groundTransportId == res[i].groundTransportId){
+                                    flag = 1;
+                                }
+                            }
+                            if (flag!=1){
+                                data.push(res[i]);
+                                flag = 0;
+                            }
+                            
+                        }
+                        options.push({groundTransportId: element.value});
+                    }
+                }
+
+            });
+            console.log(data);
+            console.log("Filter : "+options);
+            return data;
+            // const hptResponse = await clientauth.hornetPowerTools.list();
         }
         else{
-            var options = [];
-            selectedItemsList.forEach(element =>{
-                console.log("Key"+element.key);
-                if(element.key === "Battery ID"){
-                    options.push({batteryId: element.value});
-                }
-                else if(element.key === "Motor ID"){
-                    options.push({motorId: element.value});
-                }
-                else if(element.key === "Sea Route ID"){
-                    options.push({seaTransportId: element.value});
-                }
-                else if(element.key === "Ground Route ID"){
-                    options.push({groundTransportId: element.value});
-                }
-            });
-           
-            console.log("Filter : "+options);
-            const response = await clientauth.hornetPowerTools.list({
-                
-            });
-            // const hptResponse = await clientauth.hornetPowerTools.list();
-            console.log("hpt data after filter: ", response.items);
-            return response.items;
+            console.log("hpt data: ", hptResponse.items);
+            return hptResponse.items;
         }
     }
 
@@ -43,7 +129,7 @@ class HptCon{
         console.log("In HPT Con")
         const response = await clientauth.hornetPowerTools.add({
             co2: coo2,
-            tooltype: tooltype,
+            toolType: tooltype,
             SerialNumber: serialNumAdmin,
             partsCost: partscost,
             motorId: motorid,
