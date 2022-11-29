@@ -1,12 +1,41 @@
+import { json } from "react-router-dom";
 import clientdetails from "./main";
 
 const clientauth = clientdetails();
 
 class HptCon{
-    async hpt_fetch() {
-        const hptResponse = await clientauth.hornetPowerTools.list();
-        console.log("hpt data: ", hptResponse.items);
-        return hptResponse.items;
+    async hpt_fetch(selectedItemsList) {
+        if(selectedItemsList == null){
+            const hptResponse = await clientauth.hornetPowerTools.list();
+            console.log("hpt data: ", hptResponse.items);
+            return hptResponse.items;
+        }
+        else{
+            var options = [];
+            selectedItemsList.forEach(element =>{
+                console.log("Key"+element.key);
+                if(element.key === "Battery ID"){
+                    options.push({batteryId: element.value});
+                }
+                else if(element.key === "Motor ID"){
+                    options.push({motorId: element.value});
+                }
+                else if(element.key === "Sea Route ID"){
+                    options.push({seaTransportId: element.value});
+                }
+                else if(element.key === "Ground Route ID"){
+                    options.push({groundTransportId: element.value});
+                }
+            });
+           
+            console.log("Filter : "+options);
+            const response = await clientauth.hornetPowerTools.list({
+                
+            });
+            // const hptResponse = await clientauth.hornetPowerTools.list();
+            console.log("hpt data after filter: ", response.items);
+            return response.items;
+        }
     }
 
     async hpt_create(tooltype,serialNumAdmin,coo2,partscost,motorid,

@@ -68,7 +68,7 @@ export default function AdminComponent(){
     
     const get_hpt_info = async()=>{
         //setDisplayRows(false);
-        const hptData = await HptCon.hpt_fetch();
+        const hptData = await HptCon.hpt_fetch(selectedItemsList);
         // console.log("motor data :",hptData);
 
         if (rows.length===0){
@@ -83,7 +83,7 @@ export default function AdminComponent(){
     }    
     
     useEffect(()=>{
-    get_hpt_info();
+        get_hpt_info();
     },[]);
 
     const handleClickOpenNew = () => {
@@ -106,7 +106,9 @@ export default function AdminComponent(){
     const handleClickOpenFilter = () =>{
         console.log("filter");
         setOpenFilter(true);
-        getFilterOptions();
+        if(state.options.length <1){
+            getFilterOptions();
+        }
     }
 
     const handleReset = () => {
@@ -124,8 +126,8 @@ export default function AdminComponent(){
         selectedItemsList.forEach(element =>{
             console.log(element);
         });
+        get_hpt_info();
 
-        
     }
 
     const handleItemSelect = (selectedList, selectedItem) => {
