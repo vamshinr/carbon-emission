@@ -25,7 +25,7 @@ class BatteryCon{
     }
 
     async battery_update(data) {
-        console.log("in battery update");
+        console.log("in battery update: ",data);
         const updateProductResponse = await clientauth.battery.update(data);
         console.log("update response",updateProductResponse);
         return updateProductResponse;

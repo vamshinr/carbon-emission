@@ -145,4 +145,4 @@ class HptCon{
     }
 }
 
-export default new HptCon();
+export default new HptCon(); 

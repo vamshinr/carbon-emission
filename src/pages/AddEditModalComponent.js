@@ -19,6 +19,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MotorCon from '../connections/MotorCon';
 import SeaTransportCon from '../connections/SeaTransportCon';
 import GroundTransportCon from '../connections/GroundTransportCon';
+import HptCon from '../connections/HptCon';
 
 export default function AddEditPageComponent(params){
     // debugger;
@@ -120,6 +121,24 @@ export default function AddEditPageComponent(params){
                 setAlert(true);
             });
 
+            HptCon.hpt_update_by_id(data['serialNumber'],'battery').then(response =>{
+                params.close(false);
+                // setAlertContent("Success! Editted Battery Details");
+                // setAlertSeverity("success");
+                // setAlert(true);
+                console.log(response);
+                setTimeout(() => window.location.reload(false), 2000);
+                
+    
+            }).catch(error =>{
+                console.log(error);
+                setAlertContent("Failure! Couldn't Edit Battery Details");
+                setAlertSeverity("error")
+                setAlert(true);
+            });
+
+
+
         }
         else if(type==='Motor'){
             data = {
@@ -167,7 +186,7 @@ export default function AddEditPageComponent(params){
                 // setAlertSeverity("success");
                 // setAlert(true);
                 console.log(response);
-                setTimeout(() => window.location.reload(false), 2000);
+                setTimeout(() => window.location.reload(false), 1000);
                 
     
             }).catch(error =>{

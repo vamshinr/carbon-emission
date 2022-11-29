@@ -1,5 +1,5 @@
 import clientdetails from "./main";
-
+import HptCon from "./HptCon";
 const clientauth = clientdetails();
 
 class SeaTransportCon{
@@ -26,8 +26,13 @@ class SeaTransportCon{
 
     async searoute_update(data) {
         console.log("in searoute update");
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
         const updateProductResponse = await clientauth.seaTransportation.update(data);
+        //setTimeout(() => window.location.reload(false), 2000);
         console.log("update response",updateProductResponse);
+        //await sleep(1000);
+        //setTimeout(() => window.location.reload(false), 2000);
+        const result = await HptCon.hpt_update_by_id(data['trackingNumber'],'seatransport');
         return updateProductResponse;
     }
 

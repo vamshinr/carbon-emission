@@ -33,7 +33,10 @@ export default function Dashboard(){
     const [batterySupplierco2, setbatterySupplierco2] = useState(0);
 
     const get_co2_info = async(params)=>{
+        console.log("entered co2 info fetch")
         const hptTotal = await HptCon.hpt_fetch_by_number(params.hpt)
+        console.log(hptTotal);
+        var calHptCo2 = 0;
         if (hptTotal.length === 0){
             setHPTco2("not available");
             setShowResults(false);
@@ -52,6 +55,7 @@ export default function Dashboard(){
             }
             else {
                 const totalseaco2 = seatransport[0].co2;
+                calHptCo2 += totalseaco2;
                 setseaTransportationco2(totalseaco2);
                 console.log("total sea co2"+totalseaco2);
             }
@@ -62,16 +66,17 @@ export default function Dashboard(){
             }
             else {
                 const totalMotorCo2 = motor[0].co2;
+                calHptCo2 += totalMotorCo2;
                 setmotorSupplierco2(totalMotorCo2);
                 console.log("total motor co2"+totalMotorCo2);
             }
-
             const battery = await HptCon.hpt_fetch_by_number(params.hpt, 'battery')
             if (battery.length === 0){
                 setbatterySupplierco2(0);
             }
             else {
                 const totalBatteryCo2 = battery[0].co2
+                calHptCo2 += totalBatteryCo2;
                 console.log("total battery co2"+totalBatteryCo2);
                 setbatterySupplierco2(totalBatteryCo2);
             }
@@ -83,8 +88,20 @@ export default function Dashboard(){
             }
             else{
                 const totalgroundco2 = groundtransport[0].co2;
+                calHptCo2 += totalgroundco2;
                 setgroundTransportationco2(totalgroundco2);
                 console.log("total ground co2"+totalgroundco2);
+            }
+            if (calHptCo2 !== hptTotal[0].co2){
+                setHPTco2(calHptCo2);
+                var data = hptTotal[0];
+                data.co2 = calHptCo2;
+                const response = await HptCon.hpt_update(data);
+                console.log("act hpt:",calHptCo2);
+                setShowResults(true); 
+            }
+            else {
+                setShowResults(true); 
             }
 
         }
@@ -96,7 +113,8 @@ export default function Dashboard(){
         setHPT(buffHPT);
         console.log("buff"+buffHPT);
         get_co2_info({hpt : buffHPT});  
-        setShowResults(true);     
+        console.log("already here");
+        //setShowResults(true);     
     }
 
     const [alert, setAlert] = useState(false);
