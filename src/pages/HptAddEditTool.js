@@ -235,19 +235,12 @@ export default function HptAddEditTool(params){
                 
                 <div>
                     <Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
-                        <ListItem key="totalCostco2"> 
+                        {/* <ListItem key="totalCostco2"> 
                         {hptDisplay?
                             <p>TOTAL CO2</p>
                             :<></>}
-                        </ListItem>
-                        <ListItem key="totalCo2"> 
-                            {hptDisplay?
-                            <Chip
-                            icon={<TbBuildingFactory style={{color:'#004e38', fontSize:'15px'}}/>}
-                            label={calco2}
-                            onDelete={undefined}
-                            />:<></>}
-                        </ListItem>
+                        </ListItem> */}
+                        
                         <ListItem key="battery">
                         {batteryDisplay? 
                             <Chip
@@ -256,6 +249,7 @@ export default function HptAddEditTool(params){
                             onDelete={undefined}
                             />:<></>}
                         </ListItem>
+                        {motorDisplay?  <span style={{padding:'5px'}}>+</span>:<></>}
                         <ListItem key="motor">
                             {motorDisplay?
                             <Chip
@@ -264,6 +258,7 @@ export default function HptAddEditTool(params){
                             onDelete={undefined}
                             />:<></>}
                         </ListItem>
+                        {seaDisplay?  <span style={{padding:'5px'}}>+</span>:<></>}
                         <ListItem key="searoute">
                             {seaDisplay?
                             <Chip
@@ -272,6 +267,7 @@ export default function HptAddEditTool(params){
                             onDelete={undefined}
                             />:<></>}
                         </ListItem>
+                        {groundDisplay?  <span style={{padding:'5px'}}>+</span>:<></>}
                         <ListItem key="groundroute">
                             {groundDisplay?
                             <Chip
@@ -280,7 +276,15 @@ export default function HptAddEditTool(params){
                             onDelete={undefined}
                             />:<></>}
                         </ListItem>
-                        
+                        {hptDisplay?  <span style={{padding:'5px'}}>=</span>:<></>}
+                        <ListItem key="totalCo2"> 
+                            {hptDisplay?
+                            <Chip
+                            icon={<TbBuildingFactory style={{color:'#004e38', fontSize:'15px'}}/>}
+                            label={calco2}
+                            onDelete={undefined}
+                            />:<></>}
+                        </ListItem>
                     </Paper>
                 </div>
                 <div>
