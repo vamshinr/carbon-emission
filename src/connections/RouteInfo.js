@@ -4,8 +4,15 @@ const clientauth = clientdetails();
 
 class RouteInfo{
 
+    async route_fetch() {
+        console.log("entered route info",clientauth);
+        const Response = await clientauth.routeTable.list();
+        console.log(Response.items);
+        return Response.items;
+    }
+
     async route_fetch_start(id) {
-        const Response = await clientauth.RouteInfo.list(
+        const Response = await clientauth.routeTable.list(
             {
              filter: {
                  routeId: {
@@ -19,7 +26,7 @@ class RouteInfo{
     }
 
     async route_fetch_end(id) {
-        const Response = await clientauth.RouteInfo.list(
+        const Response = await clientauth.routeTable.list(
             {
              filter: {
                  routeId: {

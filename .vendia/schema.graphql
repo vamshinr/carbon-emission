@@ -209,6 +209,7 @@ input Self_Battery_ConditionInput_ {
 }
 
 input Self_Battery_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   co2: Vendia_ModelFloatInput_
   costManufactured: Vendia_ModelFloatInput_
   dateManufactured: Vendia_ModelStringInput_
@@ -310,6 +311,7 @@ input Self_GroundTransportation_ConditionInput_ {
 }
 
 input Self_GroundTransportation_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   co2: Vendia_ModelFloatInput_
   customerCost: Vendia_ModelFloatInput_
   fuelCost: Vendia_ModelFloatInput_
@@ -406,7 +408,7 @@ input Self_GroundTransportation_PartialInput_ {
 input Self_HornetPowerTools_ConditionInput_ {
   BatteryId: Vendia_ModelStringInput_
   SerialNumber: Vendia_ModelStringInput_
-  co2: Vendia_ModelStringInput_
+  co2: Vendia_ModelFloatInput_
   groundTransportId: Vendia_ModelStringInput_
   motorId: Vendia_ModelStringInput_
   partsCost: Vendia_ModelFloatInput_
@@ -418,9 +420,10 @@ input Self_HornetPowerTools_ConditionInput_ {
 }
 
 input Self_HornetPowerTools_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   BatteryId: Vendia_ModelStringInput_
   SerialNumber: Vendia_ModelStringInput_
-  co2: Vendia_ModelStringInput_
+  co2: Vendia_ModelFloatInput_
   groundTransportId: Vendia_ModelStringInput_
   motorId: Vendia_ModelStringInput_
   partsCost: Vendia_ModelFloatInput_
@@ -439,7 +442,7 @@ type Self_HornetPowerTools {
   _id: ID!
   BatteryId: String
   SerialNumber: String
-  co2: String
+  co2: Float
   groundTransportId: String
   motorId: String
   partsCost: Float
@@ -453,7 +456,7 @@ type Self_HornetPowerTools_Partial_ {
   _id: ID!
   BatteryId: String
   SerialNumber: String
-  co2: String
+  co2: Float
   groundTransportId: String
   motorId: String
   partsCost: Float
@@ -487,7 +490,7 @@ type Self_HornetPowerTools_Connection_ {
 input Self_HornetPowerTools_Input_ {
   BatteryId: String
   SerialNumber: String
-  co2: String
+  co2: Float
   groundTransportId: String
   motorId: String
   partsCost: Float
@@ -498,7 +501,7 @@ input Self_HornetPowerTools_Input_ {
 input Self_HornetPowerTools_UpdateInput_ {
   BatteryId: String
   SerialNumber: String
-  co2: String
+  co2: Float
   groundTransportId: String
   motorId: String
   partsCost: Float
@@ -509,7 +512,7 @@ input Self_HornetPowerTools_UpdateInput_ {
 input Self_HornetPowerTools_PartialInput_ {
   BatteryId: String
   SerialNumber: String
-  co2: String
+  co2: Float
   groundTransportId: String
   motorId: String
   partsCost: Float
@@ -530,6 +533,7 @@ input Self_Motor_ConditionInput_ {
 }
 
 input Self_Motor_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   co2: Vendia_ModelFloatInput_
   costManufactured: Vendia_ModelFloatInput_
   dateManufactured: Vendia_ModelStringInput_
@@ -617,6 +621,100 @@ input Self_Motor_PartialInput_ {
   serialNumber: String
 }
 
+input Self_RouteTable_ConditionInput_ {
+  connections: Vendia_ModelStringInput_
+  endPoint: Vendia_ModelStringInput_
+  routeId: Vendia_ModelStringInput_
+  routeType: Vendia_ModelStringInput_
+  startPoint: Vendia_ModelStringInput_
+  _and: [Self_RouteTable_ConditionInput_]
+  _or: [Self_RouteTable_ConditionInput_]
+  _not: Self_RouteTable_ConditionInput_
+}
+
+input Self_RouteTable_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
+  connections: Vendia_ModelStringInput_
+  endPoint: Vendia_ModelStringInput_
+  routeId: Vendia_ModelStringInput_
+  routeType: Vendia_ModelStringInput_
+  startPoint: Vendia_ModelStringInput_
+  _and: [Self_RouteTable_FilterInput_]
+  _or: [Self_RouteTable_FilterInput_]
+  _not: Self_RouteTable_FilterInput_
+}
+
+input Self_RouteTable_OrderInput_ {
+  _id: Vendia_ModelSortDirection
+}
+
+type Self_RouteTable {
+  _id: ID!
+  connections: String
+  endPoint: String
+  routeId: String
+  routeType: String
+  startPoint: String
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+type Self_RouteTable_Partial_ {
+  _id: ID!
+  connections: String
+  endPoint: String
+  routeId: String
+  routeType: String
+  startPoint: String
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+union Self_RouteTable_PartialUnion_ = Self_RouteTable | Self_RouteTable_Partial_
+
+type Self_RouteTable_Result_ {
+  error: String
+  result: Self_RouteTable
+}
+
+type Self_RouteTable_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Self_RouteTable_PartialUnion_
+}
+
+type Self_RouteTable_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+type Self_RouteTable_Connection_ {
+  _RouteTableItems: [Self_RouteTable_PartialUnion_]
+  nextToken: String
+}
+
+input Self_RouteTable_Input_ {
+  connections: String
+  endPoint: String
+  routeId: String
+  routeType: String
+  startPoint: String
+}
+
+input Self_RouteTable_UpdateInput_ {
+  connections: String
+  endPoint: String
+  routeId: String
+  routeType: String
+  startPoint: String
+}
+
+input Self_RouteTable_PartialInput_ {
+  connections: String
+  endPoint: String
+  routeId: String
+  routeType: String
+  startPoint: String
+}
+
 input Self_SeaTransportation_ConditionInput_ {
   co2: Vendia_ModelFloatInput_
   customerCost: Vendia_ModelFloatInput_
@@ -631,6 +729,7 @@ input Self_SeaTransportation_ConditionInput_ {
 }
 
 input Self_SeaTransportation_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   co2: Vendia_ModelFloatInput_
   customerCost: Vendia_ModelFloatInput_
   fuelCost: Vendia_ModelFloatInput_
@@ -722,92 +821,6 @@ input Self_SeaTransportation_PartialInput_ {
   routeId: String
   shipId: String
   trackingNumber: String
-}
-
-input Self_UserAuth_ConditionInput_ {
-  emailId: Vendia_ModelStringInput_
-  password: Vendia_ModelStringInput_
-  userName: Vendia_ModelStringInput_
-  userType: Vendia_ModelStringInput_
-  _and: [Self_UserAuth_ConditionInput_]
-  _or: [Self_UserAuth_ConditionInput_]
-  _not: Self_UserAuth_ConditionInput_
-}
-
-input Self_UserAuth_FilterInput_ {
-  emailId: Vendia_ModelStringInput_
-  password: Vendia_ModelStringInput_
-  userName: Vendia_ModelStringInput_
-  userType: Vendia_ModelStringInput_
-  _and: [Self_UserAuth_FilterInput_]
-  _or: [Self_UserAuth_FilterInput_]
-  _not: Self_UserAuth_FilterInput_
-}
-
-input Self_UserAuth_OrderInput_ {
-  _id: Vendia_ModelSortDirection
-}
-
-type Self_UserAuth {
-  _id: ID!
-  emailId: String
-  password: String
-  userName: String
-  userType: String
-  _acl: [Vendia_Acl!]
-  _owner: String
-}
-
-type Self_UserAuth_Partial_ {
-  _id: ID!
-  emailId: String
-  password: String
-  userName: String
-  userType: String
-  _acl: [Vendia_Acl!]
-  _owner: String
-}
-
-union Self_UserAuth_PartialUnion_ = Self_UserAuth | Self_UserAuth_Partial_
-
-type Self_UserAuth_Result_ {
-  error: String
-  result: Self_UserAuth
-}
-
-type Self_UserAuth_Transaction_Result_ {
-  transaction: Vendia_Transaction!
-  result: Self_UserAuth_PartialUnion_
-}
-
-type Self_UserAuth_Delete_Transaction_Result_ {
-  transaction: Vendia_Transaction!
-}
-
-type Self_UserAuth_Connection_ {
-  _UserAuthItems: [Self_UserAuth_PartialUnion_]
-  nextToken: String
-}
-
-input Self_UserAuth_Input_ {
-  emailId: String
-  password: String
-  userName: String
-  userType: String
-}
-
-input Self_UserAuth_UpdateInput_ {
-  emailId: String
-  password: String
-  userName: String
-  userType: String
-}
-
-input Self_UserAuth_PartialInput_ {
-  emailId: String
-  password: String
-  userName: String
-  userType: String
 }
 
 input Vendia_Block_transactions_transactionsItem_ConditionInput_ {
@@ -2139,6 +2152,7 @@ input Vendia_Subscription_ConditionInput_ {
 }
 
 input Vendia_Subscription_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   operation: Vendia_ModelStringInput_
   connectionId: Vendia_ModelStringInput_
   _and: [Vendia_Subscription_FilterInput_]
@@ -2217,6 +2231,7 @@ input Vendia_Block_ConditionInput_ {
 }
 
 input Vendia_Block_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   blockSchemaVersion: Vendia_ModelStringInput_
   blockId: Vendia_ModelStringInput_
   redactedBlockHash: Vendia_ModelStringInput_
@@ -2348,6 +2363,7 @@ input Vendia_File_ConditionInput_ {
 }
 
 input Vendia_File_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   sourceBucket: Vendia_ModelStringInput_
   sourceKey: Vendia_ModelStringInput_
   sourceRegion: Vendia_ModelStringInput_
@@ -2489,6 +2505,7 @@ input Vendia_Folder_ConditionInput_ {
 }
 
 input Vendia_Folder_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   name: Vendia_ModelStringInput_
   parent: Vendia_ModelStringInput_
   read: Vendia_ModelStringInput_
@@ -2587,6 +2604,7 @@ input Vendia_Contract_ConditionInput_ {
 }
 
 input Vendia_Contract_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   name: Vendia_ModelStringInput_
   description: Vendia_ModelStringInput_
   revisionId: Vendia_ModelStringInput_
@@ -2682,6 +2700,7 @@ input Vendia_ApiKey_ConditionInput_ {
 }
 
 input Vendia_ApiKey_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   name: Vendia_ModelStringInput_
   status: Vendia_ModelStringInput_
   expiry: Vendia_ModelStringInput_
@@ -2764,6 +2783,7 @@ input Vendia_JwtAuthentication_ConditionInput_ {
 }
 
 input Vendia_JwtAuthentication_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   name: Vendia_ModelStringInput_
   jwksUrl: Vendia_ModelStringInput_
   issuer: Vendia_ModelStringInput_
@@ -3069,6 +3089,7 @@ input Vendia_DeploymentInfo_ConditionInput_ {
 }
 
 input Vendia_DeploymentInfo_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
   deploymentTime: Vendia_ModelStringInput_
   consensusDefinitionHash: Vendia_ModelStringInput_
   versionTag: Vendia_ModelStringInput_
@@ -3155,12 +3176,12 @@ type Query {
   get_Motor(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_Motor_PartialUnion_
   list_MotorItems(filter: Self_Motor_FilterInput_, readMode: Vendia_ReadMode = NODE_COMMITTED, order: [Self_Motor_OrderInput_!], limit: Int, nextToken: String): Self_Motor_Connection_
   list_MotorVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
+  get_RouteTable(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_RouteTable_PartialUnion_
+  list_RouteTableItems(filter: Self_RouteTable_FilterInput_, readMode: Vendia_ReadMode = NODE_COMMITTED, order: [Self_RouteTable_OrderInput_!], limit: Int, nextToken: String): Self_RouteTable_Connection_
+  list_RouteTableVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   get_SeaTransportation(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_SeaTransportation_PartialUnion_
   list_SeaTransportationItems(filter: Self_SeaTransportation_FilterInput_, readMode: Vendia_ReadMode = NODE_COMMITTED, order: [Self_SeaTransportation_OrderInput_!], limit: Int, nextToken: String): Self_SeaTransportation_Connection_
   list_SeaTransportationVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
-  get_UserAuth(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_UserAuth_PartialUnion_
-  list_UserAuthItems(filter: Self_UserAuth_FilterInput_, readMode: Vendia_ReadMode = NODE_COMMITTED, order: [Self_UserAuth_OrderInput_!], limit: Int, nextToken: String): Self_UserAuth_Connection_
-  list_UserAuthVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   listVendia_SubscriptionItems(filter: Vendia_Subscription_FilterInput_, order: [Vendia_Subscription_OrderInput_!], limit: Int, nextToken: String): Vendia_Subscription_Connection_
   getVendia_Block(id: ID!): Vendia_Block
   listVendia_BlockItems(filter: Vendia_Block_FilterInput_, order: [Vendia_Block_OrderInput_!], limit: Int, nextToken: String): Vendia_Block_Connection_
@@ -3187,88 +3208,47 @@ type Query {
 }
 
 type Mutation {
-  add_Battery_async(input: Self_Battery_Input_!, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   add_Battery(input: Self_Battery_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Battery_Transaction_Result_
-  put_Battery_async(id: ID!, input: Self_Battery_Input_!, condition: Self_Battery_ConditionInput_, aclInput: Vendia_Acls_Input_!): Vendia_Transaction_Result_
   put_Battery(id: ID!, input: Self_Battery_Input_!, condition: Self_Battery_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Battery_Transaction_Result_
-  update_Battery_async(id: ID!, input: Self_Battery_UpdateInput_!, condition: Self_Battery_ConditionInput_, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   update_Battery(id: ID!, input: Self_Battery_UpdateInput_!, condition: Self_Battery_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Battery_Transaction_Result_
-  remove_Battery_async(id: ID!, condition: Self_Battery_ConditionInput_): Vendia_Transaction_Result_
   remove_Battery(id: ID!, condition: Self_Battery_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Battery_Delete_Transaction_Result_
-  add_GroundTransportation_async(input: Self_GroundTransportation_Input_!, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   add_GroundTransportation(input: Self_GroundTransportation_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_GroundTransportation_Transaction_Result_
-  put_GroundTransportation_async(id: ID!, input: Self_GroundTransportation_Input_!, condition: Self_GroundTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_!): Vendia_Transaction_Result_
   put_GroundTransportation(id: ID!, input: Self_GroundTransportation_Input_!, condition: Self_GroundTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_GroundTransportation_Transaction_Result_
-  update_GroundTransportation_async(id: ID!, input: Self_GroundTransportation_UpdateInput_!, condition: Self_GroundTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   update_GroundTransportation(id: ID!, input: Self_GroundTransportation_UpdateInput_!, condition: Self_GroundTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_GroundTransportation_Transaction_Result_
-  remove_GroundTransportation_async(id: ID!, condition: Self_GroundTransportation_ConditionInput_): Vendia_Transaction_Result_
   remove_GroundTransportation(id: ID!, condition: Self_GroundTransportation_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_GroundTransportation_Delete_Transaction_Result_
-  add_HornetPowerTools_async(input: Self_HornetPowerTools_Input_!, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   add_HornetPowerTools(input: Self_HornetPowerTools_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_HornetPowerTools_Transaction_Result_
-  put_HornetPowerTools_async(id: ID!, input: Self_HornetPowerTools_Input_!, condition: Self_HornetPowerTools_ConditionInput_, aclInput: Vendia_Acls_Input_!): Vendia_Transaction_Result_
   put_HornetPowerTools(id: ID!, input: Self_HornetPowerTools_Input_!, condition: Self_HornetPowerTools_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_HornetPowerTools_Transaction_Result_
-  update_HornetPowerTools_async(id: ID!, input: Self_HornetPowerTools_UpdateInput_!, condition: Self_HornetPowerTools_ConditionInput_, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   update_HornetPowerTools(id: ID!, input: Self_HornetPowerTools_UpdateInput_!, condition: Self_HornetPowerTools_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_HornetPowerTools_Transaction_Result_
-  remove_HornetPowerTools_async(id: ID!, condition: Self_HornetPowerTools_ConditionInput_): Vendia_Transaction_Result_
   remove_HornetPowerTools(id: ID!, condition: Self_HornetPowerTools_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_HornetPowerTools_Delete_Transaction_Result_
-  add_Motor_async(input: Self_Motor_Input_!, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   add_Motor(input: Self_Motor_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Motor_Transaction_Result_
-  put_Motor_async(id: ID!, input: Self_Motor_Input_!, condition: Self_Motor_ConditionInput_, aclInput: Vendia_Acls_Input_!): Vendia_Transaction_Result_
   put_Motor(id: ID!, input: Self_Motor_Input_!, condition: Self_Motor_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Motor_Transaction_Result_
-  update_Motor_async(id: ID!, input: Self_Motor_UpdateInput_!, condition: Self_Motor_ConditionInput_, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   update_Motor(id: ID!, input: Self_Motor_UpdateInput_!, condition: Self_Motor_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Motor_Transaction_Result_
-  remove_Motor_async(id: ID!, condition: Self_Motor_ConditionInput_): Vendia_Transaction_Result_
   remove_Motor(id: ID!, condition: Self_Motor_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Motor_Delete_Transaction_Result_
-  add_SeaTransportation_async(input: Self_SeaTransportation_Input_!, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
+  add_RouteTable(input: Self_RouteTable_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_RouteTable_Transaction_Result_
+  put_RouteTable(id: ID!, input: Self_RouteTable_Input_!, condition: Self_RouteTable_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_RouteTable_Transaction_Result_
+  update_RouteTable(id: ID!, input: Self_RouteTable_UpdateInput_!, condition: Self_RouteTable_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_RouteTable_Transaction_Result_
+  remove_RouteTable(id: ID!, condition: Self_RouteTable_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_RouteTable_Delete_Transaction_Result_
   add_SeaTransportation(input: Self_SeaTransportation_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_SeaTransportation_Transaction_Result_
-  put_SeaTransportation_async(id: ID!, input: Self_SeaTransportation_Input_!, condition: Self_SeaTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_!): Vendia_Transaction_Result_
   put_SeaTransportation(id: ID!, input: Self_SeaTransportation_Input_!, condition: Self_SeaTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_SeaTransportation_Transaction_Result_
-  update_SeaTransportation_async(id: ID!, input: Self_SeaTransportation_UpdateInput_!, condition: Self_SeaTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   update_SeaTransportation(id: ID!, input: Self_SeaTransportation_UpdateInput_!, condition: Self_SeaTransportation_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_SeaTransportation_Transaction_Result_
-  remove_SeaTransportation_async(id: ID!, condition: Self_SeaTransportation_ConditionInput_): Vendia_Transaction_Result_
   remove_SeaTransportation(id: ID!, condition: Self_SeaTransportation_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_SeaTransportation_Delete_Transaction_Result_
-  add_UserAuth_async(input: Self_UserAuth_Input_!, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
-  add_UserAuth(input: Self_UserAuth_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_UserAuth_Transaction_Result_
-  put_UserAuth_async(id: ID!, input: Self_UserAuth_Input_!, condition: Self_UserAuth_ConditionInput_, aclInput: Vendia_Acls_Input_!): Vendia_Transaction_Result_
-  put_UserAuth(id: ID!, input: Self_UserAuth_Input_!, condition: Self_UserAuth_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_UserAuth_Transaction_Result_
-  update_UserAuth_async(id: ID!, input: Self_UserAuth_UpdateInput_!, condition: Self_UserAuth_ConditionInput_, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
-  update_UserAuth(id: ID!, input: Self_UserAuth_UpdateInput_!, condition: Self_UserAuth_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_UserAuth_Transaction_Result_
-  remove_UserAuth_async(id: ID!, condition: Self_UserAuth_ConditionInput_): Vendia_Transaction_Result_
-  remove_UserAuth(id: ID!, condition: Self_UserAuth_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_UserAuth_Delete_Transaction_Result_
-  addVendia_File_async(input: Vendia_File_Input_!): Vendia_Transaction_Result_
   addVendia_File(input: Vendia_File_Input_!, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
-  putVendia_File_async(id: ID!, input: Vendia_File_Input_!, condition: Vendia_File_ConditionInput_): Vendia_Transaction_Result_
   putVendia_File(id: ID!, input: Vendia_File_Input_!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
-  updateVendia_File_async(id: ID!, input: Vendia_File_UpdateInput_!, condition: Vendia_File_ConditionInput_): Vendia_Transaction_Result_
   updateVendia_File(id: ID!, input: Vendia_File_UpdateInput_!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
-  removeVendia_File_async(id: ID!, condition: Vendia_File_ConditionInput_): Vendia_Transaction_Result_
   removeVendia_File(id: ID!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Delete_Transaction_Result_
-  addVendia_Folder_async(input: Vendia_Folder_Input_!): Vendia_Transaction_Result_
   addVendia_Folder(input: Vendia_Folder_Input_!, syncMode: Vendia_SyncMode!): Vendia_Folder_Transaction_Result_
-  removeVendia_Folder_async(id: ID!, condition: Vendia_Folder_ConditionInput_): Vendia_Transaction_Result_
   removeVendia_Folder(id: ID!, condition: Vendia_Folder_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_Folder_Delete_Transaction_Result_
-  addVendia_Contract_async(input: Vendia_Contract_Input_!, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   addVendia_Contract(input: Vendia_Contract_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
-  updateVendia_Contract_async(id: ID!, input: Vendia_Contract_UpdateInput_!, condition: Vendia_Contract_ConditionInput_, aclInput: Vendia_Acls_Input_): Vendia_Transaction_Result_
   updateVendia_Contract(id: ID!, input: Vendia_Contract_UpdateInput_!, condition: Vendia_Contract_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
-  removeVendia_Contract_async(id: ID!, condition: Vendia_Contract_ConditionInput_): Vendia_Transaction_Result_
   removeVendia_Contract(id: ID!, condition: Vendia_Contract_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_Contract_Delete_Transaction_Result_
-  addVendia_ApiKey_async(input: Vendia_ApiKey_Input_!): Vendia_Transaction_Result_
   addVendia_ApiKey(input: Vendia_ApiKey_Input_!, syncMode: Vendia_SyncMode!): Vendia_ApiKey_Transaction_Result_
-  updateVendia_ApiKey_async(id: ID!, input: Vendia_ApiKey_UpdateInput_!, condition: Vendia_ApiKey_ConditionInput_): Vendia_Transaction_Result_
   updateVendia_ApiKey(id: ID!, input: Vendia_ApiKey_UpdateInput_!, condition: Vendia_ApiKey_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_ApiKey_Transaction_Result_
-  removeVendia_ApiKey_async(id: ID!, condition: Vendia_ApiKey_ConditionInput_): Vendia_Transaction_Result_
   removeVendia_ApiKey(id: ID!, condition: Vendia_ApiKey_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_ApiKey_Delete_Transaction_Result_
-  addVendia_JwtAuthentication_async(input: Vendia_JwtAuthentication_Input_!): Vendia_Transaction_Result_
   addVendia_JwtAuthentication(input: Vendia_JwtAuthentication_Input_!, syncMode: Vendia_SyncMode!): Vendia_JwtAuthentication_Transaction_Result_
-  updateVendia_JwtAuthentication_async(id: ID!, input: Vendia_JwtAuthentication_UpdateInput_!, condition: Vendia_JwtAuthentication_ConditionInput_): Vendia_Transaction_Result_
   updateVendia_JwtAuthentication(id: ID!, input: Vendia_JwtAuthentication_UpdateInput_!, condition: Vendia_JwtAuthentication_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_JwtAuthentication_Transaction_Result_
-  removeVendia_JwtAuthentication_async(id: ID!, condition: Vendia_JwtAuthentication_ConditionInput_): Vendia_Transaction_Result_
   removeVendia_JwtAuthentication(id: ID!, condition: Vendia_JwtAuthentication_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_JwtAuthentication_Delete_Transaction_Result_
-  updateVendia_Settings_async(input: Vendia_Settings_UpdateInput_!, condition: Vendia_Settings_ConditionInput_): Vendia_Transaction_Result_
   updateVendia_Settings(input: Vendia_Settings_UpdateInput_!, condition: Vendia_Settings_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_Settings_Transaction_Result_
   invokeVendia_Contract(id: ID!, revisionId: String, input: Vendia_Contract_InvokeInput_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
-  invokeVendia_Contract_async(id: ID!, revisionId: String, input: Vendia_Contract_InvokeInput_): Vendia_Transaction_Result_
 }
 
 type Subscription {
@@ -3288,14 +3268,14 @@ type Subscription {
   onUpdate_Motor: Self_Motor_Result_
   onPut_Motor: Self_Motor_Result_
   onRemove_Motor: Self_Motor_Result_
+  onAdd_RouteTable: Self_RouteTable_Result_
+  onUpdate_RouteTable: Self_RouteTable_Result_
+  onPut_RouteTable: Self_RouteTable_Result_
+  onRemove_RouteTable: Self_RouteTable_Result_
   onAdd_SeaTransportation: Self_SeaTransportation_Result_
   onUpdate_SeaTransportation: Self_SeaTransportation_Result_
   onPut_SeaTransportation: Self_SeaTransportation_Result_
   onRemove_SeaTransportation: Self_SeaTransportation_Result_
-  onAdd_UserAuth: Self_UserAuth_Result_
-  onUpdate_UserAuth: Self_UserAuth_Result_
-  onPut_UserAuth: Self_UserAuth_Result_
-  onRemove_UserAuth: Self_UserAuth_Result_
   onAddVendia_Block: Vendia_Block_Result_
   onUpdateVendia_Block: Vendia_Block_Result_
   onPutVendia_Block: Vendia_Block_Result_

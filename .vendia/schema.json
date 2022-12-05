@@ -20,8 +20,8 @@
     "HornerPowerToolsAcl": {
       "type": "HornetPowerTools"
     },
-    "UserAuthAcl": {
-      "type": "UserAuth"
+    "RouteTableAcl": {
+      "type": "RouteTable"
     }
   },
   "properties": {
@@ -181,7 +181,7 @@
           },
           "co2": {
             "description": "Date part was manufactured",
-            "type": "string"
+            "type": "number"
           },
           "partsCost": {
             "description": "Parts cost",
@@ -208,24 +208,28 @@
       },
       "type": "array"
     },
-    "UserAuth": {
-      "description": "user account information",
+    "RouteTable": {
+      "description": "route information",
       "items": {
         "properties": {
-          "userName": {
-            "description": "name of the user",
+          "routeId": {
+            "description": "route id",
             "type": "string"
           },
-          "emailId": {
-            "description": "email id",
+          "startPoint": {
+            "description": "starting point of the route",
             "type": "string"
           },
-          "password": {
-            "description": "passowrd of the user",
+          "endPoint": {
+            "description": "destination of the route",
             "type": "string"
           },
-          "userType": {
-            "description": "type of user for authentication",
+          "connections": {
+            "description": "connecting points in between start and end points",
+            "type": "string"
+          },
+          "routeType": {
+            "description": "sea or ground transport",
             "type": "string"
           }
         },

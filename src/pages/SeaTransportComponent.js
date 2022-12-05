@@ -30,6 +30,7 @@ import { MdLocationOn, MdOutlineLocationOn } from "react-icons/md";
 import { TbArrowBigRightLines } from "react-icons/tb";
 import { RiShip2Fill } from "react-icons/ri";
 import RouteInfo from '../connections/RouteInfo';
+import Autocomplete from '@mui/material/Autocomplete';
 import {
     Chart as ChartJS,
     LinearScale,
@@ -69,6 +70,8 @@ const data1 = [];
 const data2 = [];
 const data4 = [];
 
+const seaRoutesOptions = [];
+
 export default function SeaTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
     const [openHistory, setOpenHistory] = useState(false);
@@ -107,9 +110,21 @@ export default function SeaTransportComponent(){
         rows.sort((a, b) => (a.shipID < b.shipID ? -1 : 1));
         setTimeout(() => setDisplayRows(true), 1500);
         //setDisplayRows(true);
+    }
+    const get_sea_routes = async()=>{
+        const routeData = await RouteInfo.route_fetch();
+        console.log("sea routes :",routeData);
+        if (seaRoutesOptions.length === 0){
+            for(var i = 0; i < routeData.length; i++) {
+                seaRoutesOptions.push(routeData[i].routeId+" - "+routeData[i].startPoint+" - "+routeData[i].endPoint);
+            }
+        }
+        console.log("sea routes:", seaRoutesOptions);
     }    
     
     useEffect(()=>{
+        console.log("entering useeffect");
+        get_sea_routes();
         get_sea_info();
     },[]);
 
@@ -292,6 +307,9 @@ export default function SeaTransportComponent(){
 
                         <div>
                             <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Tracking Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
+                        </div>
+                        <div>
+                            <Autocomplete disablePortal id="routeID" options={seaRoutesOptions} renderInput={(params) => <TextField {...params} label="Tool Type" />} value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true); setRouteDetails(true);}}/>                    
                         </div>
                         <div>
                             <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true); setRouteDetails(true);}}/>
