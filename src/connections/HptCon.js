@@ -229,6 +229,14 @@ class HptCon{
         console.log("delete response",deleteProductResponse);
         return deleteProductResponse;
     }
+
+    async hpt_update(data) {
+        console.log("in hpt update");
+        delete data['_owner'];
+        const updatehptResponse = await clientauth.hornetPowerTools.update(data);
+        console.log("update response",updatehptResponse);
+        return updatehptResponse;
+    }
 }
 
 export default new HptCon(); 

@@ -96,6 +96,7 @@ export default function Dashboard(){
                 setHPTco2(calHptCo2);
                 var data = hptTotal[0];
                 data.co2 = calHptCo2;
+                console.log("hpt update:",data);
                 const response = await HptCon.hpt_update(data);
                 console.log("act hpt:",calHptCo2);
                 setShowResults(true); 

@@ -71,6 +71,7 @@ const data2 = [];
 const data4 = [];
 
 const seaRoutesOptions = [];
+const toolOptions = ['Drill','Hammer'];
 
 export default function SeaTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -279,7 +280,8 @@ export default function SeaTransportComponent(){
                         {routedetails?<Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
                         
                         <ListItem key="source">
-                            SMF
+                            {/* {seaRoutesOptions[0].split(' - ')[1]} */}
+                            {routeID.split(' - ')[1]}
                         </ListItem>
                         
                         <ListItem key="totalCo2">
@@ -298,7 +300,8 @@ export default function SeaTransportComponent(){
                             <MdLocationOn style={{color:'#004e38', fontSize:'25px'}}/>
                         </ListItem>
                         <ListItem key="destination">
-                            LAS
+                        {/* {seaRoutesOptions[0].split(' - ')[2]} */}
+                        {routeID.split(' - ')[2]}
                         </ListItem>
                         
                         
@@ -309,11 +312,8 @@ export default function SeaTransportComponent(){
                             <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Tracking Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
                         </div>
                         <div>
-                            <Autocomplete disablePortal id="routeID" options={seaRoutesOptions} renderInput={(params) => <TextField {...params} label="Tool Type" />} value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true); setRouteDetails(true);}}/>                    
-                        </div>
-                        <div>
-                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true); setRouteDetails(true);}}/>
-                        </div>
+                            <Autocomplete disablePortal id="routeID" options={seaRoutesOptions} renderInput={(params) => <TextField {...params} label="route info" />} value={routeID} onChange={e => {setRouteID(e.target.innerText); setDirty(true); setRouteDetails(true);}}/>                    
+                        </div>                        
                         <div>
                             <TextField required error={shipID !== null && shipID !== '' ? false : true} id="shipID" variant='filled' label="Ship ID" defaultValue="" value={shipID} onChange={e => {setShipID(e.target.value); setDirty(true);}}/>
                         </div>
