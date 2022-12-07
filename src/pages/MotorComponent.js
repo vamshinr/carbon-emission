@@ -34,8 +34,9 @@ function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
 }
 
 const rows = [];
-const data1 = [];
-const data2 = [];
+var data1 = [];
+var data2 = [];
+var data5 = {};
 
 export default function MotorComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -67,6 +68,19 @@ export default function MotorComponent(){
                 motorData[i].dateManufactured,motorData[i].partNumber,motorData[i].salesPrice,
                 motorData[i].serialNumber,motorData[i]._id));
         }
+        console.log('here1');
+
+        for (var i = 0; i<motorData.length; i++){
+            if (data5[data1[i].slice(0,4)]==undefined){
+                data5[data1[i].slice(0,4)] = data2[i];
+            }
+            else{
+                data5[data1[i].slice(0,4)] = data5[data1[i].slice(0,4)]+data2[i];
+            }
+        }
+        console.log(data5);
+        data1 = Object.keys(data5) ;
+        data2 = Object.values(data5) ;
     }
         rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
         setTimeout(() => setDisplayRows(true), 1500);
