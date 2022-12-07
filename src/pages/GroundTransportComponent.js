@@ -62,9 +62,12 @@ const ListItem = styled('li')(({ theme }) => ({
 }));
 
 const rows = [];
-const data1 = [];
-const data2 = [];
-const data4 = [];
+var data1 = [];
+var data2 = [];
+var data4 = [];
+var data5 = {};
+var data6 = {};
+var data7 = {};
 
 export default function GroundTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -97,6 +100,25 @@ export default function GroundTransportComponent(){
                 groundData[i].routeId,groundData[i].trackingNumber,groundData[i].laborCost,
                 groundData[i].truckId,groundData[i].customerCost, groundData[i]._id));
         }
+        for(i = 0; i<groundData.length; i++){
+            if (data6[data1[i]] === undefined){
+                data6[data1[i]] = data2[i];
+                data7[data1[i]] = data4[i];
+                data5[data1[i]] = 1;
+            }
+            else{
+                data6[data1[i]] = data6[data1[i]] + data2[i];
+                data7[data1[i]] = data7[data1[i]] + data4[i];
+                data5[data1[i]] = data5[data1[i]] + 1;
+            }
+        }
+        data1 = Object.keys(data6);
+        for (i = 0; i<data1.length; i++){
+            data6[data1[i]] = data6[data1[i]]/data5[data1[i]];
+            data7[data1[i]] = data7[data1[i]]/data5[data1[i]];
+        }
+        data2 = Object.values(data6);
+        data4 = Object.values(data7);
     }
         rows.sort((a, b) => (a.fuelCost < b.fuelCost ? -1 : 1));
         setTimeout(() => setDisplayRows(true), 1500);

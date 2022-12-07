@@ -36,6 +36,7 @@ function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
 const rows = [];
 var data1 = [];
 var data2 = [];
+var data4 = {};
 var data5 = {};
 
 export default function MotorComponent(){  
@@ -68,19 +69,23 @@ export default function MotorComponent(){
                 motorData[i].dateManufactured,motorData[i].partNumber,motorData[i].salesPrice,
                 motorData[i].serialNumber,motorData[i]._id));
         }
-        console.log('here1');
+        
 
-        for (var i = 0; i<motorData.length; i++){
-            if (data5[data1[i].slice(0,4)]==undefined){
+        for (i = 0; i<motorData.length; i++){
+            if (data5[data1[i].slice(0,4)]===undefined){
                 data5[data1[i].slice(0,4)] = data2[i];
+                data4[data1[i].slice(0,4)] = 1;
             }
             else{
                 data5[data1[i].slice(0,4)] = data5[data1[i].slice(0,4)]+data2[i];
+                data4[data1[i].slice(0,4)] = data4[data1[i].slice(0,4)]+1;
             }
         }
-        console.log(data5);
         data1 = Object.keys(data5) ;
-        data2 = Object.values(data5) ;
+        for(i =0; i<data1.length; i++){
+            data5[data1[i]] = data5[data1[i]]/data4[data1[i]]
+        }
+        data2 = Object.values(data5);
     }
         rows.sort((a, b) => (a.serialNumber < b.serialNumber ? -1 : 1));
         setTimeout(() => setDisplayRows(true), 1500);
