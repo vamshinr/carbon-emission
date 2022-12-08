@@ -15,7 +15,7 @@ class GroundTransportCon{
         const response = await clientauth.groundTransportation.add({
             co2: coo2,
             fuelCost: fuelCo,
-            routeId: rouID,
+            routeId: rouID.split(" - ")[0],
             trackingNumber: trackNum,
             laborCost: labCo,
             truckId: tID,

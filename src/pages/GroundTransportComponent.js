@@ -27,6 +27,9 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { MdLocationOn, MdOutlineLocationOn, MdLocalShipping} from "react-icons/md";
 import { TbArrowBigRightLines } from "react-icons/tb";
+import RouteInfo from '../connections/RouteInfo';
+import Autocomplete from '@mui/material/Autocomplete';
+
 import {
     Chart as ChartJS,
     LinearScale,
@@ -68,6 +71,7 @@ var data4 = [];
 var data5 = {};
 var data6 = {};
 var data7 = {};
+const groundRoutesOptions = [];
 
 export default function GroundTransportComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -85,6 +89,9 @@ export default function GroundTransportComponent(){
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
     const [displayRows, setDisplayRows] = useState(false);
+    const [routedetails, setRouteDetails] = useState(false);
+    const [source, setSource] = useState();
+    const [destination,setDestination] = useState();
 
     const get_ground_info = async()=>{
         setDisplayRows(false);
@@ -123,9 +130,24 @@ export default function GroundTransportComponent(){
         rows.sort((a, b) => (a.fuelCost < b.fuelCost ? -1 : 1));
         setTimeout(() => setDisplayRows(true), 1500);
         //setDisplayRows(true);
-    }    
+    }
+    
+    const get_ground_routes = async()=>{
+        const routeData = await RouteInfo.route_fetch();
+        console.log("ground routes :",routeData);
+        if (groundRoutesOptions.length === 0){
+            for(var i = 0; i < routeData.length; i++) {
+                if (routeData[i].routeType == "ground"){
+                    groundRoutesOptions.push(routeData[i].routeId+" - "+routeData[i].startPoint+" - "+routeData[i].endPoint);
+                }
+            }
+        }
+        console.log("ground routes:", groundRoutesOptions);
+    }
     
     useEffect(()=>{
+        console.log("entering useeffect");
+        get_ground_routes();
         get_ground_info();
     },[]);
 
@@ -140,6 +162,9 @@ export default function GroundTransportComponent(){
     };
 
     const handleCloseNew = () => {
+        setDestination();
+        setSource();
+        setRouteDetails(false);
         if(dirty){
             setOpenDirty(true);
         }
@@ -158,6 +183,7 @@ export default function GroundTransportComponent(){
 
 
     const handleClickSubmit = () =>{
+        setRouteDetails(false);
         console.log("entering handle click");
         var coo2 = Number(co2);
         var fuelCo = Number(fuelCost);
@@ -268,7 +294,11 @@ export default function GroundTransportComponent(){
                     </DialogContentText>
 
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
-                        <Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
+                    {routedetails?<Paper sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap',listStyle: 'none',p: 0.5, m: 0,}} component="ul">
+
+                            <ListItem key="source">
+                            {routeID.split(' - ')[1]}
+                            </ListItem>
                             <ListItem key="totalCo2">
                                 <MdOutlineLocationOn style={{color:'#004e38', fontSize:'25px'}}/>
                             </ListItem>
@@ -284,13 +314,19 @@ export default function GroundTransportComponent(){
                             <ListItem key="totalCo2">
                                 <MdLocationOn style={{color:'#004e38', fontSize:'25px'}}/>
                             </ListItem>
+                            <ListItem key="destination">
+                            {routeID.split(' - ')[2]}
+                            </ListItem>
                         
-                        </Paper>
+                        </Paper>:<></>}
                         <div>
                             <TextField required error={trackNumber !== null && trackNumber !== '' ? false : true} id="trackNumber" variant='filled' label="Tracking Number" defaultValue="" value={trackNumber} onChange={e => {setTrackNumber(e.target.value); setDirty(true);}}/>
                         </div>
+                        {/* <div>
+                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true); setRouteDetails(true);}}/>
+                        </div> */}
                         <div>
-                            <TextField required error={routeID !== null && routeID !== '' ? false : true} id="routeID" label="Route ID" variant='filled' defaultValue="" value={routeID} onChange={e => {setRouteID(e.target.value); setDirty(true);}}/>
+                        <Autocomplete disablePortal id="routeID" options={groundRoutesOptions} renderInput={(params) => <TextField {...params} label="route info" />} value={routeID} onChange={e => {setRouteID(e.target.innerText); setDirty(true); setRouteDetails(true);}}/> 
                         </div>
                         <div>
                             <TextField required error={truckID !== null && truckID !== '' ? false : true} id="truckId" variant='filled' label="Truck ID" defaultValue="" value={truckID} onChange={e => {setTruckID(e.target.value); setDirty(true);}}/>

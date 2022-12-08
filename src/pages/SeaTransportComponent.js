@@ -139,7 +139,9 @@ export default function SeaTransportComponent(){
         console.log("sea routes :",routeData);
         if (seaRoutesOptions.length === 0){
             for(var i = 0; i < routeData.length; i++) {
-                seaRoutesOptions.push(routeData[i].routeId+" - "+routeData[i].startPoint+" - "+routeData[i].endPoint);
+                if (routeData[i].routeType == "sea"){
+                    seaRoutesOptions.push(routeData[i].routeId+" - "+routeData[i].startPoint+" - "+routeData[i].endPoint);
+                }
             }
         }
         console.log("sea routes:", seaRoutesOptions);

@@ -24,24 +24,63 @@ import SeaTransportCon from "../connections/SeaTransportCon";
 import GroundTransportCon from '../connections/GroundTransportCon';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
 
 const toolTypeOptions = ["Drill","Tool1"];
 const batteryOptions = [];
 const motorOptions = [];
 const seaRouteOptions = [];
 const groundRouteOptions = [];
+var isupdate = false;
 
 export default function HptAddEditTool(params){
-    const rows = params.rows;
+    var rows = params.row;
+    if (rows==null){
+        rows = {
+            toolType:"",
+            serialNumAdmin:"",
+            co2:"",
+            partscost:"",
+            motorid:"",
+            batteryid:"",
+            seaid:"",
+            groundid:""
+        }
+    }
+    else{
+        isupdate = true;
+    }
+    console.log(rows==null);
     console.log("rows",rows);
-    const [toolType, setToolType] = useState();
-    const [serialNumber, setSerialNumber] = useState();
-    const [co2, setCO2] = useState(0);
-    const [partsCost, setPartscost] = useState();
-    const [motorId, setMotorId] = useState();
-    const [batteryId, setBatteryId] = useState();
-    const [seaTransportId, setSeaTransportId] = useState();
-    const [groundTransportId, setGroundTransportId] = useState();
+    // const [toolType, setToolType] = useState();
+    // const [serialNumber, setSerialNumber] = useState();
+    // const [co2, setCO2] = useState();
+    // const [partsCost, setPartscost] = useState();
+    // const [motorId, setMotorId] = useState();
+    // const [batteryId, setBatteryId] = useState();
+    // const [seaTransportId, setSeaTransportId] = useState();
+    // const [groundTransportId, setGroundTransportId] = useState();
+    
+    // if(rows!=null){
+    //     setToolType(rows.tooltype);
+    //     setSerialNumber(rows.serialNumAdmin);
+    //     setCO2(rows.co2);
+    //     setPartscost(rows.partscost);
+    //     setMotorId(rows.motorid);
+    //     setBatteryId(rows.batteryid);
+    //     setSeaTransportId(rows.seaid);
+    //     setGroundTransportId(rows.groundid);
+    // }
+    const [toolType, setToolType] = useState(rows.tooltype);
+    const [serialNumber, setSerialNumber] = useState(rows.serialNumAdmin);
+    const [co2, setCO2] = useState(rows.co2);
+    const [partsCost, setPartscost] = useState(rows.partscost);
+    const [motorId, setMotorId] = useState(rows.motorid);
+    const [batteryId, setBatteryId] = useState(rows.batteryid);
+    const [seaTransportId, setSeaTransportId] = useState(rows.seaid);
+    const [groundTransportId, setGroundTransportId] = useState(rows.groundid);
+
+
     const [alert, setAlert] = useState(false);
     const [alertContent, setAlertContent] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
@@ -80,37 +119,75 @@ export default function HptAddEditTool(params){
         var toolType = "Drill";
         var serialNumAdmin = (serialNumber);
         var coo2 = Number(calco2);
-        var partscost = 0;
+        var partscost = Number(partsCost);
         var motorid = (motorId);
         var batteryid = (batteryId);
         var seaid = (seaTransportId);
         var groundid = (groundTransportId);
         console.log("co2 : "+coo2);
         // console.log("costMan : "+costManufactured);
-        HptCon.hpt_create(toolType,serialNumAdmin,coo2,partscost,motorid,
-            batteryid,seaid,groundid).then(response =>{
-            // setOpenNew(false);
-            params.close(false);
-            setAlertContent("Success! New HPT tool Details Added");
-            setAlertSeverity("success");
-            setAlert(true);
-            console.log(response);
-            setCO2();
-            setSerialNumber();
-            setToolType();
-            setPartscost();
-            setMotorId();
-            setBatteryId();
-            setSeaTransportId();
-            setGroundTransportId();
-            //setTimeout(() => window.location.reload(false), 1000);
+        if (isupdate==true){
+            var data = {
+                _id: rows.id,
+                toolType: toolType,
+                SerialNumber: serialNumAdmin,
+                co2:coo2,
+                partsCost:partscost,
+                motorId:motorid,
+                BatteryId:batteryid,
+                seaTransportId:seaid,
+                groundTransportId:groundid
+            };
+            HptCon.hpt_update(data).then(response =>{
+                // setOpenNew(false);
+                params.close(false);
+                setAlertContent("Success! New HPT tool Details Added");
+                setAlertSeverity("success");
+                setAlert(true);
+                console.log(response);
+                setCO2();
+                setSerialNumber();
+                setToolType();
+                setPartscost();
+                setMotorId();
+                setBatteryId();
+                setSeaTransportId();
+                setGroundTransportId();
+                //setTimeout(() => window.location.reload(false), 1000);
 
-        }).catch(error =>{
-            console.log(error);
-            setAlertContent("Failure! Couldn't Add New HPT tool Details");
-            setAlertSeverity("error")
-            setAlert(true);
-        });
+            }).catch(error =>{
+                console.log(error);
+                setAlertContent("Failure! Couldn't Add New HPT tool Details");
+                setAlertSeverity("error")
+                setAlert(true);
+            });
+        }
+        else{
+            HptCon.hpt_create(toolType,serialNumAdmin,coo2,partscost,motorid,
+                batteryid,seaid,groundid).then(response =>{
+                // setOpenNew(false);
+                params.close(false);
+                setAlertContent("Success! New HPT tool Details Added");
+                setAlertSeverity("success");
+                setAlert(true);
+                console.log(response);
+                setCO2();
+                setSerialNumber();
+                setToolType();
+                setPartscost();
+                setMotorId();
+                setBatteryId();
+                setSeaTransportId();
+                setGroundTransportId();
+                //setTimeout(() => window.location.reload(false), 1000);
+
+            }).catch(error =>{
+                console.log(error);
+                setAlertContent("Failure! Couldn't Add New HPT tool Details");
+                setAlertSeverity("error")
+                setAlert(true);
+            });
+        }
 
     };
 
