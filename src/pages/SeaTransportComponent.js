@@ -360,7 +360,7 @@ export default function SeaTransportComponent(){
                     </DialogActions>
                 </Dialog>
                 <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Sea Transport History</DialogTitle>
+                    <DialogTitle><span style={{paddingRight:'10px'}}><BsGraphUp /></span> Sea Transport History</DialogTitle>
                     <div>
                     <Box>   
                     

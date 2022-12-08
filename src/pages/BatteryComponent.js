@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
-import { FaCarBattery, FaPlus} from 'react-icons/fa';
+import { FaCarBattery, FaPlus, FaChartLines} from 'react-icons/fa';
+import {BsFillBarChartLineFill} from 'react-icons/bs';
 import './Page.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
@@ -22,10 +23,13 @@ import { useEffect } from 'react';
 import loader from './logos/loader3.gif';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import HomeIcon from '@mui/icons-material/Home';
-import { Line } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import {CategoryScale} from 'chart.js'; 
 import Chart from 'chart.js/auto';
 import {BsGraphUp} from 'react-icons/bs';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import PropTypes from 'prop-types';
 Chart.register(CategoryScale);
 
 function createData(co2,costManu,dateManu,partNum,salesPr,serialNum,id) {
@@ -36,6 +40,39 @@ var data1 = [];
 var data2 = [];
 var data4 = {};
 var data5 = {};
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+  
+function a11yProps(index) {
+return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+};
+}  
 
 export default function BatteryComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -194,6 +231,12 @@ export default function BatteryComponent(){
         ]
     };
 
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
 
     return(
      <>
@@ -255,11 +298,22 @@ export default function BatteryComponent(){
                     </DialogActions>
                 </Dialog>
                 <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Battery History</DialogTitle>
+                    <DialogTitle><span style={{color:'#004e38', backgroundColor:'#fff'}}><BsGraphUp /></span>Battery History</DialogTitle>
                     <div>
-                    <Box>   
-                    <Line data={data3} />
-                    </Box>
+                        <Box sx={{ width: '100%' }}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                <Tab label="Bar Chart" {...a11yProps(0)} />
+                                <Tab label="Line Chart" {...a11yProps(1)} />
+                                </Tabs>
+                            </Box>
+                            <TabPanel value={value} index={0}>
+                                <Bar data={data3} />
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                                <Line data={data3} /> 
+                            </TabPanel>
+                        </Box>
                     </div>
                 </Dialog>
             </div>

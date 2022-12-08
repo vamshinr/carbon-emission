@@ -316,7 +316,7 @@ export default function GroundTransportComponent(){
                     </DialogActions>
                 </Dialog>
                 <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Ground Transport History</DialogTitle>
+                    <DialogTitle><span style={{paddingRight:'10px'}}><BsGraphUp /></span> Ground Transport History</DialogTitle>
                     <div>
                     <Box>   
                     <Chart type='bar' data={data3} />
