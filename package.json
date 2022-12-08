@@ -21,6 +21,7 @@
     "@vendia/client": "^0.8.0",
     "bootstrap": "^5.2.2",
     "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.1.0",
     "dayjs": "^1.11.5",
     "font-awesome": "^4.7.0",
     "multiselect-react-dropdown": "^2.0.25",
