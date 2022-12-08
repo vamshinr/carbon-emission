@@ -222,12 +222,37 @@ export default function MotorComponent(){
             label: "Motor Co2",
             data: data2,
             fill: true,
-            backgroundColor: "rgba(75,192,192,0.2)",
-            borderColor: "rgba(75,192,192,1)"
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1.5,
             },
             
         ]
     };
+    const options = {
+        scales: {
+            x: { 
+                title: { 
+                    display: true, 
+                    text: 'Year',
+                    font: {
+                        size: 17,
+                        style:'bold'
+                      }
+                }
+            },
+            y: { 
+                title: { 
+                    display: true, 
+                    text: 'CO2',
+                    font: {
+                        size: 14,
+                        style:'bold'
+                      }
+                }
+            }
+        }
+  }
 
     const [value, setValue] = React.useState(0);
 
@@ -293,7 +318,7 @@ export default function MotorComponent(){
                     </DialogActions>
                 </Dialog>
                 <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}><BsGraphUp /></span>Motor History</DialogTitle>
+                    <DialogTitle><span style={{paddingRight:'10px'}}><BsGraphUp /></span>&nbsp; Motor History</DialogTitle>
                     <div>
                         <Box sx={{ width: '100%' }}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -303,10 +328,10 @@ export default function MotorComponent(){
                                 </Tabs>
                             </Box>
                             <TabPanel value={value} index={0}>
-                                <Bar data={data3} />
+                                <Bar data={data3} options={options}  />
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                <Line data={data3} /> 
+                                <Line data={data3} options={options}  /> 
                             </TabPanel>
                         </Box>
                     </div>

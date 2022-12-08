@@ -259,7 +259,7 @@ export default function SeaTransportComponent(){
             {
               type: 'bar',
               label: 'Sea Transport Labor + Fuel Cost',
-              backgroundColor: 'rgb(255, 99, 132)',
+              backgroundColor: 'rgba(255, 99, 132, 0.7)',
               data: data4,
               borderColor: 'red',
               borderWidth: 2,
@@ -267,6 +267,20 @@ export default function SeaTransportComponent(){
             },
           ],
     };
+    const options = {
+        scales: {
+            x: { 
+                title: { 
+                    display: true, 
+                    text: 'Route',
+                    font: {
+                        size: 16,
+                        style:'bold'
+                      }
+                }
+            }
+        }
+    }
 
     return(
         
@@ -364,7 +378,7 @@ export default function SeaTransportComponent(){
                     <div>
                     <Box>   
                     
-                    <Chart type='bar' data={data3} />
+                    <Chart type='bar' data={data3} options = {options} />
                     </Box>
                     </div>
                 </Dialog>

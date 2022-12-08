@@ -230,14 +230,28 @@ export default function GroundTransportComponent(){
             {
               type: 'bar',
               label: 'Ground Transport Labor + Fuel Cost',
-              backgroundColor: 'rgb(255, 99, 132)',
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
               data: data4,
-              borderColor: 'red',
+              borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 2,
               fill: false,
             },
           ],
     };
+    const options = {
+        scales: {
+            x: { 
+                title: { 
+                    display: true, 
+                    text: 'Route',
+                    font: {
+                        size: 16,
+                        style:'bold'
+                      }
+                }
+            }
+        }
+    }
 
     return(
         
@@ -319,7 +333,7 @@ export default function GroundTransportComponent(){
                     <DialogTitle><span style={{paddingRight:'10px'}}><BsGraphUp /></span> Ground Transport History</DialogTitle>
                     <div>
                     <Box>   
-                    <Chart type='bar' data={data3} />
+                    <Chart type='bar' data={data3} options={options} />
                     </Box>
                     </div>
                 </Dialog>
