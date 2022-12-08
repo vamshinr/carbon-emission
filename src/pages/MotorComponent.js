@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
-import { FaPlus} from 'react-icons/fa';
+import { FaPlus, FaChartLine} from 'react-icons/fa';
+import {BsFillBarChartLineFill} from 'react-icons/bs';
 import {FiSettings} from 'react-icons/fi';
 import './Page.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,12 +21,15 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import MotorCon from '../connections/MotorCon';
 import loader from './logos/loader3.gif';
-import { Line } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import {CategoryScale} from 'chart.js'; 
 import Chart from 'chart.js/auto'
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import HomeIcon from '@mui/icons-material/Home';
 import {BsGraphUp} from 'react-icons/bs';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import PropTypes from 'prop-types';
 Chart.register(CategoryScale);
 
 
@@ -38,6 +42,39 @@ var data1 = [];
 var data2 = [];
 var data4 = {};
 var data5 = {};
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+  
+function a11yProps(index) {
+return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+};
+}  
 
 export default function MotorComponent(){  
     const [openNew, setOpenNew] = React.useState(false);
@@ -185,12 +222,44 @@ export default function MotorComponent(){
             label: "Motor Co2",
             data: data2,
             fill: true,
-            backgroundColor: "rgba(75,192,192,0.2)",
-            borderColor: "rgba(75,192,192,1)"
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1.5,
             },
             
         ]
     };
+    const options = {
+        scales: {
+            x: { 
+                title: { 
+                    display: true, 
+                    text: 'Year',
+                    font: {
+                        size: 17,
+                        style:'bold'
+                      }
+                }
+            },
+            y: { 
+                title: { 
+                    display: true, 
+                    text: 'CO2',
+                    font: {
+                        size: 14,
+                        style:'bold'
+                      }
+                }
+            }
+        }
+  }
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
 
     return(  
         <>
@@ -249,11 +318,22 @@ export default function MotorComponent(){
                     </DialogActions>
                 </Dialog>
                 <Dialog open={openHistory} fullWidth = {true} onClose={handleHistoryClose}>
-                    <DialogTitle><span style={{paddingRight:'10px'}}></span> Motor History</DialogTitle>
+                    <DialogTitle><span style={{paddingRight:'10px'}}><BsGraphUp /></span>&nbsp; Motor History</DialogTitle>
                     <div>
-                    <Box>   
-                    <Line data={data3} />
-                    </Box>
+                        <Box sx={{ width: '100%' }}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                <Tab label="Bar Chart" {...a11yProps(0)} />
+                                <Tab label="Line Chart" {...a11yProps(1)} />
+                                </Tabs>
+                            </Box>
+                            <TabPanel value={value} index={0}>
+                                <Bar data={data3} options={options}  />
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                                <Line data={data3} options={options}  /> 
+                            </TabPanel>
+                        </Box>
                     </div>
                 </Dialog>
             </div>
