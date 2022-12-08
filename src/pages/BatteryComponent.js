@@ -118,6 +118,8 @@ export default function BatteryComponent(){
         data1 = Object.keys(data5) ;
         for(i =0; i<data1.length; i++){
             data5[data1[i]] = data5[data1[i]]/data4[data1[i]]
+            data5[data1[i]] = Math.round(data5[data1[i]]*100)/100
+            // console.log((Math.round(63.2666666 *100))/100)
         }
         data2 = Object.values(data5);
 

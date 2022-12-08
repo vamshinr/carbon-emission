@@ -122,7 +122,9 @@ export default function GroundTransportComponent(){
         data1 = Object.keys(data6);
         for (i = 0; i<data1.length; i++){
             data6[data1[i]] = data6[data1[i]]/data5[data1[i]];
+            data6[data1[i]] = Math.round(data6[data1[i]]*100)/100
             data7[data1[i]] = data7[data1[i]]/data5[data1[i]];
+            data7[data1[i]] = Math.round(data7[data1[i]]*100)/100
         }
         data2 = Object.values(data6);
         data4 = Object.values(data7);

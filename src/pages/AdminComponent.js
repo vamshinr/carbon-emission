@@ -112,7 +112,7 @@ export default function AdminComponent(){
         }
     }
 
-    const handleReset = () => {
+    const handleReset = async() => {
         setOpenFilter(false);
         const newlist = [];
         setSelectedItemsList(newlist);
@@ -120,6 +120,7 @@ export default function AdminComponent(){
         selectedItemsList.forEach(element =>{
             console.log(element.id);
         });
+        await get_hpt_info();
     }
 
     const handleFilter = async()=> {
