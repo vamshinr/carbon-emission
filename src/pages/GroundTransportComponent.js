@@ -29,6 +29,7 @@ import { MdLocationOn, MdOutlineLocationOn, MdLocalShipping} from "react-icons/m
 import { TbArrowBigRightLines } from "react-icons/tb";
 import RouteInfo from '../connections/RouteInfo';
 import Autocomplete from '@mui/material/Autocomplete';
+import RouteCon from '../connections/RouteInfo';
 
 import {
     Chart as ChartJS,
@@ -92,6 +93,11 @@ export default function GroundTransportComponent(){
     const [routedetails, setRouteDetails] = useState(false);
     const [source, setSource] = useState();
     const [destination,setDestination] = useState();
+    const [routeOpen, setRouteOpen] = useState(false);
+    const [seaRouteID, setSeaRouteID] = useState();
+    const [sourceID, setSourceID] = useState();
+    const [destinationID, setDestinationID] = useState();
+    const [connections, setConnections] = useState();
 
     const get_ground_info = async()=>{
         setDisplayRows(false);
@@ -281,6 +287,32 @@ export default function GroundTransportComponent(){
         }
     }
 
+    const handleClickNewRoute = () => {
+        setRouteOpen(true);
+    }
+
+    const handleCloseNewRoute = () => {
+        setRouteOpen(false);
+    }
+
+    const handleClickRouteSubmit = () => {
+        RouteCon.route_create(seaRouteID,sourceID,destinationID,connections,"ground").then(response=>{
+            setRouteOpen(false);
+            setAlertContent("Success! New Ground Route Details Added");
+            setAlertSeverity("success");
+            setSeaRouteID();
+            setSourceID();
+            setDestinationID();
+            setConnections();
+            setTimeout(() => window.location.reload(false), 1000);
+        }).catch(error =>{
+            console.log(error);
+            setAlertContent("Failure! Couldn't Add New Ground Route Details");
+            setAlertSeverity("error")
+            setAlert(true);
+        });
+    }
+
     return(
         
         <>
@@ -294,14 +326,15 @@ export default function GroundTransportComponent(){
         : <></>}
         <div className="hpt-body" style={{ backgroundColor:'#d8d2b8', padding:'20px'}}>
             <div className='row' style={{paddingBottom:'20px'}}>
-            <div className='col-lg-10 col-md-10 col-sm-8 col-xs-6'>
+            <div className='col-lg-8 col-md-8 col-sm-6 col-xs-6'>
                 <Typography gutterBottom variant="h5" component="div" align="left">
                 <span style={{color:'#004e38', fontSize:'35px', padding:'15px'}}><FaShippingFast /></span> Hornet Ground Transporters
                 </Typography>
             </div>
-            <div className='col-lg-2 col-md-2 col-sm-4 col-xs-6' style={{textAlign:'right'}}>
-            <Button  onClick={handleHistoryOpen} title="Ground Transport History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38',marginTop:'10px', marginRight:'10px' }}><span style={{paddingLeft:'1px'}}><BsGraphUp /></span></Button>
-                <Button onClick={handleClickOpenNew} title="Add New Ground Route Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Route</span></Button>
+            <div className='col-lg-4 col-md-4 col-sm-6 col-xs-6' style={{textAlign:'right'}}>
+                <Button  onClick={handleHistoryOpen} title="Ground Transport History" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38',marginTop:'10px', marginRight:'10px' }}><span style={{paddingLeft:'1px'}}><BsGraphUp /></span></Button>
+                <Button onClick={handleClickOpenNew} title="Add New Ground Transport Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px', marginRight:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Transport</span></Button>
+                <Button onClick={handleClickNewRoute} title="Add New Route Details" style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38', marginTop:'10px'}}><FaPlus /><span style={{paddingLeft:'10px'}}>New Route</span></Button>
                 <Dialog open={openNew} onClose={handleCloseNew}>
                     <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Ground Route Details</DialogTitle>
                     <DialogContent>
@@ -374,6 +407,32 @@ export default function GroundTransportComponent(){
                     <Chart type='bar' data={data3} options={options} />
                     </Box>
                     </div>
+                </Dialog>
+                <Dialog open={routeOpen} onClose={handleCloseNewRoute}>
+                    <DialogTitle><span style={{paddingRight:'10px'}}><FaPlus/></span>New Ground Route Details</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText>
+                         Add New Ground Route details here.
+                    </DialogContentText>
+                    <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch', backgroundColor:'#fff' }, paddingLeft:'0px', '& .MuiButton-root':{backgroundColor: '#0fa153'}}} noValidate autoComplete="off">
+                        <div>
+                            <TextField required error={seaRouteID !== null && seaRouteID !== '' ? false : true} id="seaRouteID" variant='filled' label="Route ID" defaultValue="" value={seaRouteID} onChange={e => {setSeaRouteID(e.target.value); setDirty(true);}}/>
+                        </div>
+                        <div>
+                            <TextField required error={sourceID !== null && sourceID !== '' ? false : true} id="sourceID" variant='filled' label="Source" defaultValue="" value={sourceID} onChange={e => {setSourceID(e.target.value); setDirty(true);}}/>
+                        </div>
+                        <div>
+                            <TextField required error={destinationID !== null && destinationID !== '' ? false : true} id="destinationID" variant='filled' label="Destination" defaultValue="" value={destinationID} onChange={e => {setDestinationID(e.target.value); setDirty(true);}}/>
+                        </div>
+                        <div>
+                            <TextField error={connections !== null && connections !== '' ? false : true} id="connections" variant='filled' label="Connections" defaultValue="" value={connections} onChange={e => {setConnections(e.target.value); setDirty(true);}}/>
+                        </div>
+                    </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseNewRoute} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Cancel</Button>
+                        <Button onClick={handleClickRouteSubmit} style={{color:'#fff', backgroundColor:'#004e38', border:'0.5px solid #004e38'}}>Submit</Button>
+                    </DialogActions>
                 </Dialog>
             </div>
             <div role="presentation">

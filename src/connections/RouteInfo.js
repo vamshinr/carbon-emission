@@ -38,5 +38,18 @@ class RouteInfo{
         console.log(Response.items);
         return Response.items[0].endPoint;
     }
+
+    async route_create(routeID, source, destination, connections, routeType){
+        console.log("In Route Con")
+        const response = await clientauth.routeTable.add({
+            routeId: routeID,
+            startPoint: source,
+            endPoint: destination,
+            connections: connections,
+            routeType: routeType
+        });
+        console.log("response for addition: "+response)
+        return response;
+    }
 }
 export default new RouteInfo();

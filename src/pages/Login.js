@@ -72,16 +72,16 @@ export default function Login(){
                         <div>
                             <TextField required error={password !== null && password !== ''? false : true} id="password" variant='filled' label="Password" type="password" value={password} onChange={e=>{setPassword(e.target.value)}}/>
                         </div>
-                        { hide ?
+                        {/* { hide ? */}
                         <div style={{float:'right', paddingTop:'15px', paddingRight:'27px'}}>
                             <Button id="login" variant="contained" onClick={handleSubmit}>Login</Button>
                         </div>
-                        :
+                        {/* :
                         <div style={{textAlign:'right'}}>
                             <LoadingButton loading variant="outlined">
                             Submit
                             </LoadingButton>
-                        </div>}
+                        </div>} */}
                     </Box>
                 </div>
                 <div className='col-lg-4 col-md-4 col-sm-4 col-xs-12'></div></div>
