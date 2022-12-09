@@ -32,6 +32,10 @@ const motorOptions = [];
 const seaRouteOptions = [];
 const groundRouteOptions = [];
 var isupdate = false;
+var prevbatco2 = 0;
+var prevmotco2 = 0;
+var prevseaco2 = 0;
+var prevgroundco2 = 0;
 
 export default function HptAddEditTool(params){
     var rows = params.row;
@@ -94,7 +98,23 @@ export default function HptAddEditTool(params){
     const [groundDisplay, setGroundDisplay] = useState(false);
     const [hptDisplay, setHptDisplay] = useState(false);
     const [calco2, setCalCo2] = useState(0);
+
+    // useEffect(()=>{
+    //     if(isupdate==true){
+    //         get_battery_co2();
+    //         //setBatteryDisplay(true);
+    //         get_motor_co2();
+    //         //setMotorDisplay(true);
+    //         get_sea_co2();
+    //         //setSeaDisplay(true);
+    //         get_ground_co2();
+    //         //setGroundDisplay(true);
+    //         //setHptDisplay(true);
+    //     }
+    // },[]);
+
     
+
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -138,6 +158,8 @@ export default function HptAddEditTool(params){
                 seaTransportId:seaid,
                 groundTransportId:groundid
             };
+            setCalCo2(coo2);
+            
             HptCon.hpt_update(data).then(response =>{
                 // setOpenNew(false);
                 params.close(false);
@@ -241,10 +263,12 @@ export default function HptAddEditTool(params){
             if (batteryData[i].serialNumber == params.bat){
                 setBatteryCo2(batteryData[i].co2);
                 //calco2 += batteryData[i].co2;
-                setCalCo2(calco2+batteryData[i].co2);
+                setCalCo2(calco2-prevbatco2+batteryData[i].co2);
+                prevbatco2 = batteryData[i].co2;
                 break
             }
         }
+        setBatteryDisplay(true);
     }
     const get_motor_co2 = async(params)=>{
         const motorData = await MotorCon.motor_fetch();
@@ -253,7 +277,8 @@ export default function HptAddEditTool(params){
             if (motorData[i].serialNumber == params.bat){
                 setMotorCo2(motorData[i].co2);
                 //calco2 += motorData[i].co2;
-                setCalCo2(calco2+motorData[i].co2);
+                setCalCo2(calco2-prevmotco2+motorData[i].co2);
+                prevmotco2 = motorData[i].co2;
                 break
             }
         }
@@ -265,7 +290,8 @@ export default function HptAddEditTool(params){
             if (seaData[i].trackingNumber == params.bat){
                 setSeaCo2(seaData[i].co2);
                 //calco2 += seaData[i].co2;
-                setCalCo2(calco2+seaData[i].co2);
+                setCalCo2(calco2-prevseaco2+seaData[i].co2);
+                prevseaco2 = seaData[i].co2;
                 break
             }
         }
@@ -277,7 +303,8 @@ export default function HptAddEditTool(params){
             if (groundData[i].trackingNumber == params.bat){
                 setGroundCo2(groundData[i].co2);
                 //calco2 += groundData[i].co2;
-                setCalCo2(calco2+groundData[i].co2);
+                setCalCo2(calco2-prevgroundco2+groundData[i].co2);
+                prevgroundco2 = groundData[i].co2;
                 break
             }
         }
