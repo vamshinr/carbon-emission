@@ -32,7 +32,7 @@ class SeaTransportCon{
         console.log("update response",updateProductResponse);
         //await sleep(1000);
         //setTimeout(() => window.location.reload(false), 2000);
-        const result = await HptCon.hpt_update_by_id(data['trackingNumber'],'seatransport');
+        //const result = await HptCon.hpt_update_by_id(data['trackingNumber'],'seatransport');
         return updateProductResponse;
     }
 
